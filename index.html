@@ -5,25 +5,35 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Menù Spi Pizza</title>
+  <!-- Font elegante da Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
   <style>
     body {
-      font-family: 'Georgia', serif;
-      color: #333;
-      margin: 0 auto;
+      font-family: 'Cinzel', serif;
+      color: #000;
+      background: url('https://images.unsplash.com/photo-1600891964599-f61ba0e24092?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80') no-repeat center center fixed;
+      background-size: cover;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      background-color: rgba(255, 255, 255, 0.9);
       max-width: 800px;
+      margin: 40px auto;
       padding: 40px;
-      background: #fdfaf6;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.4);
     }
     h1 {
       text-align: center;
       font-size: 3em;
-      color: #8B0000;
+      color: darkred;
       margin-bottom: 10px;
     }
     .subtitle {
       text-align: center;
       font-size: 1.2em;
-      color: #555;
+      color: #333;
       margin-bottom: 30px;
     }
     .section {
@@ -31,9 +41,18 @@
     }
     .section h2 {
       font-size: 2em;
-      border-bottom: 2px solid #ccc;
+      color: darkred;
+      border-bottom: 2px solid darkred;
       padding-bottom: 5px;
       margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+    }
+    .section h2::before {
+      content: url('https://cdn-icons-png.flaticon.com/512/3595/3595455.png');
+      width: 32px;
+      height: 32px;
+      margin-right: 10px;
     }
     .dish {
       display: flex;
@@ -48,44 +67,46 @@
     }
     .price {
       font-weight: bold;
-      color: #8B0000;
+      color: darkred;
     }
   </style>
 </head>
 <body>
+<div class="container">
 
-<h1>Spi Pizza</h1>
-<div class="subtitle">Il gusto mediterraneo, un'esperienza unica</div>
+  <h1>Spi Pizza</h1>
+  <div class="subtitle">Tradizione e passione dal forno alla tavola</div>
 
-<div class="section">
-  <h2>Antipasti</h2>
-  <div class="dish"><div>Bruschetta al pomodoro <span class="desc">Pane tostato, pomodori, basilico</span></div><div class="price">€6</div></div>
-  <div class="dish"><div>Caprese <span class="desc">Mozzarella di bufala, pomodoro, olio EVO</span></div><div class="price">€8</div></div>
+  <div class="section">
+    <h2>Antipasti</h2>
+    <div class="dish"><div>Bruschetta al pomodoro <span class="desc">Pane tostato, pomodori, basilico</span></div><div class="price">€6</div></div>
+    <div class="dish"><div>Caprese <span class="desc">Mozzarella di bufala, pomodoro, olio EVO</span></div><div class="price">€8</div></div>
+  </div>
+
+  <div class="section">
+    <h2>Pizze Classiche</h2>
+    <div class="dish"><div>Margherita <span class="desc">Pomodoro, mozzarella, basilico</span></div><div class="price">€9</div></div>
+    <div class="dish"><div>Diavola <span class="desc">Pomodoro, mozzarella, salame piccante</span></div><div class="price">€11</div></div>
+  </div>
+
+  <div class="section">
+    <h2>Pizze Gourmet</h2>
+    <div class="dish"><div>Quattro Formaggi <span class="desc">Mozzarella, gorgonzola, fontina, parmigiano</span></div><div class="price">€13</div></div>
+    <div class="dish"><div>Prosciutto e Rucola <span class="desc">Pomodoro, mozzarella, prosciutto crudo, rucola</span></div><div class="price">€14</div></div>
+  </div>
+
+  <div class="section">
+    <h2>Dolci</h2>
+    <div class="dish"><div>Tiramisù della casa <span class="desc">Mascarpone, caffè, savoiardi</span></div><div class="price">€5</div></div>
+    <div class="dish"><div>Panna cotta al limone <span class="desc">Con coulis ai frutti rossi</span></div><div class="price">€5</div></div>
+  </div>
+
+  <div class="section">
+    <h2>Bevande</h2>
+    <div class="dish"><div>Acqua minerale <span class="desc">0,5 l</span></div><div class="price">€2</div></div>
+    <div class="dish"><div>Vino della casa (bicchiere) <span class="desc">Rosso o bianco</span></div><div class="price">€4</div></div>
+  </div>
+
 </div>
-
-<div class="section">
-  <h2>Pizze Classiche</h2>
-  <div class="dish"><div>Margherita <span class="desc">Pomodoro, mozzarella, basilico</span></div><div class="price">€9</div></div>
-  <div class="dish"><div>Diavola <span class="desc">Pomodoro, mozzarella, salame piccante</span></div><div class="price">€11</div></div>
-</div>
-
-<div class="section">
-  <h2>Pizze Gourmet</h2>
-  <div class="dish"><div>Quattro Formaggi <span class="desc">Mozzarella, gorgonzola, fontina, parmigiano</span></div><div class="price">€13</div></div>
-  <div class="dish"><div>Prosciutto e Rucola <span class="desc">Pomodoro, mozzarella, prosciutto crudo, rucola</span></div><div class="price">€14</div></div>
-</div>
-
-<div class="section">
-  <h2>Dolci</h2>
-  <div class="dish"><div>Tiramisù della casa <span class="desc">Mascarpone, caffè, savoiardi</span></div><div class="price">€5</div></div>
-  <div class="dish"><div>Panna cotta al limone <span class="desc">Servita con coulis ai frutti rossi</span></div><div class="price">€5</div></div>
-</div>
-
-<div class="section">
-  <h2>Bevande</h2>
-  <div class="dish"><div>Acqua minerale <span class="desc">0,5 l</span></div><div class="price">€2</div></div>
-  <div class="dish"><div>Vino della casa (bicchiere) <span class="desc">Rosso o bianco</span></div><div class="price">€4</div></div>
-</div>
-
 </body>
 </html>
