@@ -2,119 +2,146 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Menù Spi Pizza</title>
-  <!-- Font stile cartone animato da Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap" rel="stylesheet">
+  <title>Ordina da Spi Pizza</title>
   <style>
     body {
-      font-family: 'Fredoka', sans-serif;
-      background-color: #fefbe9;
-      color: #333;
+      font-family: Arial, sans-serif;
+      background-color: #fff8dc;
       margin: 0;
-      padding: 0;
+      padding: 30px;
+      color: #333;
     }
-
-    .container {
-      max-width: 800px;
-      margin: 40px auto;
-      padding: 40px;
-      background-color: #fff;
-      border: 4px dashed #f4a261;
-      border-radius: 25px;
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-    }
-
     h1 {
       text-align: center;
-      font-size: 3.2rem;
-      color: #e76f51;
-      margin-bottom: 10px;
+      color: #d35400;
     }
-
-    .subtitle {
-      text-align: center;
-      font-size: 1.3rem;
-      color: #2a9d8f;
-      margin-bottom: 30px;
-      font-style: italic;
-    }
-
-    .section {
-      margin-top: 35px;
-    }
-
-    .section h2 {
-      font-size: 1.8rem;
-      color: #264653;
-      border-bottom: 3px dotted #e9c46a;
-      padding-bottom: 5px;
-      margin-bottom: 15px;
-    }
-
-    .dish {
+    .menu-item {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background-color: #f4f1de;
-      border-radius: 12px;
-      padding: 10px 15px;
-      margin-bottom: 12px;
-      transition: background-color 0.3s ease;
+      margin: 12px 0;
+      padding: 10px;
+      background: #fefefe;
+      border: 1px solid #ddd;
+      border-radius: 10px;
     }
-
-    .dish:hover {
-      background-color: #fff0c7;
+    .menu-item span {
+      flex: 1;
     }
-
-    .dish .desc {
-      font-size: 0.9rem;
-      color: #6c757d;
-      font-style: italic;
-      display: block;
+    .qty {
+      width: 60px;
+      padding: 5px;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      text-align: center;
     }
-
-    .price {
-      color: #e76f51;
+    .total {
+      text-align: center;
+      font-size: 1.3rem;
+      margin-top: 25px;
       font-weight: bold;
-      font-size: 1.1rem;
+    }
+    .btn {
+      display: block;
+      margin: 25px auto;
+      padding: 12px 20px;
+      font-size: 1.2rem;
+      background-color: #27ae60;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Spi Pizza</h1>
-    <div class="subtitle">Il menù più buono e simpatico della città 🍕😋</div>
+  <h1>Menù Spi Pizza 🍕</h1>
 
-    <div class="section">
-      <h2>Antipasti</h2>
-      <div class="dish"><div>Bruschetta al pomodoro <span class="desc">Pane tostato, pomodori freschi, basilico</span></div><div class="price">€6</div></div>
-      <div class="dish"><div>Caprese <span class="desc">Mozzarella di bufala, pomodoro, olio EVO</span></div><div class="price">€8</div></div>
+  <form id="orderForm">
+    <div class="menu-item">
+      <span>Margherita (€9)</span>
+      <input class="qty" type="number" min="0" value="0" data-name="Margherita" data-price="9">
+    </div>
+    <div class="menu-item">
+      <span>Diavola (€11)</span>
+      <input class="qty" type="number" min="0" value="0" data-name="Diavola" data-price="11">
+    </div>
+    <div class="menu-item">
+      <span>Quattro Formaggi (€13)</span>
+      <input class="qty" type="number" min="0" value="0" data-name="Quattro Formaggi" data-price="13">
+    </div>
+    <div class="menu-item">
+      <span>Tiramisù (€5)</span>
+      <input class="qty" type="number" min="0" value="0" data-name="Tiramisù" data-price="5">
+    </div>
+    <div class="menu-item">
+      <span>Panna cotta (€5)</span>
+      <input class="qty" type="number" min="0" value="0" data-name="Panna cotta" data-price="5">
+    </div>
+    <div class="menu-item">
+      <span>Acqua minerale (€2)</span>
+      <input class="qty" type="number" min="0" value="0" data-name="Acqua minerale" data-price="2">
+    </div>
+    <div class="menu-item">
+      <span>Vino della casa (€4)</span>
+      <input class="qty" type="number" min="0" value="0" data-name="Vino della casa" data-price="4">
     </div>
 
-    <div class="section">
-      <h2>Pizze Classiche</h2>
-      <div class="dish"><div>Margherita <span class="desc">Pomodoro, mozzarella, basilico</span></div><div class="price">€9</div></div>
-      <div class="dish"><div>Diavola <span class="desc">Pomodoro, mozzarella, salame piccante</span></div><div class="price">€11</div></div>
-    </div>
+    <div class="total" id="totalDisplay">Totale: €0</div>
 
-    <div class="section">
-      <h2>Pizze Gourmet</h2>
-      <div class="dish"><div>Quattro Formaggi <span class="desc">Mozzarella, gorgonzola, fontina, parmigiano</span></div><div class="price">€13</div></div>
-      <div class="dish"><div>Prosciutto e Rucola <span class="desc">Pomodoro, mozzarella, prosciutto crudo, rucola</span></div><div class="price">€14</div></div>
-    </div>
+    <button type="button" class="btn" onclick="sendWhatsApp()">Invia Ordine via WhatsApp</button>
+  </form>
 
-    <div class="section">
-      <h2>Dolci</h2>
-      <div class="dish"><div>Tiramisù della casa <span class="desc">Mascarpone, caffè, savoiardi</span></div><div class="price">€5</div></div>
-      <div class="dish"><div>Panna cotta al limone <span class="desc">Con coulis ai frutti rossi</span></div><div class="price">€5</div></div>
-    </div>
+  <script>
+    const inputs = document.querySelectorAll('.qty');
+    const totalDisplay = document.getElementById('totalDisplay');
 
-    <div class="section">
-      <h2>Bevande</h2>
-      <div class="dish"><div>Acqua minerale <span class="desc">0,5 l</span></div><div class="price">€2</div></div>
-      <div class="dish"><div>Vino della casa (bicchiere) <span class="desc">Rosso o bianco</span></div><div class="price">€4</div></div>
-    </div>
-  </div>
+    inputs.forEach(input => {
+      input.addEventListener('input', updateTotal);
+    });
+
+    function updateTotal() {
+      let total = 0;
+      inputs.forEach(input => {
+        const qty = parseInt(input.value);
+        const price = parseFloat(input.dataset.price);
+        if (!isNaN(qty)) {
+          total += qty * price;
+        }
+      });
+      totalDisplay.textContent = "Totale: €" + total.toFixed(2);
+    }
+
+    function sendWhatsApp() {
+      let message = "Ciao! Vorrei ordinare da Spi Pizza:\n";
+      let hasOrder = false;
+
+      inputs.forEach(input => {
+        const qty = parseInt(input.value);
+        const name = input.dataset.name;
+        const price = parseFloat(input.dataset.price);
+        if (qty > 0) {
+          hasOrder = true;
+          message += `- ${qty} x ${name} (€${(qty * price).toFixed(2)})\n`;
+        }
+      });
+
+      if (!hasOrder) {
+        alert("Seleziona almeno un prodotto.");
+        return;
+      }
+
+      const total = totalDisplay.textContent.replace("Totale: ", "");
+      message += `\nTotale: ${total}`;
+
+      const phone = "3935560714"; // <-- tuo numero WhatsApp
+      const encoded = encodeURIComponent(message);
+      const url = `https://wa.me/${phone}?text=${encoded}`;
+
+      window.open(url, '_blank');
+    }
+  </script>
 </body>
+</html>
 </html>
