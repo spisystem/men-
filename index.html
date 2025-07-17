@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <title>Spi Pizza - Menù</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
     * {
       margin: 0;
@@ -13,8 +13,8 @@
     }
 
     body {
-      font-family: 'Fredoka', sans-serif;
-      background: linear-gradient(135deg, #f6d365, #fda085);
+      font-family: 'Inter', sans-serif;
+      background-color: #f5f5f5;
       color: #333;
       font-size: 1.4rem;
       line-height: 1.6;
@@ -22,68 +22,64 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      height: 100vh;
-      text-align: center;
+      justify-content: flex-start;
+      min-height: 100vh;
     }
 
     h1 {
       font-size: 3rem;
-      color: #ffffff;
-      margin-bottom: 40px;
-      text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+      color: #333;
+      margin-bottom: 20px;
+      font-weight: 600;
     }
 
     .btn {
       display: block;
-      width: 100%;
-      padding: 18px 24px;
-      font-size: 1.6rem;
-      background: linear-gradient(145deg, #27ae60, #2ecc71);
+      width: 250px;
+      padding: 15px;
+      font-size: 1.5rem;
       color: white;
+      background-color: #27ae60;
       border: none;
       border-radius: 50px;
+      text-align: center;
       cursor: pointer;
-      box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.1);
-      transition: all 0.3s ease;
-      margin-bottom: 40px;
+      margin-bottom: 30px;
+      transition: background-color 0.3s ease, transform 0.3s ease;
     }
 
     .btn:hover {
-      background: linear-gradient(145deg, #2ecc71, #27ae60);
-      box-shadow: 0px 6px 16px rgba(0, 0, 0, 0.2);
-      transform: translateY(-5px);
+      background-color: #219150;
+      transform: translateY(-3px);
     }
 
     .section {
-      margin-top: 20px;
       width: 100%;
       max-width: 600px;
+      margin-top: 30px;
     }
 
     .section h2 {
-      font-size: 2.2rem;
-      color: #fff;
-      margin-bottom: 20px;
-      border-bottom: 2px solid #ff914d;
+      font-size: 2rem;
+      color: #444;
+      margin-bottom: 15px;
+      border-bottom: 2px solid #ddd;
       padding-bottom: 5px;
     }
 
     .dish {
       display: flex;
       justify-content: space-between;
-      align-items: center;
-      background: #ffffff;
-      padding: 15px;
+      padding: 12px;
+      background-color: #fff;
       margin: 10px 0;
-      border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-      transition: all 0.3s ease;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      transition: box-shadow 0.3s ease;
     }
 
     .dish:hover {
-      transform: scale(1.05);
-      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
     }
 
     .dish span {
@@ -93,18 +89,12 @@
 
     .qty {
       width: 60px;
-      padding: 10px;
+      padding: 8px;
       font-size: 1.2rem;
       border: 2px solid #ccc;
-      border-radius: 12px;
+      border-radius: 8px;
       text-align: center;
       background-color: #f9f9f9;
-      transition: all 0.3s ease;
-    }
-
-    .qty:focus {
-      border-color: #27ae60;
-      outline: none;
     }
 
     .total {
@@ -116,19 +106,23 @@
 
     .order-section {
       display: none;
+      width: 100%;
+      max-width: 600px;
       margin-top: 40px;
-      border-top: 2px solid #ddd;
-      padding-top: 30px;
-      background: #fff;
+      padding: 20px;
+      background-color: #fff;
       border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     }
 
-    /* Responsive */
+    .order-section input {
+      margin-bottom: 15px;
+    }
+
+    /* Responsività */
     @media (max-width: 768px) {
       body {
         padding: 15px;
-        font-size: 1.3rem;
       }
 
       h1 {
@@ -137,28 +131,23 @@
 
       .btn {
         width: 100%;
-        font-size: 1.4rem;
+        font-size: 1.3rem;
       }
 
-      .menu-item {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      .qty {
-        margin-top: 10px;
-        width: 80px;
+      .dish span {
+        font-size: 1.2rem;
       }
     }
   </style>
 </head>
 <body>
 
-  <!-- ✅ Bottone Ben Visibile - Spostato in alto -->
+  <!-- Pulsante "Voglio ordinare" in cima -->
   <button class="btn" id="openOrder">📦 Voglio ordinare</button>
 
   <h1>🍕 Menù Spi Pizza</h1>
 
+  <!-- Sezioni del menù -->
   <div class="section">
     <h2>Pizze Classiche</h2>
     <div class="dish"><span>Margherita</span> <span>€9</span></div>
@@ -183,7 +172,7 @@
     <div class="dish"><span>Vino della casa</span> <span>€4</span></div>
   </div>
 
-  <!-- Sezione per ordinare -->
+  <!-- Sezione per l'ordine -->
   <div class="order-section" id="orderSection">
     <form id="orderForm">
       <div class="menu-item">
