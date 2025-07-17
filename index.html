@@ -165,7 +165,11 @@
       <!-- Dati Cliente -->
       <div class="menu-item">
         <label for="customerName">Nome *</label>
-        <input class="text-input" type="text" id="customerName" placeholder="Es. Mario Rossi" required>
+        <input class="text-input" type="text" id="customerName" placeholder="Es. Mario" required>
+      </div>
+      <div class="menu-item">
+        <label for="customerSurname">Cognome *</label>
+        <input class="text-input" type="text" id="customerSurname" placeholder="Es. Rossi" required>
       </div>
       <div class="menu-item">
         <label for="customerAddress">Indirizzo *</label>
@@ -211,11 +215,12 @@
 
     function sendWhatsApp() {
       let name = document.getElementById('customerName').value.trim();
+      let surname = document.getElementById('customerSurname').value.trim();
       let address = document.getElementById('customerAddress').value.trim();
       let phone = document.getElementById('customerPhone').value.trim();
 
-      if (!name || !address || !phone) {
-        alert("Per favore, compila tutti i campi richiesti (Nome, Indirizzo e Telefono).");
+      if (!name || !surname || !address || !phone) {
+        alert("Per favore, compila tutti i campi richiesti (Nome, Cognome, Indirizzo e Telefono).");
         return;
       }
 
@@ -239,7 +244,7 @@
 
       const total = totalDisplay.textContent.replace("Totale: ", "");
       message += `\n${total}\n\n`;
-      message += `📍 *Dati cliente:*\n👤 Nome: ${name}\n🏠 Indirizzo: ${address}\n📞 Telefono: ${phone}`;
+      message += `📍 *Dati cliente:*\n👤 Nome: ${name} ${surname}\n🏠 Indirizzo: ${address}\n📞 Telefono: ${phone}`;
 
       const phoneNumber = "3935560714";
       const encoded = encodeURIComponent(message);
