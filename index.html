@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <title>Spi Pizza - Menù</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap" rel="stylesheet">
   <style>
     body {
       font-family: 'Fredoka', sans-serif;
@@ -24,19 +24,17 @@
       margin-bottom: 30px;
     }
 
-    /* Categoria menù - visibile nel menù statico */
     .dish.category {
       font-weight: 700;
       font-size: 1.6rem;
-      background-color: #ffe6e6; /* chiaro rosso */
-      color: #e74c3c; /* rosso acceso */
+      background-color: #ffe6e6;
+      color: #e74c3c;
       padding: 8px 15px;
       border-radius: 10px;
       margin-top: 15px;
       border: 2px solid #e74c3c;
     }
 
-    /* Piatti menù statico */
     .dish:not(.category) {
       font-weight: 400;
       font-size: 1.4rem;
@@ -50,7 +48,6 @@
       border-bottom: 1px dotted #ccc;
     }
 
-    /* Bottone "Voglio ordinare" */
     .btn {
       display: block;
       margin: 40px auto;
@@ -68,7 +65,6 @@
       background-color: #1e874b;
     }
 
-    /* Sezione ordine (form a tendina) nascosta all'inizio */
     .order-section {
       display: none;
       margin-top: 40px;
@@ -76,7 +72,6 @@
       padding-top: 30px;
     }
 
-    /* Menu-item nel form ordine */
     .menu-item {
       display: flex;
       justify-content: space-between;
@@ -89,7 +84,6 @@
       gap: 10px;
     }
 
-    /* Input quantità e testo */
     .qty, .text-input, select {
       width: 100%;
       padding: 10px;
@@ -99,7 +93,6 @@
       box-sizing: border-box;
     }
 
-    /* Totale ordine */
     .total {
       text-align: center;
       font-size: 1.6rem;
@@ -108,7 +101,6 @@
       color: #27ae60;
     }
 
-    /* Selettore lingua con bandiere */
     #languageSelector {
       position: fixed;
       top: 10px;
@@ -128,14 +120,12 @@
       cursor: pointer;
       border: 2px solid transparent;
       border-radius: 4px;
-      transition: border-color 0.3s;
     }
 
     .flag:hover, .flag.selected {
       border-color: #e74c3c;
     }
 
-    /* Label piccoli nel form */
     label {
       flex-basis: 25%;
       font-weight: 700;
@@ -146,7 +136,6 @@
       margin-right: 10px;
     }
 
-    /* Per il riepilogo orario */
     #orderTime {
       margin-top: 20px;
       font-weight: 700;
@@ -157,13 +146,11 @@
   </style>
 </head>
 <body>
-
-  <!-- Selettore lingua con bandiere -->
-  <div id="languageSelector" role="navigation" aria-label="Seleziona lingua">
-    <img src="https://flagcdn.com/w20/it.png" alt="Italiano" class="flag selected" data-lang="it" tabindex="0" />
-    <img src="https://flagcdn.com/w20/gb.png" alt="English" class="flag" data-lang="en" tabindex="0" />
-    <img src="https://flagcdn.com/w20/fr.png" alt="Français" class="flag" data-lang="fr" tabindex="0" />
-    <img src="https://flagcdn.com/w20/sa.png" alt="العربية" class="flag" data-lang="ar" tabindex="0" />
+  <div id="languageSelector">
+    <img src="https://flagcdn.com/w20/it.png" alt="Italiano" class="flag selected" data-lang="it" />
+    <img src="https://flagcdn.com/w20/gb.png" alt="English" class="flag" data-lang="en" />
+    <img src="https://flagcdn.com/w20/fr.png" alt="Français" class="flag" data-lang="fr" />
+    <img src="https://flagcdn.com/w20/sa.png" alt="عربي" class="flag" data-lang="ar" />
   </div>
 
   <h1 id="title">🍕 Menù Spi Pizza</h1>
@@ -185,8 +172,7 @@
     <div class="dish"><span>Acqua minerale</span> <span>€2</span></div>
     <div class="dish"><span>Vino della casa</span> <span>€4</span></div>
   </div>
-
-  <button class="btn" id="openOrder">📦 Voglio ordinare</button>
+    <button class="btn" id="openOrder">📦 Voglio ordinare</button>
 
   <div class="order-section" id="orderSection" role="region" aria-labelledby="orderTitle">
     <form id="orderForm">
@@ -195,9 +181,7 @@
       <!-- Categoria e prodotti come select a tendina -->
       <div class="menu-item">
         <label for="categorySelect" id="labelCategory">Categoria *</label>
-        <select id="categorySelect" required>
-          <!-- Options generate da JS -->
-        </select>
+        <select id="categorySelect" required></select>
       </div>
 
       <div class="menu-item">
@@ -242,103 +226,179 @@
 
     <div id="orderTime" aria-live="polite" role="status"></div>
   </div>
-
   <script>
-    // Dati prodotti con traduzioni
-    const productsData = {
-      it: {
-        "Pizze Classiche": [
-          { name: "Margherita", price: 9 },
-          { name: "Diavola", price: 11 },
-        ],
-        "Pizze Gourmet": [
-          { name: "Quattro Formaggi", price: 13 },
-          { name: "Prosciutto e Rucola", price: 14 },
-        ],
-        "Dolci": [
-          { name: "Tiramisù", price: 5 },
-          { name: "Panna cotta", price: 5 },
-        ],
-        "Bevande": [
-          { name: "Acqua minerale", price: 2 },
-          { name: "Vino della casa", price: 4 },
-        ],
-        labels: {
-          category: "Categoria *",
-          product: "Prodotto *",
-          quantity: "Quantità *",
-          name: "Nome *",
-          surname: "Cognome *",
-          address: "Indirizzo *",
-          phone: "Telefono *",
-          orderTitle: "Compila il tuo ordine",
-          addToCart: "➕ Aggiungi al carrello",
-          cartTitle: "Carrello",
-          sendOrder: "📲 Invia Ordine via WhatsApp",
-          total: "Totale: €",
-          selectCategory: "Seleziona una categoria",
-          selectProduct: "Seleziona prima una categoria",
-          noProducts: "Nessun prodotto disponibile",
-          orderButton: "📦 Voglio ordinare",
-          menuTitle: "🍕 Menù Spi Pizza",
-          alertFillFields: "Per favore, compila tutti i campi richiesti.",
-          alertSelectProduct: "Seleziona prodotto e quantità.",
-          alertSelectAtLeastOne: "Aggiungi almeno un prodotto al carrello.",
-          alertPhoneInvalid: "Numero di telefono non valido.",
-          alertNameSurname: "Nome e cognome devono essere lunghi almeno 2 caratteri.",
-          alertOrderSent: "Ordine inviato con successo!",
-          alertNoOrder: "Seleziona almeno un prodotto.",
-          orderTimePrefix: "Ordine effettuato alle ore "
-        }
-      },
-      en: {
-        "Classic Pizzas": [
-          { name: "Margherita", price: 9 },
-          { name: "Diavola", price: 11 },
-        ],
-        "Gourmet Pizzas": [
-          { name: "Four Cheese", price: 13 },
-          { name: "Ham and Arugula", price: 14 },
-        ],
-        "Desserts": [
-          { name: "Tiramisu", price: 5 },
-          { name: "Panna cotta", price: 5 },
-        ],
-        "Drinks": [
-          { name: "Mineral Water", price: 2 },
-          { name: "House Wine", price: 4 },
-        ],
-        labels: {
-          category: "Category *",
-          product: "Product *",
-          quantity: "Quantity *",
-          name: "Name *",
-          surname: "Surname *",
-          address: "Address *",
-          phone: "Phone *",
-          orderTitle: "Fill in your order",
-          addToCart: "➕ Add to cart",
-          cartTitle: "Cart",
-          sendOrder: "📲 Send Order via WhatsApp",
-          total: "Total: €",
-          selectCategory: "Select a category",
-          selectProduct: "Select a category first",
-          noProducts: "No products available",
-          orderButton: "📦 I want to order",
-          menuTitle: "🍕 Spi Pizza Menu",
-          alertFillFields: "Please fill in all required fields.",
-          alertSelectProduct: "Select product and quantity.",
-          alertSelectAtLeastOne: "Add at least one product to the cart.",
-          alertPhoneInvalid: "Invalid phone number.",
-          alertNameSurname: "Name and surname must be at least 2 characters long.",
-          alertOrderSent: "Order sent successfully!",
-          alertNoOrder: "Select at least one product.",
-          orderTimePrefix: "Order placed at "
-        }
-      },
-      fr: {
-        "Pizzas Classiques": [
-          { name: "Margherita", price: 9 },
-          { name: "Diavola", price: 11 },
-        ],
-        "Pizzas Gourmets":
+  const products = {
+    it: {
+      "Pizze Classiche": [
+        { name: "Margherita", price: 9 },
+        { name: "Diavola", price: 11 }
+      ],
+      "Pizze Gourmet": [
+        { name: "Quattro Formaggi", price: 13 },
+        { name: "Prosciutto e Rucola", price: 14 }
+      ],
+      "Dolci": [
+        { name: "Tiramisù", price: 5 },
+        { name: "Panna cotta", price: 5 }
+      ],
+      "Bevande": [
+        { name: "Acqua minerale", price: 2 },
+        { name: "Vino della casa", price: 4 }
+      ]
+    },
+    en: {
+      "Classic Pizzas": [
+        { name: "Margherita", price: 9 },
+        { name: "Spicy Salami", price: 11 }
+      ],
+      "Gourmet Pizzas": [
+        { name: "Four Cheese", price: 13 },
+        { name: "Ham and Arugula", price: 14 }
+      ],
+      "Desserts": [
+        { name: "Tiramisu", price: 5 },
+        { name: "Panna cotta", price: 5 }
+      ],
+      "Drinks": [
+        { name: "Mineral Water", price: 2 },
+        { name: "House Wine", price: 4 }
+      ]
+    }
+  };
+
+  let currentLang = "it";
+  const categorySelect = document.getElementById("categorySelect");
+  const productSelect = document.getElementById("productSelect");
+  const quantitySelect = document.getElementById("quantitySelect");
+  const cartList = document.getElementById("cartList");
+  const totalDisplay = document.getElementById("totalDisplay");
+  const languageSelector = document.getElementById("languageSelector");
+  const orderBtn = document.getElementById("openOrder");
+  const orderSection = document.getElementById("orderSection");
+  const orderTitle = document.getElementById("orderTitle");
+  const cartTitle = document.getElementById("cartTitle");
+  const sendOrder = document.getElementById("sendOrder");
+  const addToCart = document.getElementById("addToCart");
+  const orderTime = document.getElementById("orderTime");
+
+  let cart = [];
+
+  function populateCategories() {
+    categorySelect.innerHTML = `<option value="">${
+      currentLang === "it" ? "Seleziona una categoria" : "Select a category"
+    }</option>`;
+    Object.keys(products[currentLang]).forEach(category => {
+      const opt = document.createElement("option");
+      opt.value = category;
+      opt.textContent = category;
+      categorySelect.appendChild(opt);
+    });
+  }
+
+  function updateProducts() {
+    const selectedCategory = categorySelect.value;
+    productSelect.innerHTML = "";
+    productSelect.disabled = true;
+    quantitySelect.disabled = true;
+    if (!selectedCategory) return;
+
+    const productList = products[currentLang][selectedCategory];
+    if (productList && productList.length > 0) {
+      productSelect.disabled = false;
+      quantitySelect.disabled = false;
+      const defaultOpt = document.createElement("option");
+      defaultOpt.textContent =
+        currentLang === "it" ? "Seleziona un prodotto" : "Select a product";
+      defaultOpt.value = "";
+      productSelect.appendChild(defaultOpt);
+      productList.forEach(p => {
+        const opt = document.createElement("option");
+        opt.value = p.name;
+        opt.textContent = `${p.name} (€${p.price})`;
+        productSelect.appendChild(opt);
+      });
+    }
+  }
+
+  function updateTotal() {
+    const total = cart.reduce((sum, item) => sum + item.total, 0);
+    totalDisplay.textContent = `${currentLang === "it" ? "Totale: €" : "Total: €"}${total.toFixed(2)}`;
+  }
+
+  function refreshCart() {
+    cartList.innerHTML = "";
+    cart.forEach(item => {
+      const li = document.createElement("li");
+      li.textContent = `${item.qty} × ${item.name} = €${item.total.toFixed(2)}`;
+      cartList.appendChild(li);
+    });
+    updateTotal();
+  }
+
+  categorySelect.addEventListener("change", updateProducts);
+
+  addToCart.addEventListener("click", () => {
+    const name = productSelect.value;
+    const qty = parseInt(quantitySelect.value);
+    if (!name || qty < 1) return;
+
+    const category = categorySelect.value;
+    const price = products[currentLang][category].find(p => p.name === name).price;
+    const total = price * qty;
+
+    cart.push({ name, qty, total });
+    refreshCart();
+  });
+
+  sendOrder.addEventListener("click", () => {
+    if (cart.length === 0) {
+      alert(currentLang === "it" ? "Nessun prodotto nel carrello." : "No products in cart.");
+      return;
+    }
+    const name = document.getElementById("customerName").value;
+    const surname = document.getElementById("customerSurname").value;
+    const address = document.getElementById("customerAddress").value;
+    const phone = document.getElementById("customerPhone").value;
+
+    if (!name || !surname || !address || !phone) {
+      alert(currentLang === "it" ? "Compila tutti i campi cliente." : "Please fill all customer fields.");
+      return;
+    }
+
+    let msg = `🧾 *Ordine Spi Pizza* (%0A`;
+    cart.forEach(item => {
+      msg += `- ${item.qty} × ${item.name} = €${item.total.toFixed(2)}%0A`;
+    });
+    const total = cart.reduce((sum, item) => sum + item.total, 0);
+    msg += `%0A*Totale:* €${total.toFixed(2)}%0A`;
+    msg += `👤 *Cliente:* ${name} ${surname}%0A📍 *Indirizzo:* ${address}%0A📞 *Telefono:* ${phone}%0A`;
+
+    const now = new Date();
+    const timeString = now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+    orderTime.textContent = `${currentLang === "it" ? "Ordine effettuato alle ore" : "Order sent at"} ${timeString}`;
+
+    window.open(`https://wa.me/3935560714?text=${msg}`, "_blank");
+  });
+
+  orderBtn.addEventListener("click", () => {
+    orderSection.style.display = "block";
+    populateCategories();
+    updateTotal();
+    orderTitle.textContent = currentLang === "it" ? "Compila il tuo ordine" : "Complete your order";
+  });
+
+  languageSelector.addEventListener("change", () => {
+    currentLang = languageSelector.value;
+    document.getElementById("title").textContent = currentLang === "it" ? "🍕 Menù Spi Pizza" : "🍕 Spi Pizza Menu";
+    orderBtn.textContent = currentLang === "it" ? "📦 Voglio ordinare" : "📦 Order now";
+    sendOrder.textContent = currentLang === "it" ? "📲 Invia Ordine via WhatsApp" : "📲 Send Order via WhatsApp";
+    addToCart.textContent = currentLang === "it" ? "➕ Aggiungi al carrello" : "➕ Add to cart";
+    cartTitle.textContent = currentLang === "it" ? "Carrello" : "Cart";
+    orderTitle.textContent = currentLang === "it" ? "Compila il tuo ordine" : "Complete your order";
+    populateCategories();
+    updateProducts();
+    refreshCart();
+  });
+</script>
+</body>
+</html>
