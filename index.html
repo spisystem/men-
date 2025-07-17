@@ -1,280 +1,374 @@
 <!DOCTYPE html>
-<html lang="it" dir="ltr">
+<html lang="it">
 <head>
   <meta charset="UTF-8" />
-  <title>Spi Pizza</title>
+  <title>Spi Pizza - Menù</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    body { font-family: 'Fredoka', sans-serif; background: #fff8dc; margin: 0; padding: 30px; color: #2c3e50; font-size: 1.4rem; direction: ltr; }
-    h1 { text-align: center; font-size: 3rem; color: #e74c3c; margin-bottom: 30px; }
-    .dish, .menu-item { display: flex; justify-content: space-between; margin-bottom: 12px; padding: 10px 0; border-bottom: 1px dotted #ccc; }
-    .btn { display: block; margin: 40px auto; padding: 15px 25px; font-size: 1.5rem; background: #27ae60; color: white; border: none; border-radius: 12px; cursor: pointer; transition: .3s; }
-    .btn:hover { background: #1e874b; }
-    .order-section { display: none; margin-top: 40px; border-top: 3px dashed #999; padding-top: 30px; }
-    .category-toggle { background: #ffa500; color: white; padding: 12px 20px; font-size: 1.3rem; border: none; width: 100%; text-align: left; border-radius: 10px; cursor: pointer; margin-bottom: 10px; }
-    .items { display: none; padding: 10px; background: #fff; border: 2px solid #ffa500; border-radius: 10px; }
-    .qty, .text-input { width: 100%; padding: 10px; font-size: 1.2rem; border: 2px solid #ccc; border-radius: 10px; box-sizing: border-box; }
-    .total { text-align: center; font-size: 1.6rem; margin-top: 25px; font-weight: bold; color: #27ae60; }
-    .summary { margin-top: 30px; padding: 15px; background: #ecf0f1; border: 2px dashed #27ae60; border-radius: 10px; font-size: 1.2rem; white-space: pre-wrap; }
-    .language-switch { position: absolute; top: 20px; right: 30px; font-size: 1rem; }
+    body {
+      font-family: 'Fredoka', sans-serif;
+      background-color: #fff8dc;
+      margin: 0;
+      padding: 30px;
+      color: #2c3e50;
+      font-size: 1.4rem;
+      position: relative;
+      min-height: 100vh;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 3rem;
+      color: #e74c3c;
+      margin-bottom: 30px;
+    }
+
+    /* Categoria menù - visibile nel menù statico */
+    .dish.category {
+      font-weight: 700;
+      font-size: 1.6rem;
+      background-color: #f7c59f; /* arancio chiaro */
+      color: #b34700;
+      padding: 8px 15px;
+      border-radius: 10px;
+      margin-top: 15px;
+      border: 2px solid #ffa500;
+    }
+
+    /* Piatti menù statico */
+    .dish:not(.category) {
+      font-weight: 400;
+      font-size: 1.4rem;
+      padding-left: 25px;
+      color: #2c3e50;
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      padding-top: 10px;
+      padding-bottom: 10px;
+      border-bottom: 1px dotted #ccc;
+    }
+
+    /* Bottone "Voglio ordinare" */
+    .btn {
+      display: block;
+      margin: 40px auto;
+      padding: 15px 25px;
+      font-size: 1.5rem;
+      background-color: #27ae60;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .btn:hover {
+      background-color: #1e874b;
+    }
+
+    /* Sezione ordine (form a tendina) nascosta all'inizio */
+    .order-section {
+      display: none;
+      margin-top: 40px;
+      border-top: 3px dashed #999;
+      padding-top: 30px;
+    }
+
+    /* Menu-item nel form ordine */
+    .menu-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 12px 0;
+      padding: 10px;
+      background: #fff;
+      border: 2px solid #ffa500;
+      border-radius: 12px;
+      gap: 10px;
+    }
+
+    /* Input quantità e testo */
+    .qty, .text-input, select {
+      width: 100%;
+      padding: 10px;
+      font-size: 1.2rem;
+      border: 2px solid #ccc;
+      border-radius: 10px;
+      box-sizing: border-box;
+    }
+
+    /* Totale ordine */
+    .total {
+      text-align: center;
+      font-size: 1.6rem;
+      margin-top: 25px;
+      font-weight: bold;
+      color: #27ae60;
+    }
+
+    /* Selettore lingua in alto a destra */
+    #languageSelector {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      background: #fff8dc;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      padding: 5px 12px;
+      font-size: 1rem;
+      cursor: pointer;
+      z-index: 1000;
+    }
+
+    /* Label piccoli nel form */
+    label {
+      flex-basis: 25%;
+      font-weight: 700;
+      color: #d35400;
+    }
+
+    .menu-item > label {
+      margin-right: 10px;
+    }
+
+    /* Per il riepilogo orario */
+    #orderTime {
+      margin-top: 20px;
+      font-weight: 700;
+      color: #b34700;
+      text-align: center;
+      font-size: 1.3rem;
+    }
+
   </style>
 </head>
 <body>
 
-  <div class="language-switch">
-    🌐 Lingua:
-    <a href="#" onclick="setLanguage('it')">🇮🇹</a> |
-    <a href="#" onclick="setLanguage('en')">🇬🇧</a> |
-    <a href="#" onclick="setLanguage('fr')">🇫🇷</a> |
-    <a href="#" onclick="setLanguage('es')">🇪🇸</a> |
-    <a href="#" onclick="setLanguage('de')">🇩🇪</a> |
-    <a href="#" onclick="setLanguage('ar')">🇸🇦</a>
-  </div>
+  <!-- Selettore lingua -->
+  <select id="languageSelector" aria-label="Seleziona lingua">
+    <option value="it">Italiano</option>
+    <option value="en">English</option>
+    <option value="fr">Français</option>
+    <option value="ar">العربية</option>
+  </select>
 
-  <h1 id="mainTitle">🍕 Menù Spi Pizza</h1>
+  <h1 id="title">🍕 Menù Spi Pizza</h1>
 
-  <div id="classicMenu">
-    <div class="dish"><span id="catClassic">Pizze Classiche</span></div>
-    <div class="dish"><span>Margherita</span><span>€9</span></div>
-    <div class="dish"><span>Diavola</span><span>€11</span></div>
-    <div class="dish"><span id="catGourmet">Pizze Gourmet</span></div>
-    <div class="dish"><span>Quattro Formaggi</span><span>€13</span></div>
-    <div class="dish"><span>Prosciutto e Rucola</span><span>€14</span></div>
-    <div class="dish"><span id="catDessert">Dolci</span></div>
-    <div class="dish"><span>Tiramisù</span><span>€5</span></div>
-    <div class="dish"><span>Panna cotta</span><span>€5</span></div>
-    <div class="dish"><span id="catDrinks">Bevande</span></div>
-    <div class="dish"><span>Acqua minerale</span><span>€2</span></div>
-    <div class="dish"><span>Vino della casa</span><span>€4</span></div>
+  <div id="menuStatic">
+    <div class="dish category" id="catClassic">Pizze Classiche</div>
+    <div class="dish"><span>Margherita</span> <span>€9</span></div>
+    <div class="dish"><span>Diavola</span> <span>€11</span></div>
+
+    <div class="dish category" id="catGourmet">Pizze Gourmet</div>
+    <div class="dish"><span>Quattro Formaggi</span> <span>€13</span></div>
+    <div class="dish"><span>Prosciutto e Rucola</span> <span>€14</span></div>
+
+    <div class="dish category" id="catDessert">Dolci</div>
+    <div class="dish"><span>Tiramisù</span> <span>€5</span></div>
+    <div class="dish"><span>Panna cotta</span> <span>€5</span></div>
+
+    <div class="dish category" id="catDrinks">Bevande</div>
+    <div class="dish"><span>Acqua minerale</span> <span>€2</span></div>
+    <div class="dish"><span>Vino della casa</span> <span>€4</span></div>
   </div>
 
   <button class="btn" id="openOrder">📦 Voglio ordinare</button>
 
-  <div class="order-section" id="orderSection">
+  <div class="order-section" id="orderSection" role="region" aria-labelledby="orderTitle">
     <form id="orderForm">
-      <!-- Categorie dinamiche translate -->
-      <div class="category">
-        <button type="button" class="category-toggle" id="ordClassic">🍕 Pizze Classiche</button>
-        <div class="items">
-          <div class="menu-item"><span>Margherita (€9)</span><input class="qty" data-name="Margherita" data-price="9" type="number" min="0" value="0"></div>
-          <div class="menu-item"><span>Diavola (€11)</span><input class="qty" data-name="Diavola" data-price="11" type="number" min="0" value="0"></div>
-        </div>
-      </div>
-      <div class="category">
-        <button type="button" class="category-toggle" id="ordGourmet">🍕 Pizze Gourmet</button>
-        <div class="items">
-          <div class="menu-item"><span>Quattro Formaggi (€13)</span><input class="qty" data-name="Quattro Formaggi" data-price="13" type="number" min="0" value="0"></div>
-          <div class="menu-item"><span>Prosciutto e Rucola (€14)</span><input class="qty" data-name="Prosciutto e Rucola" data-price="14" type="number" min="0" value="0"></div>
-        </div>
-      </div>
-      <div class="category">
-        <button type="button" class="category-toggle" id="ordDessert">🍰 Dolci</button>
-        <div class="items">
-          <div class="menu-item"><span>Tiramisù (€5)</span><input class="qty" data-name="Tiramisù" data-price="5" type="number" min="0" value="0"></div>
-          <div class="menu-item"><span>Panna cotta (€5)</span><input class="qty" data-name="Panna cotta" data-price="5" type="number" min="0" value="0"></div>
-        </div>
-      </div>
-      <div class="category">
-        <button type="button" class="category-toggle" id="ordDrinks">🥤 Bevande</button>
-        <div class="items">
-          <div class="menu-item"><span>Acqua minerale (€2)</span><input class="qty" data-name="Acqua minerale" data-price="2" type="number" min="0" value="0"></div>
-          <div class="menu-item"><span>Vino della casa (€4)</span><input class="qty" data-name="Vino della casa" data-price="4" type="number" min="0" value="0"></div>
-        </div>
+      <h2 id="orderTitle" style="text-align:center; color:#d35400; margin-bottom:20px;"></h2>
+
+      <!-- Categoria e prodotti come select a tendina -->
+      <div class="menu-item">
+        <label for="categorySelect" id="labelCategory">Categoria *</label>
+        <select id="categorySelect" required>
+          <!-- Options generate da JS -->
+        </select>
       </div>
 
-      <!-- Dati cliente -->
-      <div class="menu-item"><label for="customerName" id="lblName">Nome *</label><input id="customerName" class="text-input" type="text" required></div>
-      <div class="menu-item"><label for="customerSurname" id="lblSurname">Cognome *</label><input id="customerSurname" class="text-input" type="text" required></div>
-      <div class="menu-item"><label for="customerAddress" id="lblAddress">Indirizzo *</label><input id="customerAddress" class="text-input" type="text" required></div>
-      <div class="menu-item"><label for="customerPhone" id="lblPhone">Telefono *</label><input id="customerPhone" class="text-input" type="tel" required></div>
+      <div class="menu-item">
+        <label for="productSelect" id="labelProduct">Prodotto *</label>
+        <select id="productSelect" required disabled>
+          <option value="">Seleziona prima una categoria</option>
+        </select>
+      </div>
 
-      <div class="total" id="totalDisplay">Totale: €0</div>
-      <button type="button" class="btn" id="btnOrder">📲 Invia Ordine via WhatsApp</button>
-      <div class="summary" id="summaryBox" style="display:none;"></div>
+      <div class="menu-item">
+        <label for="quantitySelect" id="labelQuantity">Quantità *</label>
+        <input class="qty" type="number" id="quantitySelect" min="1" value="1" required disabled>
+      </div>
+
+      <!-- Dati Cliente -->
+      <div class="menu-item">
+        <label for="customerName" id="labelName">Nome *</label>
+        <input class="text-input" type="text" id="customerName" placeholder="Es. Mario" required>
+      </div>
+      <div class="menu-item">
+        <label for="customerSurname" id="labelSurname">Cognome *</label>
+        <input class="text-input" type="text" id="customerSurname" placeholder="Es. Rossi" required>
+      </div>
+      <div class="menu-item">
+        <label for="customerAddress" id="labelAddress">Indirizzo *</label>
+        <input class="text-input" type="text" id="customerAddress" placeholder="Via, civico, città" required>
+      </div>
+      <div class="menu-item">
+        <label for="customerPhone" id="labelPhone">Telefono *</label>
+        <input class="text-input" type="tel" id="customerPhone" placeholder="3331234567" required>
+      </div>
+
+      <div class="total" id="totalDisplay">Totale: €0.00</div>
+
+      <button type="button" class="btn" id="addToCart">➕ Aggiungi al carrello</button>
+
+      <h3 style="text-align:center; margin-top:30px; color:#d35400;">Carrello</h3>
+      <ul id="cartList" style="list-style:none; padding-left:0; max-width:400px; margin: 10px auto;"></ul>
+
+      <button type="button" class="btn" id="sendOrder">📲 Invia Ordine via WhatsApp</button>
     </form>
+
+    <div id="orderTime" aria-live="polite" role="status"></div>
   </div>
 
   <script>
-    const langs = {
+    // Dati prodotti organizzati per categoria (con traduzioni)
+    const productsData = {
       it: {
-        dir:'ltr',
-        title:'🍕 Menù Spi Pizza',
-        catClassic:'Pizze Classiche', ordClassic:'🍕 Pizze Classiche',
-        catGourmet:'Pizze Gourmet', ordGourmet:'🍕 Pizze Gourmet',
-        catDessert:'Dolci', ordDessert:'🍰 Dolci',
-        catDrinks:'Bevande', ordDrinks:'🥤 Bevande',
-        btnOrder:'📲 Invia Ordine via WhatsApp',
-        btnStart:'📦 Voglio ordinare',
-        lblName:'Nome *', lblSurname:'Cognome *', lblAddress:'Indirizzo *', lblPhone:'Telefono *',
-        alertFill:'Per favore, compila tutti i campi richiesti.',
-        alertSelect:'Seleziona almeno un prodotto.',
-        summaryTitle:'📋 Riepilogo ordine Spi Pizza',
-        totalPrefix:'Totale: €'
+        "Pizze Classiche": [
+          { name: "Margherita", price: 9 },
+          { name: "Diavola", price: 11 },
+        ],
+        "Pizze Gourmet": [
+          { name: "Quattro Formaggi", price: 13 },
+          { name: "Prosciutto e Rucola", price: 14 },
+        ],
+        "Dolci": [
+          { name: "Tiramisù", price: 5 },
+          { name: "Panna cotta", price: 5 },
+        ],
+        "Bevande": [
+          { name: "Acqua minerale", price: 2 },
+          { name: "Vino della casa", price: 4 },
+        ],
+        labels: {
+          category: "Categoria *",
+          product: "Prodotto *",
+          quantity: "Quantità *",
+          name: "Nome *",
+          surname: "Cognome *",
+          address: "Indirizzo *",
+          phone: "Telefono *",
+          orderTitle: "Compila il tuo ordine",
+          addToCart: "➕ Aggiungi al carrello",
+          cartTitle: "Carrello",
+          sendOrder: "📲 Invia Ordine via WhatsApp",
+          total: "Totale: €",
+          selectCategory: "Seleziona una categoria",
+          selectProduct: "Seleziona prima una categoria",
+          noProducts: "Nessun prodotto disponibile",
+          orderButton: "📦 Voglio ordinare",
+          menuTitle: "🍕 Menù Spi Pizza",
+          alertFillFields: "Per favore, compila tutti i campi richiesti.",
+          alertSelectProduct: "Seleziona prodotto e quantità.",
+          alertSelectAtLeastOne: "Aggiungi almeno un prodotto al carrello.",
+          alertPhoneInvalid: "Numero di telefono non valido.",
+          alertNameSurname: "Nome e cognome devono essere lunghi almeno 2 caratteri.",
+          alertOrderSent: "Ordine inviato con successo!",
+          alertNoOrder: "Seleziona almeno un prodotto.",
+          orderTimePrefix: "Ordine effettuato alle ore "
+        }
       },
       en: {
-        dir:'ltr',
-        title:'🍕 Spi Pizza Menu',
-        catClassic:'Classic Pizzas', ordClassic:'🍕 Classic Pizzas',
-        catGourmet:'Gourmet Pizzas', ordGourmet:'🍕 Gourmet Pizzas',
-        catDessert:'Desserts', ordDessert:'🍰 Desserts',
-        catDrinks:'Drinks', ordDrinks:'🥤 Drinks',
-        btnOrder:'📲 Send Order via WhatsApp',
-        btnStart:'📦 I want to order',
-        lblName:'First Name *', lblSurname:'Last Name *', lblAddress:'Address *', lblPhone:'Phone *',
-        alertFill:'Please fill all required fields.',
-        alertSelect:'Please select at least one product.',
-        summaryTitle:'📋 Spi Pizza order summary',
-        totalPrefix:'Total: €'
+        "Classic Pizzas": [
+          { name: "Margherita", price: 9 },
+          { name: "Diavola", price: 11 },
+        ],
+        "Gourmet Pizzas": [
+          { name: "Four Cheese", price: 13 },
+          { name: "Ham and Arugula", price: 14 },
+        ],
+        "Desserts": [
+          { name: "Tiramisu", price: 5 },
+          { name: "Panna cotta", price: 5 },
+        ],
+        "Drinks": [
+          { name: "Mineral Water", price: 2 },
+          { name: "House Wine", price: 4 },
+        ],
+        labels: {
+          category: "Category *",
+          product: "Product *",
+          quantity: "Quantity *",
+          name: "Name *",
+          surname: "Surname *",
+          address: "Address *",
+          phone: "Phone *",
+          orderTitle: "Fill your order",
+          addToCart: "➕ Add to cart",
+          cartTitle: "Cart",
+          sendOrder: "📲 Send Order via WhatsApp",
+          total: "Total: €",
+          selectCategory: "Select a category",
+          selectProduct: "Select a category first",
+          noProducts: "No products available",
+          orderButton: "📦 I want to order",
+          menuTitle: "🍕 Spi Pizza Menu",
+          alertFillFields: "Please fill all required fields.",
+          alertSelectProduct: "Select product and quantity.",
+          alertSelectAtLeastOne: "Add at least one product to cart.",
+          alertPhoneInvalid: "Invalid phone number.",
+          alertNameSurname: "Name and surname must be at least 2 characters.",
+          alertOrderSent: "Order sent successfully!",
+          alertNoOrder: "Select at least one product.",
+          orderTimePrefix: "Order placed at "
+        }
       },
       fr: {
-        dir:'ltr',
-        title:'🍕 Menu Spi Pizza',
-        catClassic:'Pizzas Classiques', ordClassic:'🍕 Pizzas Classiques',
-        catGourmet:'Pizzas Gastronomiques', ordGourmet:'🍕 Pizzas Gastronomiques',
-        catDessert:'Desserts', ordDessert:'🍰 Desserts',
-        catDrinks:'Boissons', ordDrinks:'🥤 Boissons',
-        btnOrder:'📲 Envoyer commande via WhatsApp',
-        btnStart:'📦 Je veux commander',
-        lblName:'Prénom *', lblSurname:'Nom *', lblAddress:'Adresse *', lblPhone:'Téléphone *',
-        alertFill:'Veuillez remplir tous les champs requis.',
-        alertSelect:'Veuillez sélectionner au moins un produit.',
-        summaryTitle:'📋 Récapitulatif commande Spi Pizza',
-        totalPrefix:'Total : €'
-      },
-      es: {
-        dir:'ltr',
-        title:'🍕 Menú Spi Pizza',
-        catClassic:'Pizzas Clásicas', ordClassic:'🍕 Pizzas Clásicas',
-        catGourmet:'Pizzas Gourmet', ordGourmet:'🍕 Pizzas Gourmet',
-        catDessert:'Postres', ordDessert:'🍰 Postres',
-        catDrinks:'Bebidas', ordDrinks:'🥤 Bebidas',
-        btnOrder:'📲 Enviar pedido por WhatsApp',
-        btnStart:'📦 Quiero pedir',
-        lblName:'Nombre *', lblSurname:'Apellido *', lblAddress:'Dirección *', lblPhone:'Teléfono *',
-        alertFill:'Por favor, completa todos los campos requeridos.',
-        alertSelect:'Por favor selecciona al menos un producto.',
-        summaryTitle:'📋 Resumen del pedido Spi Pizza',
-        totalPrefix:'Total: €'
-      },
-      de: {
-        dir:'ltr',
-        title:'🍕 Spi Pizza Menü',
-        catClassic:'Klassische Pizzas', ordClassic:'🍕 Klassische Pizzas',
-        catGourmet:'Gourmet Pizzen', ordGourmet:'🍕 Gourmet Pizzen',
-        catDessert:'Desserts', ordDessert:'🍰 Desserts',
-        catDrinks:'Getränke', ordDrinks:'🥤 Getränke',
-        btnOrder:'📲 Bestellung per WhatsApp senden',
-        btnStart:'📦 Ich möchte bestellen',
-        lblName:'Vorname *', lblSurname:'Nachname *', lblAddress:'Adresse *', lblPhone:'Telefon *',
-        alertFill:'Bitte füllen Sie alle Pflichtfelder aus.',
-        alertSelect:'Bitte wählen Sie mindestens ein Produkt.',
-        summaryTitle:'📋 Spi Pizza Bestellzusammenfassung',
-        totalPrefix:'Gesamt: €'
+        "Pizzas Classiques": [
+          { name: "Margherita", price: 9 },
+          { name: "Diavola", price: 11 },
+        ],
+        "Pizzas Gourmets": [
+          { name: "Quatre Fromages", price: 13 },
+          { name: "Jambon et Roquette", price: 14 },
+        ],
+        "Desserts": [
+          { name: "Tiramisu", price: 5 },
+          { name: "Panna cotta", price: 5 },
+        ],
+        "Boissons": [
+          { name: "Eau minérale", price: 2 },
+          { name: "Vin de la maison", price: 4 },
+        ],
+        labels: {
+          category: "Catégorie *",
+          product: "Produit *",
+          quantity: "Quantité *",
+          name: "Prénom *",
+          surname: "Nom *",
+          address: "Adresse *",
+          phone: "Téléphone *",
+          orderTitle: "Remplissez votre commande",
+          addToCart: "➕ Ajouter au panier",
+          cartTitle: "Panier",
+          sendOrder: "📲 Envoyer la commande via WhatsApp",
+          total: "Total : €",
+          selectCategory: "Sélectionnez une catégorie",
+          selectProduct: "Sélectionnez d'abord une catégorie",
+          noProducts: "Aucun produit disponible",
+          orderButton: "📦 Je veux commander",
+          menuTitle: "🍕 Menu Spi Pizza",
+          alertFillFields: "Veuillez remplir tous les champs requis.",
+          alertSelectProduct: "Sélectionnez un produit et une quantité.",
+          alertSelectAtLeastOne: "Ajoutez au moins un produit au panier.",
+          alertPhoneInvalid: "Numéro de téléphone invalide.",
+          alertNameSurname: "Le prénom et le nom doivent comporter au moins 2 caractères.",
+          alertOrderSent: "Commande envoyée avec succès !",
+          alertNoOrder: "Sélectionnez au moins un produit.",
+          orderTimePrefix: "Commande passée à "
+        }
       },
       ar: {
-        dir:'rtl',
-        title:'🍕 قائمة سبّي بيتزا',
-        catClassic:'بيتزا كلاسيكية', ordClassic:'🍕 بيتزا كلاسيكية',
-        catGourmet:'بيتزا فاخرة', ordGourmet:'🍕 بيتزا فاخرة',
-        catDessert:'حلويات', ordDessert:'🍰 حلويات',
-        catDrinks:'مشروبات', ordDrinks:'🥤 مشروبات',
-        btnOrder:'📲 أرسل الطلب عبر واتساب',
-        btnStart:'📦 أريد الطلب',
-        lblName:'الاسم الأول *', lblSurname:'اسم العائلة *', lblAddress:'العنوان *', lblPhone:'الهاتف *',
-        alertFill:'يرجى ملء جميع الحقول المطلوبة.',
-        alertSelect:'يرجى اختيار منتج واحد على الأقل.',
-        summaryTitle:'📋 ملخص طلب سبّي بيتزا',
-        totalPrefix:'الإجمالي: €'
-      }
-    };
-
-    function setLanguage(l) {
-      const t = langs[l];
-      document.body.dir = t.dir;
-      document.getElementById('mainTitle').textContent = t.title;
-      document.getElementById('catClassic').textContent = t.catClassic;
-      document.getElementById('catGourmet').textContent = t.catGourmet;
-      document.getElementById('catDessert').textContent = t.catDessert;
-      document.getElementById('catDrinks').textContent = t.catDrinks;
-      document.getElementById('ordClassic').textContent = t.ordClassic;
-      document.getElementById('ordGourmet').textContent = t.ordGourmet;
-      document.getElementById('ordDessert').textContent = t.ordDessert;
-      document.getElementById('ordDrinks').textContent = t.ordDrinks;
-      document.getElementById('btnOrder').textContent = t.btnOrder;
-      document.getElementById('openOrder').textContent = t.btnStart;
-      document.getElementById('lblName').textContent = t.lblName;
-      document.getElementById('lblSurname').textContent = t.lblSurname;
-      document.getElementById('lblAddress').textContent = t.lblAddress;
-      document.getElementById('lblPhone').textContent = t.lblPhone;
-      currentLang = t;
-      updateTotal(); // refresh total prefix if needed
-    }
-
-    let currentLang = langs.it;
-
-    const openBtn = document.getElementById('openOrder');
-    const orderSection = document.getElementById('orderSection');
-    const classicMenu = document.getElementById('classicMenu');
-    const categoryToggles = document.querySelectorAll('.category-toggle');
-    const inputs = document.querySelectorAll('.qty');
-    const totalDisplay = document.getElementById('totalDisplay');
-    const summaryBox = document.getElementById('summaryBox');
-
-    openBtn.addEventListener('click', () => {
-      orderSection.style.display = 'block';
-      classicMenu.style.display = 'none';
-      openBtn.style.display = 'none';
-      orderSection.scrollIntoView({ behavior: 'smooth' });
-    });
-
-    categoryToggles.forEach(btn => btn.addEventListener('click', () => {
-      const items = btn.nextElementSibling;
-      items.style.display = items.style.display === 'none' ? 'block' : 'none';
-    }));
-
-    inputs.forEach(input => input.addEventListener('input', updateTotal));
-
-    function updateTotal() {
-      let total = 0;
-      inputs.forEach(input => {
-        const q = parseInt(input.value);
-        const p = parseFloat(input.dataset.price);
-        if (!isNaN(q) && q > 0) total += q * p;
-      });
-      totalDisplay.textContent = `${currentLang.totalPrefix}${total.toFixed(2)}`;
-    }
-
-    document.getElementById('btnOrder').addEventListener('click', () => {
-      const name = document.getElementById('customerName').value.trim();
-      const surname = document.getElementById('customerSurname').value.trim();
-      const address = document.getElementById('customerAddress').value.trim();
-      const phone = document.getElementById('customerPhone').value.trim();
-      if (!name || !surname || !address || !phone) {
-        alert(currentLang.alertFill); return;
-      }
-      let msg = `${name} ${surname}\n`;
-      let summ = `${currentLang.summaryTitle}\n🕒 ${new Date().toLocaleTimeString()}\n`;
-      let has = false, tot = 0;
-      inputs.forEach(i => {
-        const q = parseInt(i.value), n = i.dataset.name, p = parseFloat(i.dataset.price);
-        if (q > 0) {
-          has = true;
-          const lt = (q * p).toFixed(2);
-          tot += parseFloat(lt);
-          msg += `- ${q} x ${n} (€${lt})\n`;
-          summ += `- ${q} x ${n} (€${lt})\n`;
-        }
-      });
-      if (!has) { alert(currentLang.alertSelect); return; }
-      msg += `${currentLang.totalPrefix}${tot.toFixed(2)}\n📍 ${address}\n📞 ${phone}`;
-      summ += `${currentLang.totalPrefix}${tot.toFixed(2)}\n📍 ${address}\n📞 ${phone}`;
-      window.open(`https://wa.me/3935560714?text=${encodeURIComponent(msg)}`, '_blank');
-      summaryBox.textContent = summ;
-      summaryBox.style.display = 'block';
-    });
-
-    setLanguage('it'); // iniziale
-  </script>
-</body>
-</html>
+        "بيتزا كلاسيكية": [
+          { name: "مار
