@@ -180,10 +180,6 @@
         totalLabel: "Totale",
         name: "Nome", surname: "Cognome", address: "Indirizzo",
         city: "Città", phone: "Telefono",
-        classicTitle: "Pizze Classiche",
-        gourmetTitle: "Pizze Gourmet",
-        dessertTitle: "Dolci",
-        drinksTitle: "Bevande"
       },
       en: {
         title: "🍕 Spi Pizza Menu",
@@ -192,10 +188,6 @@
         totalLabel: "Total",
         name: "Name", surname: "Surname", address: "Address",
         city: "City", phone: "Phone",
-        classicTitle: "Classic Pizzas",
-        gourmetTitle: "Gourmet Pizzas",
-        dessertTitle: "Desserts",
-        drinksTitle: "Drinks"
       },
       fr: {
         title: "🍕 Menu Spi Pizza",
@@ -204,10 +196,6 @@
         totalLabel: "Total",
         name: "Prénom", surname: "Nom", address: "Adresse",
         city: "Ville", phone: "Téléphone",
-        classicTitle: "Pizzas Classiques",
-        gourmetTitle: "Pizzas Gourmet",
-        dessertTitle: "Desserts",
-        drinksTitle: "Boissons"
       },
       ar: {
         title: "🍕 قائمة سباي بيتزا",
@@ -216,10 +204,6 @@
         totalLabel: "المجموع",
         name: "الاسم", surname: "اللقب", address: "العنوان",
         city: "المدينة", phone: "الهاتف",
-        classicTitle: "البيتزا الكلاسيكية",
-        gourmetTitle: "البيتزا الفاخرة",
-        dessertTitle: "الحلويات",
-        drinksTitle: "المشروبات"
       }
     };
     let currentLang = 'it';
@@ -240,16 +224,59 @@
       document.getElementById('openOrder').textContent = t.orderBtn;
       document.querySelector('button.btn[onclick]').textContent = t.sendBtn;
       document.getElementById('totalDisplay').textContent = `${t.totalLabel}: €0.00`;
-
-      // Cambia label campi dati cliente
       document.querySelector("label[for='customerName']").textContent = t.name + " *";
       document.querySelector("label[for='customerSurname']").textContent = t.surname + " *";
       document.querySelector("label[for='customerAddress']").textContent = t.address + " *";
       document.querySelector("label[for='customerCity']").textContent = t.city + " *";
       document.querySelector("label[for='customerPhone']").textContent = t.phone + " *";
+    }
+    updateUI();
 
-      // Cambia i titoli delle categorie
-      document.getElementById('classicTitle').textContent = t.classicTitle;
-      document.getElementById('gourmetTitle').textContent = t.gourmetTitle;
-      document.getElementById('dessertTitle').textContent = t.dessertTitle;
-      document.getElementById('drinksTitle').text
+    // Logica ordine
+    const openBtn = document.getElementById('openOrder');
+    const orderSection = document.getElementById('orderSection');
+    const inputs = document.querySelectorAll('.qty');
+    const totalDisplay = document.getElementById('totalDisplay');
+
+    openBtn.addEventListener('click', ()=>{
+      orderSection.style.display='block';
+      openBtn.style.display='none';
+    });
+    inputs.forEach(i=> i.addEventListener('input', updateTotal));
+
+    function updateTotal(){
+      let total=0;
+      inputs.forEach(i=>{
+        const q=parseInt(i.value)||0;
+        total += q * parseFloat(i.dataset.price);
+      });
+      totalDisplay.textContent = `${uiText[currentLang].totalLabel}: €${total.toFixed(2)}`;
+    }
+
+    function sendWhatsApp(){
+      const name = document.getElementById('customerName').value.trim();
+      const surname = document.getElementById('customerSurname').value.trim();
+      const address= document.getElementById('customerAddress').value.trim();
+      const city = document.getElementById('customerCity').value.trim();
+      const phone= document.getElementById('customerPhone').value.trim();
+      if(!name||!surname||!address||!city||!phone){
+        alert("Per favore, compila tutti i campi.");
+        return;
+      }
+      let msg = `Ordine Spi Pizza:\n\n`;
+      let has=false;
+      inputs.forEach(i=>{
+        const q=parseInt(i.value)||0;
+        if(q>0){
+          has=true;
+          msg += `- ${q} x ${i.dataset.name} (€${(q*parseFloat(i.dataset.price)).toFixed(2)})\n`;
+        }
+      });
+      if(!has){ alert("Seleziona almeno un prodotto."); return;}
+      msg += `\n${totalDisplay.textContent}\n\n`;
+      msg += `📍 Dati Cliente:\n👤 ${uiText[currentLang].name}: ${name}\n👥 ${uiText[currentLang].surname}: ${surname}\n🏠 ${uiText[currentLang].address}: ${address}\n🌆 ${uiText[currentLang].city}: ${city}\n📞 ${uiText[currentLang].phone}: ${phone}`;
+      window.open(`https://wa.me/3935560714?text=` + encodeURIComponent(msg), '_blank');
+    }
+  </script>
+</body>
+</html>
