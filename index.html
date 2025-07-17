@@ -14,19 +14,24 @@
 
     body {
       font-family: 'Fredoka', sans-serif;
-      background-color: #f4f4f9;
+      background: linear-gradient(135deg, #f6d365, #fda085);
       color: #333;
       font-size: 1.4rem;
       line-height: 1.6;
-      padding: 20px;
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      text-align: center;
     }
 
     h1 {
-      text-align: center;
       font-size: 3rem;
-      color: #e74c3c;
-      margin-bottom: 30px;
-      letter-spacing: 1px;
+      color: #ffffff;
+      margin-bottom: 40px;
+      text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
     }
 
     .btn {
@@ -37,7 +42,7 @@
       background: linear-gradient(145deg, #27ae60, #2ecc71);
       color: white;
       border: none;
-      border-radius: 30px;
+      border-radius: 50px;
       cursor: pointer;
       box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.1);
       transition: all 0.3s ease;
@@ -52,33 +57,38 @@
 
     .section {
       margin-top: 20px;
+      width: 100%;
+      max-width: 600px;
     }
 
     .section h2 {
-      font-size: 2rem;
-      color: #d35400;
-      margin-bottom: 15px;
-      border-bottom: 2px dashed #e67e22;
+      font-size: 2.2rem;
+      color: #fff;
+      margin-bottom: 20px;
+      border-bottom: 2px solid #ff914d;
       padding-bottom: 5px;
     }
 
     .dish {
       display: flex;
       justify-content: space-between;
-      margin-bottom: 12px;
+      align-items: center;
+      background: #ffffff;
       padding: 15px;
-      background-color: #fff;
-      border-radius: 8px;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      margin: 10px 0;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
       transition: all 0.3s ease;
     }
 
     .dish:hover {
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      transform: scale(1.05);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
     }
 
     .dish span {
       font-size: 1.4rem;
+      color: #333;
     }
 
     .qty {
@@ -98,10 +108,9 @@
     }
 
     .total {
-      text-align: center;
-      font-size: 1.8rem;
-      margin-top: 25px;
+      font-size: 2rem;
       font-weight: bold;
+      margin-top: 25px;
       color: #27ae60;
     }
 
@@ -110,6 +119,9 @@
       margin-top: 40px;
       border-top: 2px solid #ddd;
       padding-top: 30px;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
 
     /* Responsive */
@@ -242,18 +254,33 @@
 
     function sendWhatsApp() {
       let message = "Ciao! Vorrei ordinare da Spi Pizza:\n";
+      let hasOrder = false;
+
       inputs.forEach(input => {
-        const name = input.dataset.name;
         const qty = parseInt(input.value);
+        const name = input.dataset.name;
+        const price = parseFloat(input.dataset.price);
         if (qty > 0) {
-          message += `${name}: ${qty} x €${input.dataset.price}\n`;
+          hasOrder = true;
+          message += `- ${qty} x ${name} (€${(qty * price).toFixed(2)})\n`;
         }
       });
-      message += `\nTotale: €${totalDisplay.textContent.split("€")[1]}`;
-      const url = `https://wa.me/?text=${encodeURIComponent(message)}`;
-      window.open(url, "_blank");
+
+      if (!hasOrder) {
+        alert("Seleziona almeno un prodotto.");
+        return;
+      }
+
+      const total = totalDisplay.textContent.replace("Totale: ", "");
+      message += `\nTotale: ${total}`;
+
+      const phone = "3935560714";
+      const encoded = encodeURIComponent(message);
+      const url = `https://wa.me/${phone}?text=${encoded}`;
+
+      window.open(url, '_blank');
     }
   </script>
+
 </body>
 </html>
-
