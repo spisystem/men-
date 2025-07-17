@@ -75,15 +75,16 @@
       background: #fff;
       border: 2px solid #ffa500;
       border-radius: 12px;
+      gap: 10px;
     }
 
-    .qty {
-      width: 60px;
-      padding: 8px;
+    .qty, .text-input {
+      width: 100%;
+      padding: 10px;
       font-size: 1.2rem;
       border: 2px solid #ccc;
       border-radius: 10px;
-      text-align: center;
+      box-sizing: border-box;
     }
 
     .total {
@@ -98,9 +99,6 @@
 <body>
 
   <h1>🍕 Menù Spi Pizza</h1>
-
-  <!-- Bottone per aprire la sezione di ordinazione (spostato sopra il menù) -->
-  <button class="btn" id="openOrder">📦 Voglio ordinare</button>
 
   <div class="section">
     <h2>Pizze Classiche</h2>
@@ -126,8 +124,11 @@
     <div class="dish"><span>Vino della casa</span> <span>€4</span></div>
   </div>
 
+  <button class="btn" id="openOrder">📦 Voglio ordinare</button>
+
   <div class="order-section" id="orderSection">
     <form id="orderForm">
+      <!-- Prodotti -->
       <div class="menu-item">
         <span>Margherita (€9)</span>
         <input class="qty" type="number" min="0" value="0" data-name="Margherita" data-price="9">
@@ -161,6 +162,20 @@
         <input class="qty" type="number" min="0" value="0" data-name="Vino della casa" data-price="4">
       </div>
 
+      <!-- Dati Cliente -->
+      <div class="menu-item">
+        <label for="customerName">Nome *</label>
+        <input class="text-input" type="text" id="customerName" placeholder="Es. Mario Rossi" required>
+      </div>
+      <div class="menu-item">
+        <label for="customerAddress">Indirizzo *</label>
+        <input class="text-input" type="text" id="customerAddress" placeholder="Via, civico, città" required>
+      </div>
+      <div class="menu-item">
+        <label for="customerPhone">Telefono *</label>
+        <input class="text-input" type="tel" id="customerPhone" placeholder="3331234567" required>
+      </div>
+
       <div class="total" id="totalDisplay">Totale: €0</div>
 
       <button type="button" class="btn" onclick="sendWhatsApp()">📲 Invia Ordine via WhatsApp</button>
@@ -174,8 +189,8 @@
     const totalDisplay = document.getElementById('totalDisplay');
 
     openBtn.addEventListener('click', () => {
-      orderSection.style.display = 'block'; // Mostra la sezione di ordinazione
-      openBtn.style.display = 'none'; // Nasconde il pulsante "Voglio ordinare"
+      orderSection.style.display = 'block';
+      openBtn.style.display = 'none';
     });
 
     inputs.forEach(input => {
@@ -187,7 +202,7 @@
       inputs.forEach(input => {
         const qty = parseInt(input.value);
         const price = parseFloat(input.dataset.price);
-        if (!isNaN(qty)) {
+        if (!isNaN(qty) && qty > 0) {
           total += qty * price;
         }
       });
@@ -195,16 +210,25 @@
     }
 
     function sendWhatsApp() {
-      let message = "Ciao! Vorrei ordinare da Spi Pizza:\n";
+      let name = document.getElementById('customerName').value.trim();
+      let address = document.getElementById('customerAddress').value.trim();
+      let phone = document.getElementById('customerPhone').value.trim();
+
+      if (!name || !address || !phone) {
+        alert("Per favore, compila tutti i campi richiesti (Nome, Indirizzo e Telefono).");
+        return;
+      }
+
+      let message = `Ciao! Vorrei ordinare da Spi Pizza:\n\n`;
       let hasOrder = false;
 
       inputs.forEach(input => {
         const qty = parseInt(input.value);
-        const name = input.dataset.name;
+        const nameItem = input.dataset.name;
         const price = parseFloat(input.dataset.price);
         if (qty > 0) {
           hasOrder = true;
-          message += `- ${qty} x ${name} (€${(qty * price).toFixed(2)})\n`;
+          message += `- ${qty} x ${nameItem} (€${(qty * price).toFixed(2)})\n`;
         }
       });
 
@@ -214,13 +238,14 @@
       }
 
       const total = totalDisplay.textContent.replace("Totale: ", "");
-      message += `\nTotale: ${total}`;
+      message += `\n${total}\n\n`;
+      message += `📍 *Dati cliente:*\n👤 Nome: ${name}\n🏠 Indirizzo: ${address}\n📞 Telefono: ${phone}`;
 
-      const phone = "3935560714";  // Numero di telefono per l'ordine via WhatsApp
-      const encoded = encodeURIComponent(message);  // Codifica il messaggio
-      const url = `https://wa.me/${phone}?text=${encoded}`;  // Crea il link per WhatsApp
+      const phoneNumber = "3935560714";
+      const encoded = encodeURIComponent(message);
+      const url = `https://wa.me/${phoneNumber}?text=${encoded}`;
 
-      window.open(url, '_blank');  // Apre WhatsApp con il messaggio pre-compilato
+      window.open(url, '_blank');
     }
   </script>
 
