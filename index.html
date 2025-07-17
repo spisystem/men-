@@ -125,34 +125,45 @@
       font-size: 1.2rem;
       white-space: pre-wrap;
     }
+
+    .language-switch {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      font-size: 1rem;
+    }
   </style>
 </head>
 <body>
 
-  <h1>🍕 Menù Spi Pizza</h1>
+  <!-- CAMBIO LINGUA -->
+  <div class="language-switch">
+    🌐 Lingua: 
+    <a href="#" onclick="setLanguage('it')">🇮🇹</a> |
+    <a href="#" onclick="setLanguage('en')">🇬🇧</a>
+  </div>
 
-  <!-- VISUALIZZAZIONE CLASSICA DEL MENÙ -->
+  <h1 id="mainTitle">🍕 Menù Spi Pizza</h1>
+
+  <!-- MENÙ CLASSICO -->
   <div id="classicMenu">
     <div class="section">
-      <h2>Pizze Classiche</h2>
+      <h2 id="catClassic">Pizze Classiche</h2>
       <div class="dish"><span>Margherita</span> <span>€9</span></div>
       <div class="dish"><span>Diavola</span> <span>€11</span></div>
     </div>
-
     <div class="section">
-      <h2>Pizze Gourmet</h2>
+      <h2 id="catGourmet">Pizze Gourmet</h2>
       <div class="dish"><span>Quattro Formaggi</span> <span>€13</span></div>
       <div class="dish"><span>Prosciutto e Rucola</span> <span>€14</span></div>
     </div>
-
     <div class="section">
-      <h2>Dolci</h2>
+      <h2 id="catDessert">Dolci</h2>
       <div class="dish"><span>Tiramisù</span> <span>€5</span></div>
       <div class="dish"><span>Panna cotta</span> <span>€5</span></div>
     </div>
-
     <div class="section">
-      <h2>Bevande</h2>
+      <h2 id="catDrinks">Bevande</h2>
       <div class="dish"><span>Acqua minerale</span> <span>€2</span></div>
       <div class="dish"><span>Vino della casa</span> <span>€4</span></div>
     </div>
@@ -163,7 +174,8 @@
   <!-- MODULO DI ORDINAZIONE -->
   <div class="order-section" id="orderSection">
     <form id="orderForm">
-      <!-- CATEGORIE A TENDINA -->
+
+      <!-- CATEGORIE -->
       <div class="category">
         <button type="button" class="category-toggle">🍕 Pizze Classiche</button>
         <div class="items">
@@ -198,13 +210,12 @@
 
       <!-- Dati Cliente -->
       <div class="menu-item"><label for="customerName">Nome *</label><input class="text-input" type="text" id="customerName" required></div>
+      <div class="menu-item"><label for="customerSurname">Cognome *</label><input class="text-input" type="text" id="customerSurname" required></div>
       <div class="menu-item"><label for="customerAddress">Indirizzo *</label><input class="text-input" type="text" id="customerAddress" required></div>
       <div class="menu-item"><label for="customerPhone">Telefono *</label><input class="text-input" type="tel" id="customerPhone" required></div>
 
       <div class="total" id="totalDisplay">Totale: €0</div>
-
       <button type="button" class="btn" onclick="sendWhatsApp()">📲 Invia Ordine via WhatsApp</button>
-
       <div class="summary" id="summaryBox" style="display:none;"></div>
     </form>
   </div>
@@ -217,6 +228,35 @@
     const inputs = document.querySelectorAll('.qty');
     const totalDisplay = document.getElementById('totalDisplay');
     const summaryBox = document.getElementById('summaryBox');
+
+    const translations = {
+      it: {
+        title: "🍕 Menù Spi Pizza",
+        classic: "Pizze Classiche",
+        gourmet: "Pizze Gourmet",
+        dessert: "Dolci",
+        drinks: "Bevande",
+        button: "📦 Voglio ordinare"
+      },
+      en: {
+        title: "🍕 Spi Pizza Menu",
+        classic: "Classic Pizzas",
+        gourmet: "Gourmet Pizzas",
+        dessert: "Desserts",
+        drinks: "Drinks",
+        button: "📦 I want to order"
+      }
+    };
+
+    function setLanguage(lang) {
+      const t = translations[lang];
+      document.getElementById('mainTitle').textContent = t.title;
+      document.getElementById('catClassic').textContent = t.classic;
+      document.getElementById('catGourmet').textContent = t.gourmet;
+      document.getElementById('catDessert').textContent = t.dessert;
+      document.getElementById('catDrinks').textContent = t.drinks;
+      document.getElementById('openOrder').textContent = t.button;
+    }
 
     openBtn.addEventListener('click', () => {
       orderSection.style.display = 'block';
@@ -250,11 +290,12 @@
 
     function sendWhatsApp() {
       let name = document.getElementById('customerName').value.trim();
+      let surname = document.getElementById('customerSurname').value.trim();
       let address = document.getElementById('customerAddress').value.trim();
       let phone = document.getElementById('customerPhone').value.trim();
 
-      if (!name || !address || !phone) {
-        alert("Per favore, compila tutti i campi richiesti (Nome, Indirizzo e Telefono).");
+      if (!name || !surname || !address || !phone) {
+        alert("Per favore, compila tutti i campi richiesti (Nome, Cognome, Indirizzo e Telefono).");
         return;
       }
 
@@ -283,9 +324,9 @@
 
       const totalStr = "Totale: €" + total.toFixed(2);
       message += `\n${totalStr}\n\n`;
-      message += `📍 *Dati cliente:*\n👤 Nome: ${name}\n🏠 Indirizzo: ${address}\n📞 Telefono: ${phone}`;
+      message += `📍 *Dati cliente:*\n👤 Nome: ${name} ${surname}\n🏠 Indirizzo: ${address}\n📞 Telefono: ${phone}`;
 
-      summary += `\n💰 ${totalStr}\n👤 ${name}\n🏠 ${address}\n📞 ${phone}`;
+      summary += `\n💰 ${totalStr}\n👤 ${name} ${surname}\n🏠 ${address}\n📞 ${phone}`;
 
       const phoneNumber = "3935560714";
       const encoded = encodeURIComponent(message);
