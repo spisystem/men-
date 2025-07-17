@@ -99,6 +99,9 @@
 
   <h1>🍕 Menù Spi Pizza</h1>
 
+  <!-- Bottone per aprire la sezione di ordinazione (spostato sopra il menù) -->
+  <button class="btn" id="openOrder">📦 Voglio ordinare</button>
+
   <div class="section">
     <h2>Pizze Classiche</h2>
     <div class="dish"><span>Margherita</span> <span>€9</span></div>
@@ -122,9 +125,6 @@
     <div class="dish"><span>Acqua minerale</span> <span>€2</span></div>
     <div class="dish"><span>Vino della casa</span> <span>€4</span></div>
   </div>
-
-  <!-- Bottone per aprire la sezione di ordinazione -->
-  <button class="btn" id="openOrder">📦 Voglio ordinare</button>
 
   <div class="order-section" id="orderSection">
     <form id="orderForm">
@@ -174,8 +174,8 @@
     const totalDisplay = document.getElementById('totalDisplay');
 
     openBtn.addEventListener('click', () => {
-      orderSection.style.display = 'block';
-      openBtn.style.display = 'none';
+      orderSection.style.display = 'block'; // Mostra la sezione di ordinazione
+      openBtn.style.display = 'none'; // Nasconde il pulsante "Voglio ordinare"
     });
 
     inputs.forEach(input => {
