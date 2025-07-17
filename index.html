@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <title>Spi Pizza - Menù</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap" rel="stylesheet" />
   <style>
     body {
       font-family: 'Fredoka', sans-serif;
@@ -28,12 +28,12 @@
     .dish.category {
       font-weight: 700;
       font-size: 1.6rem;
-      background-color: #f7c59f; /* arancio chiaro */
-      color: #b34700;
+      background-color: #ffe6e6; /* chiaro rosso */
+      color: #e74c3c; /* rosso acceso */
       padding: 8px 15px;
       border-radius: 10px;
       margin-top: 15px;
-      border: 2px solid #ffa500;
+      border: 2px solid #e74c3c;
     }
 
     /* Piatti menù statico */
@@ -108,18 +108,31 @@
       color: #27ae60;
     }
 
-    /* Selettore lingua in alto a destra */
+    /* Selettore lingua con bandiere */
     #languageSelector {
       position: fixed;
       top: 10px;
       right: 10px;
-      background: #fff8dc;
-      border: 1px solid #ccc;
-      border-radius: 10px;
-      padding: 5px 12px;
-      font-size: 1rem;
-      cursor: pointer;
+      display: flex;
+      gap: 10px;
       z-index: 1000;
+      background: #fff8dc;
+      padding: 5px 10px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+    }
+
+    .flag {
+      width: 28px;
+      height: 20px;
+      cursor: pointer;
+      border: 2px solid transparent;
+      border-radius: 4px;
+      transition: border-color 0.3s;
+    }
+
+    .flag:hover, .flag.selected {
+      border-color: #e74c3c;
     }
 
     /* Label piccoli nel form */
@@ -141,18 +154,17 @@
       text-align: center;
       font-size: 1.3rem;
     }
-
   </style>
 </head>
 <body>
 
-  <!-- Selettore lingua -->
-  <select id="languageSelector" aria-label="Seleziona lingua">
-    <option value="it">Italiano</option>
-    <option value="en">English</option>
-    <option value="fr">Français</option>
-    <option value="ar">العربية</option>
-  </select>
+  <!-- Selettore lingua con bandiere -->
+  <div id="languageSelector" role="navigation" aria-label="Seleziona lingua">
+    <img src="https://flagcdn.com/w20/it.png" alt="Italiano" class="flag selected" data-lang="it" tabindex="0" />
+    <img src="https://flagcdn.com/w20/gb.png" alt="English" class="flag" data-lang="en" tabindex="0" />
+    <img src="https://flagcdn.com/w20/fr.png" alt="Français" class="flag" data-lang="fr" tabindex="0" />
+    <img src="https://flagcdn.com/w20/sa.png" alt="العربية" class="flag" data-lang="ar" tabindex="0" />
+  </div>
 
   <h1 id="title">🍕 Menù Spi Pizza</h1>
 
@@ -222,7 +234,7 @@
 
       <button type="button" class="btn" id="addToCart">➕ Aggiungi al carrello</button>
 
-      <h3 style="text-align:center; margin-top:30px; color:#d35400;">Carrello</h3>
+      <h3 style="text-align:center; margin-top:30px; color:#d35400;" id="cartTitle">Carrello</h3>
       <ul id="cartList" style="list-style:none; padding-left:0; max-width:400px; margin: 10px auto;"></ul>
 
       <button type="button" class="btn" id="sendOrder">📲 Invia Ordine via WhatsApp</button>
@@ -232,7 +244,7 @@
   </div>
 
   <script>
-    // Dati prodotti organizzati per categoria (con traduzioni)
+    // Dati prodotti con traduzioni
     const productsData = {
       it: {
         "Pizze Classiche": [
@@ -304,7 +316,7 @@
           surname: "Surname *",
           address: "Address *",
           phone: "Phone *",
-          orderTitle: "Fill your order",
+          orderTitle: "Fill in your order",
           addToCart: "➕ Add to cart",
           cartTitle: "Cart",
           sendOrder: "📲 Send Order via WhatsApp",
@@ -314,11 +326,11 @@
           noProducts: "No products available",
           orderButton: "📦 I want to order",
           menuTitle: "🍕 Spi Pizza Menu",
-          alertFillFields: "Please fill all required fields.",
+          alertFillFields: "Please fill in all required fields.",
           alertSelectProduct: "Select product and quantity.",
-          alertSelectAtLeastOne: "Add at least one product to cart.",
+          alertSelectAtLeastOne: "Add at least one product to the cart.",
           alertPhoneInvalid: "Invalid phone number.",
-          alertNameSurname: "Name and surname must be at least 2 characters.",
+          alertNameSurname: "Name and surname must be at least 2 characters long.",
           alertOrderSent: "Order sent successfully!",
           alertNoOrder: "Select at least one product.",
           orderTimePrefix: "Order placed at "
@@ -329,46 +341,4 @@
           { name: "Margherita", price: 9 },
           { name: "Diavola", price: 11 },
         ],
-        "Pizzas Gourmets": [
-          { name: "Quatre Fromages", price: 13 },
-          { name: "Jambon et Roquette", price: 14 },
-        ],
-        "Desserts": [
-          { name: "Tiramisu", price: 5 },
-          { name: "Panna cotta", price: 5 },
-        ],
-        "Boissons": [
-          { name: "Eau minérale", price: 2 },
-          { name: "Vin de la maison", price: 4 },
-        ],
-        labels: {
-          category: "Catégorie *",
-          product: "Produit *",
-          quantity: "Quantité *",
-          name: "Prénom *",
-          surname: "Nom *",
-          address: "Adresse *",
-          phone: "Téléphone *",
-          orderTitle: "Remplissez votre commande",
-          addToCart: "➕ Ajouter au panier",
-          cartTitle: "Panier",
-          sendOrder: "📲 Envoyer la commande via WhatsApp",
-          total: "Total : €",
-          selectCategory: "Sélectionnez une catégorie",
-          selectProduct: "Sélectionnez d'abord une catégorie",
-          noProducts: "Aucun produit disponible",
-          orderButton: "📦 Je veux commander",
-          menuTitle: "🍕 Menu Spi Pizza",
-          alertFillFields: "Veuillez remplir tous les champs requis.",
-          alertSelectProduct: "Sélectionnez un produit et une quantité.",
-          alertSelectAtLeastOne: "Ajoutez au moins un produit au panier.",
-          alertPhoneInvalid: "Numéro de téléphone invalide.",
-          alertNameSurname: "Le prénom et le nom doivent comporter au moins 2 caractères.",
-          alertOrderSent: "Commande envoyée avec succès !",
-          alertNoOrder: "Sélectionnez au moins un produit.",
-          orderTimePrefix: "Commande passée à "
-        }
-      },
-      ar: {
-        "بيتزا كلاسيكية": [
-          { name: "مار
+        "Pizzas Gourmets":
