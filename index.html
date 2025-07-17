@@ -13,19 +13,16 @@
       padding: 30px;
       color: #2c3e50;
       font-size: 1.4rem;
+      position: relative;
+      min-height: 100vh;
     }
-
     h1 {
       text-align: center;
       font-size: 3rem;
       color: #e74c3c;
       margin-bottom: 30px;
     }
-
-    .section {
-      margin-top: 40px;
-    }
-
+    .section { margin-top: 40px; }
     .section h2 {
       font-size: 2rem;
       color: #d35400;
@@ -33,7 +30,6 @@
       border-bottom: 2px dashed #e67e22;
       padding-bottom: 5px;
     }
-
     .dish {
       display: flex;
       justify-content: space-between;
@@ -41,7 +37,6 @@
       padding: 10px 0;
       border-bottom: 1px dotted #ccc;
     }
-
     .btn {
       display: block;
       margin: 40px auto;
@@ -54,18 +49,13 @@
       cursor: pointer;
       transition: background 0.3s;
     }
-
-    .btn:hover {
-      background-color: #1e874b;
-    }
-
+    .btn:hover { background-color: #1e874b; }
     .order-section {
       display: none;
       margin-top: 40px;
       border-top: 3px dashed #999;
       padding-top: 30px;
     }
-
     .menu-item {
       display: flex;
       justify-content: space-between;
@@ -77,7 +67,6 @@
       border-radius: 12px;
       gap: 10px;
     }
-
     .qty, .text-input {
       width: 100%;
       padding: 10px;
@@ -86,7 +75,6 @@
       border-radius: 10px;
       box-sizing: border-box;
     }
-
     .total {
       text-align: center;
       font-size: 1.6rem;
@@ -94,165 +82,201 @@
       font-weight: bold;
       color: #27ae60;
     }
+    /* Bandiere in alto a destra */
+    #languageSelector {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      display: flex;
+      gap: 8px;
+      z-index: 1000;
+    }
+    .flag-btn {
+      width: 30px;
+      height: 20px;
+      background-size: cover;
+      border: 2px solid transparent;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: border-color 0.3s;
+    }
+    .flag-btn:hover, .flag-btn.active {
+      border-color: #e74c3c;
+    }
+    .flag-it { background-image: url('https://flagcdn.com/w20/it.png'); }
+    .flag-en { background-image: url('https://flagcdn.com/w20/gb.png'); }
+    .flag-fr { background-image: url('https://flagcdn.com/w20/fr.png'); }
+    .flag-ar { background-image: url('https://flagcdn.com/w20/sa.png'); }
+    label { flex-basis: 30%; font-weight: bold; color: #d35400; }
   </style>
 </head>
 <body>
 
-  <h1>🍕 Menù Spi Pizza</h1>
-
-  <div class="section">
-    <h2>Pizze Classiche</h2>
-    <div class="dish"><span>Margherita</span> <span>€9</span></div>
-    <div class="dish"><span>Diavola</span> <span>€11</span></div>
+  <!-- Selettore lingue -->
+  <div id="languageSelector">
+    <div class="flag-btn flag-it active" data-lang="it" title="Italiano"></div>
+    <div class="flag-btn flag-en" data-lang="en" title="English"></div>
+    <div class="flag-btn flag-fr" data-lang="fr" title="Français"></div>
+    <div class="flag-btn flag-ar" data-lang="ar" title="العربية"></div>
   </div>
 
-  <div class="section">
-    <h2>Pizze Gourmet</h2>
-    <div class="dish"><span>Quattro Formaggi</span> <span>€13</span></div>
-    <div class="dish"><span>Prosciutto e Rucola</span> <span>€14</span></div>
-  </div>
+  <h1 id="pageTitle">🍕 Menù Spi Pizza</h1>
 
+  <!-- Menù statico -->
   <div class="section">
-    <h2>Dolci</h2>
-    <div class="dish"><span>Tiramisù</span> <span>€5</span></div>
-    <div class="dish"><span>Panna cotta</span> <span>€5</span></div>
+    <h2 id="classicTitle">Pizze Classiche</h2>
+    <div class="dish"><span>Margherita</span><span>€9</span></div>
+    <div class="dish"><span>Diavola</span><span>€11</span></div>
   </div>
-
   <div class="section">
-    <h2>Bevande</h2>
-    <div class="dish"><span>Acqua minerale</span> <span>€2</span></div>
-    <div class="dish"><span>Vino della casa</span> <span>€4</span></div>
+    <h2 id="gourmetTitle">Pizze Gourmet</h2>
+    <div class="dish"><span>Quattro Formaggi</span><span>€13</span></div>
+    <div class="dish"><span>Prosciutto e Rucola</span><span>€14</span></div>
+  </div>
+  <div class="section">
+    <h2 id="dessertTitle">Dolci</h2>
+    <div class="dish"><span>Tiramisù</span><span>€5</span></div>
+    <div class="dish"><span>Panna cotta</span><span>€5</span></div>
+  </div>
+  <div class="section">
+    <h2 id="drinksTitle">Bevande</h2>
+    <div class="dish"><span>Acqua minerale</span><span>€2</span></div>
+    <div class="dish"><span>Vino della casa</span><span>€4</span></div>
   </div>
 
   <button class="btn" id="openOrder">📦 Voglio ordinare</button>
 
   <div class="order-section" id="orderSection">
     <form id="orderForm">
-      <!-- Prodotti -->
-      <div class="menu-item">
-        <span>Margherita (€9)</span>
-        <input class="qty" type="number" min="0" value="0" data-name="Margherita" data-price="9">
-      </div>
-      <div class="menu-item">
-        <span>Diavola (€11)</span>
-        <input class="qty" type="number" min="0" value="0" data-name="Diavola" data-price="11">
-      </div>
-      <div class="menu-item">
-        <span>Quattro Formaggi (€13)</span>
-        <input class="qty" type="number" min="0" value="0" data-name="Quattro Formaggi" data-price="13">
-      </div>
-      <div class="menu-item">
-        <span>Prosciutto e Rucola (€14)</span>
-        <input class="qty" type="number" min="0" value="0" data-name="Prosciutto e Rucola" data-price="14">
-      </div>
-      <div class="menu-item">
-        <span>Tiramisù (€5)</span>
-        <input class="qty" type="number" min="0" value="0" data-name="Tiramisù" data-price="5">
-      </div>
-      <div class="menu-item">
-        <span>Panna cotta (€5)</span>
-        <input class="qty" type="number" min="0" value="0" data-name="Panna cotta" data-price="5">
-      </div>
-      <div class="menu-item">
-        <span>Acqua minerale (€2)</span>
-        <input class="qty" type="number" min="0" value="0" data-name="Acqua minerale" data-price="2">
-      </div>
-      <div class="menu-item">
-        <span>Vino della casa (€4)</span>
-        <input class="qty" type="number" min="0" value="0" data-name="Vino della casa" data-price="4">
-      </div>
+      <!-- Selezione prodotti con quantità -->
+      <div class="menu-item"><span>Margherita (€9)</span><input class="qty" type="number" min="0" value="0" data-name="Margherita" data-price="9"></div>
+      <div class="menu-item"><span>Diavola (€11)</span><input class="qty" type="number" min="0" value="0" data-name="Diavola" data-price="11"></div>
+      <div class="menu-item"><span>Quattro Formaggi (€13)</span><input class="qty" type="number" min="0" value="0" data-name="Quattro Formaggi" data-price="13"></div>
+      <div class="menu-item"><span>Prosciutto e Rucola (€14)</span><input class="qty" type="number" min="0" value="0" data-name="Prosciutto e Rucola" data-price="14"></div>
+      <div class="menu-item"><span>Tiramisù (€5)</span><input class="qty" type="number" min="0" value="0" data-name="Tiramisù" data-price="5"></div>
+      <div class="menu-item"><span>Panna cotta (€5)</span><input class="qty" type="number" min="0" value="0" data-name="Panna cotta" data-price="5"></div>
+      <div class="menu-item"><span>Acqua minerale (€2)</span><input class="qty" type="number" min="0" value="0" data-name="Acqua minerale" data-price="2"></div>
+      <div class="menu-item"><span>Vino della casa (€4)</span><input class="qty" type="number" min="0" value="0" data-name="Vino della casa" data-price="4"></div>
 
       <!-- Dati Cliente -->
-      <div class="menu-item">
-        <label for="customerName">Nome *</label>
-        <input class="text-input" type="text" id="customerName" placeholder="Es. Mario" required>
-      </div>
-      <div class="menu-item">
-        <label for="customerSurname">Cognome *</label>
-        <input class="text-input" type="text" id="customerSurname" placeholder="Es. Rossi" required>
-      </div>
-      <div class="menu-item">
-        <label for="customerAddress">Indirizzo *</label>
-        <input class="text-input" type="text" id="customerAddress" placeholder="Via, civico, città" required>
-      </div>
-      <div class="menu-item">
-        <label for="customerPhone">Telefono *</label>
-        <input class="text-input" type="tel" id="customerPhone" placeholder="3331234567" required>
-      </div>
+      <div class="menu-item"><label for="customerName">Nome *</label><input class="text-input" type="text" id="customerName" required></div>
+      <div class="menu-item"><label for="customerSurname">Cognome *</label><input class="text-input" type="text" id="customerSurname" required></div>
+      <div class="menu-item"><label for="customerAddress">Indirizzo *</label><input class="text-input" type="text" id="customerAddress" required></div>
+      <div class="menu-item"><label for="customerCity">Città *</label><input class="text-input" type="text" id="customerCity" required></div>
+      <div class="menu-item"><label for="customerPhone">Telefono *</label><input class="text-input" type="tel" id="customerPhone" required></div>
 
-      <div class="total" id="totalDisplay">Totale: €0</div>
-
+      <div class="total" id="totalDisplay">Totale: €0.00</div>
       <button type="button" class="btn" onclick="sendWhatsApp()">📲 Invia Ordine via WhatsApp</button>
     </form>
   </div>
 
   <script>
+    // Testi multi‑lingua dell’interfaccia
+    const uiText = {
+      it: {
+        title: "🍕 Menù Spi Pizza",
+        orderBtn: "📦 Voglio ordinare",
+        sendBtn: "📲 Invia Ordine via WhatsApp",
+        totalLabel: "Totale",
+        name: "Nome", surname: "Cognome", address: "Indirizzo",
+        city: "Città", phone: "Telefono",
+      },
+      en: {
+        title: "🍕 Spi Pizza Menu",
+        orderBtn: "📦 I want to order",
+        sendBtn: "📲 Send Order via WhatsApp",
+        totalLabel: "Total",
+        name: "Name", surname: "Surname", address: "Address",
+        city: "City", phone: "Phone",
+      },
+      fr: {
+        title: "🍕 Menu Spi Pizza",
+        orderBtn: "📦 Je veux commander",
+        sendBtn: "📲 Envoyer la commande via WhatsApp",
+        totalLabel: "Total",
+        name: "Prénom", surname: "Nom", address: "Adresse",
+        city: "Ville", phone: "Téléphone",
+      },
+      ar: {
+        title: "🍕 قائمة سباي بيتزا",
+        orderBtn: "📦 أريد الطلب",
+        sendBtn: "📲 أرسل الطلب عبر واتساب",
+        totalLabel: "المجموع",
+        name: "الاسم", surname: "اللقب", address: "العنوان",
+        city: "المدينة", phone: "الهاتف",
+      }
+    };
+    let currentLang = 'it';
+
+    // Selettore lingue
+    document.querySelectorAll('.flag-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        currentLang = btn.getAttribute('data-lang');
+        document.querySelectorAll('.flag-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        updateUI();
+      });
+    });
+
+    function updateUI(){
+      const t = uiText[currentLang];
+      document.getElementById('pageTitle').textContent = t.title;
+      document.getElementById('openOrder').textContent = t.orderBtn;
+      document.querySelector('button.btn[onclick]').textContent = t.sendBtn;
+      document.getElementById('totalDisplay').textContent = `${t.totalLabel}: €0.00`;
+      document.querySelector("label[for='customerName']").textContent = t.name + " *";
+      document.querySelector("label[for='customerSurname']").textContent = t.surname + " *";
+      document.querySelector("label[for='customerAddress']").textContent = t.address + " *";
+      document.querySelector("label[for='customerCity']").textContent = t.city + " *";
+      document.querySelector("label[for='customerPhone']").textContent = t.phone + " *";
+    }
+    updateUI();
+
+    // Logica ordine
     const openBtn = document.getElementById('openOrder');
     const orderSection = document.getElementById('orderSection');
     const inputs = document.querySelectorAll('.qty');
     const totalDisplay = document.getElementById('totalDisplay');
 
-    openBtn.addEventListener('click', () => {
-      orderSection.style.display = 'block';
-      openBtn.style.display = 'none';
+    openBtn.addEventListener('click', ()=>{
+      orderSection.style.display='block';
+      openBtn.style.display='none';
     });
+    inputs.forEach(i=> i.addEventListener('input', updateTotal));
 
-    inputs.forEach(input => {
-      input.addEventListener('input', updateTotal);
-    });
-
-    function updateTotal() {
-      let total = 0;
-      inputs.forEach(input => {
-        const qty = parseInt(input.value);
-        const price = parseFloat(input.dataset.price);
-        if (!isNaN(qty) && qty > 0) {
-          total += qty * price;
-        }
+    function updateTotal(){
+      let total=0;
+      inputs.forEach(i=>{
+        const q=parseInt(i.value)||0;
+        total += q * parseFloat(i.dataset.price);
       });
-      totalDisplay.textContent = "Totale: €" + total.toFixed(2);
+      totalDisplay.textContent = `${uiText[currentLang].totalLabel}: €${total.toFixed(2)}`;
     }
 
-    function sendWhatsApp() {
-      let name = document.getElementById('customerName').value.trim();
-      let surname = document.getElementById('customerSurname').value.trim();
-      let address = document.getElementById('customerAddress').value.trim();
-      let phone = document.getElementById('customerPhone').value.trim();
-
-      if (!name || !surname || !address || !phone) {
-        alert("Per favore, compila tutti i campi richiesti (Nome, Cognome, Indirizzo e Telefono).");
+    function sendWhatsApp(){
+      const name = document.getElementById('customerName').value.trim();
+      const surname = document.getElementById('customerSurname').value.trim();
+      const address= document.getElementById('customerAddress').value.trim();
+      const city = document.getElementById('customerCity').value.trim();
+      const phone= document.getElementById('customerPhone').value.trim();
+      if(!name||!surname||!address||!city||!phone){
+        alert("Per favore, compila tutti i campi.");
         return;
       }
-
-      let message = `Ciao! Vorrei ordinare da Spi Pizza:\n\n`;
-      let hasOrder = false;
-
-      inputs.forEach(input => {
-        const qty = parseInt(input.value);
-        const nameItem = input.dataset.name;
-        const price = parseFloat(input.dataset.price);
-        if (qty > 0) {
-          hasOrder = true;
-          message += `- ${qty} x ${nameItem} (€${(qty * price).toFixed(2)})\n`;
+      let msg = `Ordine Spi Pizza:\n\n`;
+      let has=false;
+      inputs.forEach(i=>{
+        const q=parseInt(i.value)||0;
+        if(q>0){
+          has=true;
+          msg += `- ${q} x ${i.dataset.name} (€${(q*parseFloat(i.dataset.price)).toFixed(2)})\n`;
         }
       });
-
-      if (!hasOrder) {
-        alert("Seleziona almeno un prodotto.");
-        return;
-      }
-
-      const total = totalDisplay.textContent.replace("Totale: ", "");
-      message += `\n${total}\n\n`;
-      message += `📍 *Dati cliente:*\n👤 Nome: ${name} ${surname}\n🏠 Indirizzo: ${address}\n📞 Telefono: ${phone}`;
-
-      const phoneNumber = "3935560714";
-      const encoded = encodeURIComponent(message);
-      const url = `https://wa.me/${phoneNumber}?text=${encoded}`;
-
-      window.open(url, '_blank');
+      if(!has){ alert("Seleziona almeno un prodotto."); return;}
+      msg += `\n${totalDisplay.textContent}\n\n`;
+      msg += `📍 Dati Cliente:\n👤 ${uiText[currentLang].name}: ${name}\n👥 ${uiText[currentLang].surname}: ${surname}\n🏠 ${uiText[currentLang].address}: ${address}\n🌆 ${uiText[currentLang].city}: ${city}\n📞 ${uiText[currentLang].phone}: ${phone}`;
+      window.open(`https://wa.me/3935560714?text=` + encodeURIComponent(msg), '_blank');
     }
   </script>
-
 </body>
 </html>
