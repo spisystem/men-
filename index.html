@@ -66,15 +66,36 @@
       padding-top: 30px;
     }
 
+    .category {
+      margin-bottom: 25px;
+    }
+
+    .category-toggle {
+      background-color: #ffa500;
+      color: white;
+      padding: 12px 20px;
+      font-size: 1.3rem;
+      border: none;
+      width: 100%;
+      text-align: left;
+      border-radius: 10px;
+      cursor: pointer;
+      margin-bottom: 10px;
+    }
+
+    .items {
+      display: none;
+      padding: 10px;
+      background-color: #fff;
+      border: 2px solid #ffa500;
+      border-radius: 10px;
+    }
+
     .menu-item {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin: 12px 0;
-      padding: 10px;
-      background: #fff;
-      border: 2px solid #ffa500;
-      border-radius: 12px;
+      margin: 10px 0;
       gap: 10px;
     }
 
@@ -94,6 +115,16 @@
       font-weight: bold;
       color: #27ae60;
     }
+
+    .summary {
+      margin-top: 30px;
+      padding: 15px;
+      background: #ecf0f1;
+      border: 2px dashed #27ae60;
+      border-radius: 10px;
+      font-size: 1.2rem;
+      white-space: pre-wrap;
+    }
   </style>
 </head>
 <body>
@@ -101,96 +132,81 @@
   <h1>🍕 Menù Spi Pizza</h1>
 
   <div class="section">
-    <h2>Pizze Classiche</h2>
-    <div class="dish"><span>Margherita</span> <span>€9</span></div>
-    <div class="dish"><span>Diavola</span> <span>€11</span></div>
-  </div>
-
-  <div class="section">
-    <h2>Pizze Gourmet</h2>
-    <div class="dish"><span>Quattro Formaggi</span> <span>€13</span></div>
-    <div class="dish"><span>Prosciutto e Rucola</span> <span>€14</span></div>
-  </div>
-
-  <div class="section">
-    <h2>Dolci</h2>
-    <div class="dish"><span>Tiramisù</span> <span>€5</span></div>
-    <div class="dish"><span>Panna cotta</span> <span>€5</span></div>
-  </div>
-
-  <div class="section">
-    <h2>Bevande</h2>
-    <div class="dish"><span>Acqua minerale</span> <span>€2</span></div>
-    <div class="dish"><span>Vino della casa</span> <span>€4</span></div>
+    <h2>Menù</h2>
+    <div class="dish"><span>Visualizza le categorie qui sotto per ordinare 👇</span></div>
   </div>
 
   <button class="btn" id="openOrder">📦 Voglio ordinare</button>
 
   <div class="order-section" id="orderSection">
     <form id="orderForm">
-      <!-- Prodotti -->
-      <div class="menu-item">
-        <span>Margherita (€9)</span>
-        <input class="qty" type="number" min="0" value="0" data-name="Margherita" data-price="9">
+
+      <!-- CATEGORIE -->
+      <div class="category">
+        <button type="button" class="category-toggle">🍕 Pizze Classiche</button>
+        <div class="items">
+          <div class="menu-item"><span>Margherita (€9)</span><input class="qty" type="number" min="0" value="0" data-name="Margherita" data-price="9"></div>
+          <div class="menu-item"><span>Diavola (€11)</span><input class="qty" type="number" min="0" value="0" data-name="Diavola" data-price="11"></div>
+        </div>
       </div>
-      <div class="menu-item">
-        <span>Diavola (€11)</span>
-        <input class="qty" type="number" min="0" value="0" data-name="Diavola" data-price="11">
+
+      <div class="category">
+        <button type="button" class="category-toggle">🍕 Pizze Gourmet</button>
+        <div class="items">
+          <div class="menu-item"><span>Quattro Formaggi (€13)</span><input class="qty" type="number" min="0" value="0" data-name="Quattro Formaggi" data-price="13"></div>
+          <div class="menu-item"><span>Prosciutto e Rucola (€14)</span><input class="qty" type="number" min="0" value="0" data-name="Prosciutto e Rucola" data-price="14"></div>
+        </div>
       </div>
-      <div class="menu-item">
-        <span>Quattro Formaggi (€13)</span>
-        <input class="qty" type="number" min="0" value="0" data-name="Quattro Formaggi" data-price="13">
+
+      <div class="category">
+        <button type="button" class="category-toggle">🍰 Dolci</button>
+        <div class="items">
+          <div class="menu-item"><span>Tiramisù (€5)</span><input class="qty" type="number" min="0" value="0" data-name="Tiramisù" data-price="5"></div>
+          <div class="menu-item"><span>Panna cotta (€5)</span><input class="qty" type="number" min="0" value="0" data-name="Panna cotta" data-price="5"></div>
+        </div>
       </div>
-      <div class="menu-item">
-        <span>Prosciutto e Rucola (€14)</span>
-        <input class="qty" type="number" min="0" value="0" data-name="Prosciutto e Rucola" data-price="14">
-      </div>
-      <div class="menu-item">
-        <span>Tiramisù (€5)</span>
-        <input class="qty" type="number" min="0" value="0" data-name="Tiramisù" data-price="5">
-      </div>
-      <div class="menu-item">
-        <span>Panna cotta (€5)</span>
-        <input class="qty" type="number" min="0" value="0" data-name="Panna cotta" data-price="5">
-      </div>
-      <div class="menu-item">
-        <span>Acqua minerale (€2)</span>
-        <input class="qty" type="number" min="0" value="0" data-name="Acqua minerale" data-price="2">
-      </div>
-      <div class="menu-item">
-        <span>Vino della casa (€4)</span>
-        <input class="qty" type="number" min="0" value="0" data-name="Vino della casa" data-price="4">
+
+      <div class="category">
+        <button type="button" class="category-toggle">🥤 Bevande</button>
+        <div class="items">
+          <div class="menu-item"><span>Acqua minerale (€2)</span><input class="qty" type="number" min="0" value="0" data-name="Acqua minerale" data-price="2"></div>
+          <div class="menu-item"><span>Vino della casa (€4)</span><input class="qty" type="number" min="0" value="0" data-name="Vino della casa" data-price="4"></div>
+        </div>
       </div>
 
       <!-- Dati Cliente -->
-      <div class="menu-item">
-        <label for="customerName">Nome *</label>
-        <input class="text-input" type="text" id="customerName" placeholder="Es. Mario Rossi" required>
-      </div>
-      <div class="menu-item">
-        <label for="customerAddress">Indirizzo *</label>
-        <input class="text-input" type="text" id="customerAddress" placeholder="Via, civico, città" required>
-      </div>
-      <div class="menu-item">
-        <label for="customerPhone">Telefono *</label>
-        <input class="text-input" type="tel" id="customerPhone" placeholder="3331234567" required>
-      </div>
+      <div class="menu-item"><label for="customerName">Nome *</label><input class="text-input" type="text" id="customerName" required></div>
+      <div class="menu-item"><label for="customerAddress">Indirizzo *</label><input class="text-input" type="text" id="customerAddress" required></div>
+      <div class="menu-item"><label for="customerPhone">Telefono *</label><input class="text-input" type="tel" id="customerPhone" required></div>
 
       <div class="total" id="totalDisplay">Totale: €0</div>
 
       <button type="button" class="btn" onclick="sendWhatsApp()">📲 Invia Ordine via WhatsApp</button>
+
+      <div class="summary" id="summaryBox" style="display:none;"></div>
+
     </form>
   </div>
 
   <script>
     const openBtn = document.getElementById('openOrder');
     const orderSection = document.getElementById('orderSection');
+    const categoryToggles = document.querySelectorAll('.category-toggle');
     const inputs = document.querySelectorAll('.qty');
     const totalDisplay = document.getElementById('totalDisplay');
+    const summaryBox = document.getElementById('summaryBox');
 
     openBtn.addEventListener('click', () => {
       orderSection.style.display = 'block';
       openBtn.style.display = 'none';
+      orderSection.scrollIntoView({ behavior: 'smooth' });
+    });
+
+    categoryToggles.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const items = btn.nextElementSibling;
+        items.style.display = items.style.display === 'none' || items.style.display === '' ? 'block' : 'none';
+      });
     });
 
     inputs.forEach(input => {
@@ -220,7 +236,9 @@
       }
 
       let message = `Ciao! Vorrei ordinare da Spi Pizza:\n\n`;
+      let summary = `📋 *Riepilogo ordine Spi Pizza* \n🕒 Orario: ${new Date().toLocaleTimeString()}\n\n`;
       let hasOrder = false;
+      let total = 0;
 
       inputs.forEach(input => {
         const qty = parseInt(input.value);
@@ -228,7 +246,10 @@
         const price = parseFloat(input.dataset.price);
         if (qty > 0) {
           hasOrder = true;
-          message += `- ${qty} x ${nameItem} (€${(qty * price).toFixed(2)})\n`;
+          const lineTotal = qty * price;
+          total += lineTotal;
+          message += `- ${qty} x ${nameItem} (€${lineTotal.toFixed(2)})\n`;
+          summary += `- ${qty} x ${nameItem} (€${lineTotal.toFixed(2)})\n`;
         }
       });
 
@@ -237,15 +258,19 @@
         return;
       }
 
-      const total = totalDisplay.textContent.replace("Totale: ", "");
-      message += `\n${total}\n\n`;
+      const totalStr = "Totale: €" + total.toFixed(2);
+      message += `\n${totalStr}\n\n`;
       message += `📍 *Dati cliente:*\n👤 Nome: ${name}\n🏠 Indirizzo: ${address}\n📞 Telefono: ${phone}`;
+
+      summary += `\n💰 ${totalStr}\n👤 ${name}\n🏠 ${address}\n📞 ${phone}`;
 
       const phoneNumber = "3935560714";
       const encoded = encodeURIComponent(message);
       const url = `https://wa.me/${phoneNumber}?text=${encoded}`;
-
       window.open(url, '_blank');
+
+      summaryBox.textContent = summary;
+      summaryBox.style.display = 'block';
     }
   </script>
 
