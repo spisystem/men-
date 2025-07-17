@@ -4,153 +4,101 @@
   <meta charset="UTF-8" />
   <title>Spi Pizza - Menù</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
     body {
-      font-family: 'Inter', sans-serif;
-      background-color: #fdf6e3;
-      color: #333;
-      font-size: 1.4rem;
-      line-height: 1.6;
+      font-family: 'Fredoka', sans-serif;
+      background-color: #fff8dc;
+      margin: 0;
       padding: 30px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
-      min-height: 100vh;
+      color: #2c3e50;
+      font-size: 1.4rem;
     }
 
     h1 {
+      text-align: center;
       font-size: 3rem;
-      color: #ff6347;
-      margin-bottom: 20px;
-      font-weight: 600;
-      text-align: center;
-    }
-
-    .btn {
-      display: block;
-      width: 250px;
-      padding: 15px;
-      font-size: 1.6rem;
-      color: white;
-      background-color: #28a745; /* Verde brillante */
-      border: none;
-      border-radius: 50px;
-      text-align: center;
-      cursor: pointer;
+      color: #e74c3c;
       margin-bottom: 30px;
-      transition: background-color 0.3s ease, transform 0.3s ease;
-    }
-
-    .btn:hover {
-      background-color: #218838; /* Verde scuro */
-      transform: translateY(-3px);
     }
 
     .section {
-      width: 100%;
-      max-width: 600px;
-      margin-top: 30px;
+      margin-top: 40px;
     }
 
     .section h2 {
       font-size: 2rem;
-      color: #ff6347;
+      color: #d35400;
       margin-bottom: 15px;
-      border-bottom: 3px solid #ff6347;
+      border-bottom: 2px dashed #e67e22;
       padding-bottom: 5px;
     }
 
     .dish {
       display: flex;
       justify-content: space-between;
-      padding: 12px;
-      background-color: #ffffff;
-      margin: 10px 0;
-      border-radius: 10px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      transition: box-shadow 0.3s ease, transform 0.3s ease;
+      margin-bottom: 12px;
+      padding: 10px 0;
+      border-bottom: 1px dotted #ccc;
     }
 
-    .dish:hover {
-      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-      transform: scale(1.02);
+    .btn {
+      display: block;
+      margin: 40px auto;
+      padding: 15px 25px;
+      font-size: 1.5rem;
+      background-color: #27ae60;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background 0.3s;
     }
 
-    .dish span {
-      font-size: 1.4rem;
-      color: #333;
+    .btn:hover {
+      background-color: #1e874b;
+    }
+
+    .order-section {
+      display: none;
+      margin-top: 40px;
+      border-top: 3px dashed #999;
+      padding-top: 30px;
+    }
+
+    .menu-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 12px 0;
+      padding: 10px;
+      background: #fff;
+      border: 2px solid #ffa500;
+      border-radius: 12px;
     }
 
     .qty {
       width: 60px;
       padding: 8px;
       font-size: 1.2rem;
-      border: 2px solid #ff6347;
-      border-radius: 8px;
+      border: 2px solid #ccc;
+      border-radius: 10px;
       text-align: center;
-      background-color: #fff;
-      color: #333;
     }
 
     .total {
-      font-size: 2rem;
-      font-weight: bold;
+      text-align: center;
+      font-size: 1.6rem;
       margin-top: 25px;
-      color: #28a745;
-    }
-
-    .order-section {
-      display: none;
-      width: 100%;
-      max-width: 600px;
-      margin-top: 40px;
-      padding: 20px;
-      background-color: #fff;
-      border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    }
-
-    .order-section input {
-      margin-bottom: 15px;
-    }
-
-    /* Responsività */
-    @media (max-width: 768px) {
-      body {
-        padding: 15px;
-      }
-
-      h1 {
-        font-size: 2.5rem;
-      }
-
-      .btn {
-        width: 100%;
-        font-size: 1.3rem;
-      }
-
-      .dish span {
-        font-size: 1.2rem;
-      }
+      font-weight: bold;
+      color: #27ae60;
     }
   </style>
 </head>
 <body>
 
-  <!-- Pulsante "Voglio ordinare" in cima -->
-  <button class="btn" id="openOrder">📦 Voglio ordinare</button>
-
   <h1>🍕 Menù Spi Pizza</h1>
 
-  <!-- Sezioni del menù -->
   <div class="section">
     <h2>Pizze Classiche</h2>
     <div class="dish"><span>Margherita</span> <span>€9</span></div>
@@ -175,7 +123,9 @@
     <div class="dish"><span>Vino della casa</span> <span>€4</span></div>
   </div>
 
-  <!-- Sezione per l'ordine -->
+  <!-- ✅ Bottone ben visibile -->
+  <button class="btn" id="openOrder">📦 Voglio ordinare</button>
+
   <div class="order-section" id="orderSection">
     <form id="orderForm">
       <div class="menu-item">
@@ -254,7 +204,7 @@
         const price = parseFloat(input.dataset.price);
         if (qty > 0) {
           hasOrder = true;
-          message += `- ${qty} x ${name} (€${(qty * price).toFixed(2)})\n`;
+          message += - ${qty} x ${name} (€${(qty * price).toFixed(2)})\n;
         }
       });
 
@@ -264,11 +214,11 @@
       }
 
       const total = totalDisplay.textContent.replace("Totale: ", "");
-      message += `\nTotale: ${total}`;
+      message += \nTotale: ${total};
 
       const phone = "3935560714";
       const encoded = encodeURIComponent(message);
-      const url = `https://wa.me/${phone}?text=${encoded}`;
+      const url = https://wa.me/${phone}?text=${encoded};
 
       window.open(url, '_blank');
     }
@@ -276,4 +226,3 @@
 
 </body>
 </html>
-
