@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <title>Spi Pizza - Menù</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap" rel="stylesheet" />
   <style>
     body {
       font-family: 'Fredoka', sans-serif;
@@ -24,6 +24,7 @@
       margin-bottom: 30px;
     }
 
+    /* Categoria menù - visibile nel menù statico */
     .dish.category {
       font-weight: 700;
       font-size: 1.6rem;
@@ -35,6 +36,7 @@
       border: 2px solid #e74c3c;
     }
 
+    /* Piatti menù statico */
     .dish:not(.category) {
       font-weight: 400;
       font-size: 1.4rem;
@@ -48,6 +50,7 @@
       border-bottom: 1px dotted #ccc;
     }
 
+    /* Bottone "Voglio ordinare" */
     .btn {
       display: block;
       margin: 40px auto;
@@ -60,11 +63,11 @@
       cursor: pointer;
       transition: background 0.3s;
     }
-
     .btn:hover {
       background-color: #1e874b;
     }
 
+    /* Sezione ordine (form a tendina) nascosta all'inizio */
     .order-section {
       display: none;
       margin-top: 40px;
@@ -72,6 +75,7 @@
       padding-top: 30px;
     }
 
+    /* Menu-item nel form ordine */
     .menu-item {
       display: flex;
       justify-content: space-between;
@@ -84,6 +88,7 @@
       gap: 10px;
     }
 
+    /* Input quantità e testo */
     .qty, .text-input, select {
       width: 100%;
       padding: 10px;
@@ -93,6 +98,7 @@
       box-sizing: border-box;
     }
 
+    /* Totale ordine */
     .total {
       text-align: center;
       font-size: 1.6rem;
@@ -101,41 +107,7 @@
       color: #27ae60;
     }
 
-    #languageSelector {
-      position: fixed;
-      top: 10px;
-      right: 10px;
-      display: flex;
-      gap: 10px;
-      z-index: 1000;
-      background: #fff8dc;
-      padding: 5px 10px;
-      border-radius: 10px;
-      border: 1px solid #ccc;
-    }
-
-    .flag {
-      width: 28px;
-      height: 20px;
-      cursor: pointer;
-      border: 2px solid transparent;
-      border-radius: 4px;
-    }
-
-    .flag:hover, .flag.selected {
-      border-color: #e74c3c;
-    }
-
-    label {
-      flex-basis: 25%;
-      font-weight: 700;
-      color: #d35400;
-    }
-
-    .menu-item > label {
-      margin-right: 10px;
-    }
-
+    /* Riepilogo orario */
     #orderTime {
       margin-top: 20px;
       font-weight: 700;
@@ -143,14 +115,58 @@
       text-align: center;
       font-size: 1.3rem;
     }
+
+    /* Lingue con bandiere - contenitore */
+    #languageSelector {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      background: #fff8dc;
+      border: 1px solid #ccc;
+      border-radius: 12px;
+      padding: 5px 10px;
+      display: flex;
+      gap: 8px;
+      z-index: 1000;
+      cursor: pointer;
+    }
+    /* Bandierine come bottoni */
+    .flag-btn {
+      width: 30px;
+      height: 20px;
+      background-size: cover;
+      border-radius: 4px;
+      border: 2px solid transparent;
+      transition: border-color 0.3s;
+    }
+    .flag-btn:hover, .flag-btn.active {
+      border-color: #e74c3c;
+    }
+    /* Bandiere */
+    .flag-it { background-image: url('https://flagcdn.com/w20/it.png'); }
+    .flag-en { background-image: url('https://flagcdn.com/w20/gb.png'); }
+    .flag-fr { background-image: url('https://flagcdn.com/w20/fr.png'); }
+    .flag-ar { background-image: url('https://flagcdn.com/w20/sa.png'); }
+
+    /* Label piccoli nel form */
+    label {
+      flex-basis: 25%;
+      font-weight: 700;
+      color: #d35400;
+    }
+    .menu-item > label {
+      margin-right: 10px;
+    }
   </style>
 </head>
 <body>
-  <div id="languageSelector">
-    <img src="https://flagcdn.com/w20/it.png" alt="Italiano" class="flag selected" data-lang="it" />
-    <img src="https://flagcdn.com/w20/gb.png" alt="English" class="flag" data-lang="en" />
-    <img src="https://flagcdn.com/w20/fr.png" alt="Français" class="flag" data-lang="fr" />
-    <img src="https://flagcdn.com/w20/sa.png" alt="عربي" class="flag" data-lang="ar" />
+
+  <!-- Selettore lingua con bandiere -->
+  <div id="languageSelector" role="radiogroup" aria-label="Seleziona lingua">
+    <button class="flag-btn flag-it active" data-lang="it" aria-label="Italiano" role="radio" aria-checked="true" tabindex="0"></button>
+    <button class="flag-btn flag-en" data-lang="en" aria-label="English" role="radio" aria-checked="false" tabindex="-1"></button>
+    <button class="flag-btn flag-fr" data-lang="fr" aria-label="Français" role="radio" aria-checked="false" tabindex="-1"></button>
+    <button class="flag-btn flag-ar" data-lang="ar" aria-label="العربية" role="radio" aria-checked="false" tabindex="-1"></button>
   </div>
 
   <h1 id="title">🍕 Menù Spi Pizza</h1>
@@ -172,7 +188,8 @@
     <div class="dish"><span>Acqua minerale</span> <span>€2</span></div>
     <div class="dish"><span>Vino della casa</span> <span>€4</span></div>
   </div>
-    <button class="btn" id="openOrder">📦 Voglio ordinare</button>
+
+  <button class="btn" id="openOrder">📦 Voglio ordinare</button>
 
   <div class="order-section" id="orderSection" role="region" aria-labelledby="orderTitle">
     <form id="orderForm">
@@ -181,7 +198,9 @@
       <!-- Categoria e prodotti come select a tendina -->
       <div class="menu-item">
         <label for="categorySelect" id="labelCategory">Categoria *</label>
-        <select id="categorySelect" required></select>
+        <select id="categorySelect" required>
+          <!-- Options generate da JS -->
+        </select>
       </div>
 
       <div class="menu-item">
@@ -199,19 +218,19 @@
       <!-- Dati Cliente -->
       <div class="menu-item">
         <label for="customerName" id="labelName">Nome *</label>
-        <input class="text-input" type="text" id="customerName" placeholder="Es. Mario" required>
+        <input class="text-input" type="text" id="customerName" placeholder="Es. Mario" required />
       </div>
       <div class="menu-item">
         <label for="customerSurname" id="labelSurname">Cognome *</label>
-        <input class="text-input" type="text" id="customerSurname" placeholder="Es. Rossi" required>
+        <input class="text-input" type="text" id="customerSurname" placeholder="Es. Rossi" required />
       </div>
       <div class="menu-item">
         <label for="customerAddress" id="labelAddress">Indirizzo *</label>
-        <input class="text-input" type="text" id="customerAddress" placeholder="Via, civico, città" required>
+        <input class="text-input" type="text" id="customerAddress" placeholder="Via, civico, città" required />
       </div>
       <div class="menu-item">
         <label for="customerPhone" id="labelPhone">Telefono *</label>
-        <input class="text-input" type="tel" id="customerPhone" placeholder="3331234567" required>
+        <input class="text-input" type="tel" id="customerPhone" placeholder="3331234567" required />
       </div>
 
       <div class="total" id="totalDisplay">Totale: €0.00</div>
@@ -226,179 +245,460 @@
 
     <div id="orderTime" aria-live="polite" role="status"></div>
   </div>
-  <script>
-  const products = {
+
+<script>
+  // Prossima parte: dati prodotti, funzioni di traduzione e logica
+</script>
+
+</body>
+</html>
+<script>
+(() => {
+  // Dati prodotti con prezzi e categorie
+  const productsData = {
     it: {
-      "Pizze Classiche": [
-        { name: "Margherita", price: 9 },
-        { name: "Diavola", price: 11 }
-      ],
-      "Pizze Gourmet": [
-        { name: "Quattro Formaggi", price: 13 },
-        { name: "Prosciutto e Rucola", price: 14 }
-      ],
-      "Dolci": [
-        { name: "Tiramisù", price: 5 },
-        { name: "Panna cotta", price: 5 }
-      ],
-      "Bevande": [
-        { name: "Acqua minerale", price: 2 },
-        { name: "Vino della casa", price: 4 }
-      ]
+      categories: {
+        classic: "Pizze Classiche",
+        gourmet: "Pizze Gourmet",
+        dessert: "Dolci",
+        drinks: "Bevande",
+      },
+      products: {
+        classic: [
+          { name: "Margherita", price: 9 },
+          { name: "Diavola", price: 11 },
+        ],
+        gourmet: [
+          { name: "Quattro Formaggi", price: 13 },
+          { name: "Prosciutto e Rucola", price: 14 },
+        ],
+        dessert: [
+          { name: "Tiramisù", price: 5 },
+          { name: "Panna cotta", price: 5 },
+        ],
+        drinks: [
+          { name: "Acqua minerale", price: 2 },
+          { name: "Vino della casa", price: 4 },
+        ],
+      },
+      uiText: {
+        title: "🍕 Menù Spi Pizza",
+        btnOrder: "📦 Voglio ordinare",
+        orderTitle: "Modulo d'ordine",
+        labelCategory: "Categoria *",
+        labelProduct: "Prodotto *",
+        labelQuantity: "Quantità *",
+        labelName: "Nome *",
+        labelSurname: "Cognome *",
+        labelAddress: "Indirizzo *",
+        labelPhone: "Telefono *",
+        addToCart: "➕ Aggiungi al carrello",
+        cartTitle: "Carrello",
+        sendOrder: "📲 Invia Ordine via WhatsApp",
+        total: "Totale",
+        selectCategoryFirst: "Seleziona prima una categoria",
+        orderSent: "Ordine inviato!",
+      }
     },
     en: {
-      "Classic Pizzas": [
-        { name: "Margherita", price: 9 },
-        { name: "Spicy Salami", price: 11 }
-      ],
-      "Gourmet Pizzas": [
-        { name: "Four Cheese", price: 13 },
-        { name: "Ham and Arugula", price: 14 }
-      ],
-      "Desserts": [
-        { name: "Tiramisu", price: 5 },
-        { name: "Panna cotta", price: 5 }
-      ],
-      "Drinks": [
-        { name: "Mineral Water", price: 2 },
-        { name: "House Wine", price: 4 }
-      ]
+      categories: {
+        classic: "Classic Pizzas",
+        gourmet: "Gourmet Pizzas",
+        dessert: "Desserts",
+        drinks: "Drinks",
+      },
+      products: {
+        classic: [
+          { name: "Margherita", price: 9 },
+          { name: "Diavola", price: 11 },
+        ],
+        gourmet: [
+          { name: "Four Cheese", price: 13 },
+          { name: "Ham and Arugula", price: 14 },
+        ],
+        dessert: [
+          { name: "Tiramisu", price: 5 },
+          { name: "Panna cotta", price: 5 },
+        ],
+        drinks: [
+          { name: "Mineral Water", price: 2 },
+          { name: "House Wine", price: 4 },
+        ],
+      },
+      uiText: {
+        title: "🍕 Spi Pizza Menu",
+        btnOrder: "📦 I want to order",
+        orderTitle: "Order Form",
+        labelCategory: "Category *",
+        labelProduct: "Product *",
+        labelQuantity: "Quantity *",
+        labelName: "Name *",
+        labelSurname: "Surname *",
+        labelAddress: "Address *",
+        labelPhone: "Phone *",
+        addToCart: "➕ Add to Cart",
+        cartTitle: "Cart",
+        sendOrder: "📲 Send Order via WhatsApp",
+        total: "Total",
+        selectCategoryFirst: "Select a category first",
+        orderSent: "Order sent!",
+      }
+    },
+    fr: {
+      categories: {
+        classic: "Pizzas Classiques",
+        gourmet: "Pizzas Gourmets",
+        dessert: "Desserts",
+        drinks: "Boissons",
+      },
+      products: {
+        classic: [
+          { name: "Margherita", price: 9 },
+          { name: "Diavola", price: 11 },
+        ],
+        gourmet: [
+          { name: "Quatre Fromages", price: 13 },
+          { name: "Jambon et Roquette", price: 14 },
+        ],
+        dessert: [
+          { name: "Tiramisu", price: 5 },
+          { name: "Panna cotta", price: 5 },
+        ],
+        drinks: [
+          { name: "Eau minérale", price: 2 },
+          { name: "Vin de la maison", price: 4 },
+        ],
+      },
+      uiText: {
+        title: "🍕 Menu Spi Pizza",
+        btnOrder: "📦 Je veux commander",
+        orderTitle: "Formulaire de commande",
+        labelCategory: "Catégorie *",
+        labelProduct: "Produit *",
+        labelQuantity: "Quantité *",
+        labelName: "Prénom *",
+        labelSurname: "Nom *",
+        labelAddress: "Adresse *",
+        labelPhone: "Téléphone *",
+        addToCart: "➕ Ajouter au panier",
+        cartTitle: "Panier",
+        sendOrder: "📲 Envoyer la commande via WhatsApp",
+        total: "Total",
+        selectCategoryFirst: "Sélectionnez d'abord une catégorie",
+        orderSent: "Commande envoyée !",
+      }
+    },
+    ar: {
+      categories: {
+        classic: "البيتزا الكلاسيكية",
+        gourmet: "البيتزا الفاخرة",
+        dessert: "الحلويات",
+        drinks: "المشروبات",
+      },
+      products: {
+        classic: [
+          { name: "مارغريتا", price: 9 },
+          { name: "ديافولا", price: 11 },
+        ],
+        gourmet: [
+          { name: "أربعة أجبان", price: 13 },
+          { name: "لحم وخس", price: 14 },
+        ],
+        dessert: [
+          { name: "تيراميسو", price: 5 },
+          { name: "بانا كوتا", price: 5 },
+        ],
+        drinks: [
+          { name: "مياه معدنية", price: 2 },
+          { name: "نبيذ البيت", price: 4 },
+        ],
+      },
+      uiText: {
+        title: "🍕 قائمة سباي بيتزا",
+        btnOrder: "📦 أريد الطلب",
+        orderTitle: "نموذج الطلب",
+        labelCategory: "الفئة *",
+        labelProduct: "المنتج *",
+        labelQuantity: "الكمية *",
+        labelName: "الاسم *",
+        labelSurname: "اللقب *",
+        labelAddress: "العنوان *",
+        labelPhone: "الهاتف *",
+        addToCart: "➕ أضف إلى السلة",
+        cartTitle: "السلة",
+        sendOrder: "📲 أرسل الطلب عبر واتساب",
+        total: "المجموع",
+        selectCategoryFirst: "اختر الفئة أولاً",
+        orderSent: "تم إرسال الطلب!",
+      }
     }
   };
 
   let currentLang = "it";
+  let cart = [];
+
+  // Elementi UI
+  const langButtons = document.querySelectorAll(".flag-btn");
+  const titleEl = document.getElementById("title");
+  const btnOrder = document.getElementById("openOrder");
+  const orderSection = document.getElementById("orderSection");
+  const orderTitle = document.getElementById("orderTitle");
+  const labelCategory = document.getElementById("labelCategory");
+  const labelProduct = document.getElementById("labelProduct");
+  const labelQuantity = document.getElementById("labelQuantity");
+  const labelName = document.getElementById("labelName");
+  const labelSurname = document.getElementById("labelSurname");
+  const labelAddress = document.getElementById("labelAddress");
+  const labelPhone = document.getElementById("labelPhone");
+  const addToCartBtn = document.getElementById("addToCart");
+  const cartTitle = document.getElementById("cartTitle");
+  const sendOrderBtn = document.getElementById("sendOrder");
+  const totalDisplay = document.getElementById("totalDisplay");
+  const cartList = document.getElementById("cartList");
   const categorySelect = document.getElementById("categorySelect");
   const productSelect = document.getElementById("productSelect");
   const quantitySelect = document.getElementById("quantitySelect");
-  const cartList = document.getElementById("cartList");
-  const totalDisplay = document.getElementById("totalDisplay");
-  const languageSelector = document.getElementById("languageSelector");
-  const orderBtn = document.getElementById("openOrder");
-  const orderSection = document.getElementById("orderSection");
-  const orderTitle = document.getElementById("orderTitle");
-  const cartTitle = document.getElementById("cartTitle");
-  const sendOrder = document.getElementById("sendOrder");
-  const addToCart = document.getElementById("addToCart");
   const orderTime = document.getElementById("orderTime");
 
-  let cart = [];
-
-  function populateCategories() {
-    categorySelect.innerHTML = `<option value="">${
-      currentLang === "it" ? "Seleziona una categoria" : "Select a category"
-    }</option>`;
-    Object.keys(products[currentLang]).forEach(category => {
-      const opt = document.createElement("option");
-      opt.value = category;
-      opt.textContent = category;
-      categorySelect.appendChild(opt);
-    });
+  // Funzione per aggiornare testi UI in base alla lingua
+  function updateUIText() {
+    const ui = productsData[currentLang].uiText;
+    titleEl.textContent = ui.title;
+    btnOrder.textContent = ui.btnOrder;
+    orderTitle.textContent = ui.orderTitle;
+    labelCategory.textContent = ui.labelCategory;
+    labelProduct.textContent = ui.labelProduct;
+    labelQuantity.textContent = ui.labelQuantity;
+    labelName.textContent = ui.labelName;
+    labelSurname.textContent = ui.labelSurname;
+    labelAddress.textContent = ui.labelAddress;
+    labelPhone.textContent = ui.labelPhone;
+    addToCartBtn.textContent = ui.addToCart;
+    cartTitle.textContent = ui.cartTitle;
+    sendOrderBtn.textContent = ui.sendOrder;
+    totalDisplay.textContent = `${ui.total}: €0.00`;
   }
 
-  function updateProducts() {
-    const selectedCategory = categorySelect.value;
-    productSelect.innerHTML = "";
-    productSelect.disabled = true;
-    quantitySelect.disabled = true;
-    if (!selectedCategory) return;
+  // Riempie il menù statico in alto con le categorie e piatti nella lingua scelta
+  function updateMenuStatic() {
+    const menuStatic = document.getElementById("menuStatic");
+    // Svuota il contenuto
+    menuStatic.innerHTML = "";
+    const catNames = productsData[currentLang].categories;
+    const prods = productsData[currentLang].products;
 
-    const productList = products[currentLang][selectedCategory];
-    if (productList && productList.length > 0) {
-      productSelect.disabled = false;
-      quantitySelect.disabled = false;
-      const defaultOpt = document.createElement("option");
-      defaultOpt.textContent =
-        currentLang === "it" ? "Seleziona un prodotto" : "Select a product";
-      defaultOpt.value = "";
-      productSelect.appendChild(defaultOpt);
-      productList.forEach(p => {
-        const opt = document.createElement("option");
-        opt.value = p.name;
-        opt.textContent = `${p.name} (€${p.price})`;
-        productSelect.appendChild(opt);
+    for (const catKey in catNames) {
+      // categoria come titolo
+      const catDiv = document.createElement("div");
+      catDiv.classList.add("dish", "category");
+      catDiv.textContent = catNames[catKey];
+      menuStatic.appendChild(catDiv);
+
+      // prodotti categoria
+      prods[catKey].forEach((p) => {
+        const dishDiv = document.createElement("div");
+        dishDiv.classList.add("dish");
+        const spanName = document.createElement("span");
+        spanName.textContent = p.name;
+        const spanPrice = document.createElement("span");
+        spanPrice.textContent = `€${p.price}`;
+        dishDiv.appendChild(spanName);
+        dishDiv.appendChild(spanPrice);
+        menuStatic.appendChild(dishDiv);
       });
     }
   }
 
-  function updateTotal() {
-    const total = cart.reduce((sum, item) => sum + item.total, 0);
-    totalDisplay.textContent = `${currentLang === "it" ? "Totale: €" : "Total: €"}${total.toFixed(2)}`;
+  // Riempie la select categoria nel form
+  function populateCategorySelect() {
+    categorySelect.innerHTML = "";
+    const catNames = productsData[currentLang].categories;
+    for (const catKey in catNames) {
+      const opt = document.createElement("option");
+      opt.value = catKey;
+      opt.textContent = catNames[catKey];
+      categorySelect.appendChild(opt);
+    }
   }
 
-  function refreshCart() {
-    cartList.innerHTML = "";
+  // Aggiorna la select prodotti in base alla categoria selezionata
+  function updateProductSelect() {
+    productSelect.innerHTML = "";
+    const cat = categorySelect.value;
+    if (!cat) {
+      const opt = document.createElement("option");
+      opt.textContent = productsData[currentLang].uiText.selectCategoryFirst;
+      productSelect.appendChild(opt);
+      productSelect.disabled = true;
+      quantitySelect.disabled = true;
+      return;
+    }
+    productSelect.disabled = false;
+    quantitySelect.disabled = false;
+    const prods = productsData[currentLang].products[cat];
+    prods.forEach((p, i) => {
+      const opt = document.createElement("option");
+      opt.value = i;
+      opt.textContent = `${p.name} - €${p.price}`;
+      productSelect.appendChild(opt);
+    });
+  }
+
+  // Calcola il totale del carrello
+  function calculateTotal() {
+    let total = 0;
     cart.forEach(item => {
+      total += item.price * item.quantity;
+    });
+    totalDisplay.textContent = `${productsData[currentLang].uiText.total}: €${total.toFixed(2)}`;
+  }
+
+  // Mostra il carrello a video
+  function updateCartUI() {
+    cartList.innerHTML = "";
+    if (cart.length === 0) {
+      cartList.textContent = "(vuoto)";
+      return;
+    }
+    cart.forEach((item, idx) => {
       const li = document.createElement("li");
-      li.textContent = `${item.qty} × ${item.name} = €${item.total.toFixed(2)}`;
+      li.textContent = `${item.name} x${item.quantity} - €${(item.price * item.quantity).toFixed(2)}`;
+      // Pulsante rimuovi
+      const btnRemove = document.createElement("button");
+      btnRemove.textContent = "❌";
+      btnRemove.style.marginLeft = "10px";
+      btnRemove.style.cursor = "pointer";
+      btnRemove.setAttribute("aria-label", `Rimuovi ${item.name} dal carrello`);
+      btnRemove.onclick = () => {
+        cart.splice(idx, 1);
+        updateCartUI();
+        calculateTotal();
+      };
+      li.appendChild(btnRemove);
       cartList.appendChild(li);
     });
-    updateTotal();
   }
 
-  categorySelect.addEventListener("change", updateProducts);
+  // Gestisce cambio lingua al click su bandiera
+  function onLanguageChange(e) {
+    const selectedLang = e.target.getAttribute("data-lang");
+    if (!selectedLang || selectedLang === currentLang) return;
 
-  addToCart.addEventListener("click", () => {
-    const name = productSelect.value;
-    const qty = parseInt(quantitySelect.value);
-    if (!name || qty < 1) return;
+    currentLang = selectedLang;
 
-    const category = categorySelect.value;
-    const price = products[currentLang][category].find(p => p.name === name).price;
-    const total = price * qty;
-
-    cart.push({ name, qty, total });
-    refreshCart();
-  });
-
-  sendOrder.addEventListener("click", () => {
-    if (cart.length === 0) {
-      alert(currentLang === "it" ? "Nessun prodotto nel carrello." : "No products in cart.");
-      return;
-    }
-    const name = document.getElementById("customerName").value;
-    const surname = document.getElementById("customerSurname").value;
-    const address = document.getElementById("customerAddress").value;
-    const phone = document.getElementById("customerPhone").value;
-
-    if (!name || !surname || !address || !phone) {
-      alert(currentLang === "it" ? "Compila tutti i campi cliente." : "Please fill all customer fields.");
-      return;
-    }
-
-    let msg = `🧾 *Ordine Spi Pizza* (%0A`;
-    cart.forEach(item => {
-      msg += `- ${item.qty} × ${item.name} = €${item.total.toFixed(2)}%0A`;
+    // Aggiorna classi active bandiere e attributi aria
+    langButtons.forEach(btn => {
+      const lang = btn.getAttribute("data-lang");
+      btn.classList.toggle("active", lang === currentLang);
+      btn.setAttribute("aria-checked", lang === currentLang ? "true" : "false");
+      btn.tabIndex = lang === currentLang ? 0 : -1;
     });
-    const total = cart.reduce((sum, item) => sum + item.total, 0);
-    msg += `%0A*Totale:* €${total.toFixed(2)}%0A`;
-    msg += `👤 *Cliente:* ${name} ${surname}%0A📍 *Indirizzo:* ${address}%0A📞 *Telefono:* ${phone}%0A`;
 
+    updateUIText();
+    updateMenuStatic();
+    populateCategorySelect();
+    productSelect.innerHTML = "";
+    productSelect.disabled = true;
+    quantitySelect.disabled = true;
+    cart = [];
+    updateCartUI();
+    calculateTotal();
+    orderTime.textContent = "";
+  }
+
+  // Gestione apertura modulo ordine
+  btnOrder.addEventListener("click", () => {
+    if (orderSection.style.display === "none" || orderSection.style.display === "") {
+      orderSection.style.display = "block";
+      btnOrder.style.display = "none";
+    }
+  });
+
+  // Cambia prodotti se cambia categoria
+  categorySelect.addEventListener("change", () => {
+    updateProductSelect();
+  });
+
+  // Aggiungi prodotto al carrello
+  addToCartBtn.addEventListener("click", () => {
+    const cat = categorySelect.value;
+    const prodIndex = productSelect.value;
+    const qty = parseInt(quantitySelect.value, 10);
+    if (!cat || prodIndex === "" || isNaN(qty) || qty < 1) {
+      alert("Compila tutti i campi correttamente.");
+      return;
+    }
+    const prodData = productsData[currentLang].products[cat][prodIndex];
+    cart.push({
+      category: cat,
+      name: prodData.name,
+      price: prodData.price,
+      quantity: qty
+    });
+    updateCartUI();
+    calculateTotal();
+  });
+
+  // Invia ordine via WhatsApp
+  sendOrderBtn.addEventListener("click", () => {
+    if (cart.length === 0) {
+      alert("Il carrello è vuoto.");
+      return;
+    }
+    // Dati cliente
+    const name = document.getElementById("customerName").value.trim();
+    const surname = document.getElementById("customerSurname").value.trim();
+    const address = document.getElementById("customerAddress").value.trim();
+    const phone = document.getElementById("customerPhone").value.trim();
+    if (!name || !surname || !address || !phone) {
+      alert("Compila tutti i dati cliente.");
+      return;
+    }
+
+    // Costruisci messaggio ordine
+    const ui = productsData[currentLang].uiText;
+    let msg = `${ui.title}\n${ui.cartTitle}:\n`;
+    cart.forEach(item => {
+      msg += `- ${item.name} x${item.quantity} = €${(item.price * item.quantity).toFixed(2)}\n`;
+    });
+    let total = cart.reduce((sum, i) => sum + i.price * i.quantity, 0);
+    msg += `${ui.total}: €${total.toFixed(2)}\n\n`;
+    msg += `${ui.labelName}: ${name}\n${ui.labelSurname}: ${surname}\n${ui.labelAddress}: ${address}\n${ui.labelPhone}: ${phone}\n`;
+
+    // Orario previsto di consegna = tra 40 e 60 minuti
     const now = new Date();
-    const timeString = now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
-    orderTime.textContent = `${currentLang === "it" ? "Ordine effettuato alle ore" : "Order sent at"} ${timeString}`;
+    const minMinutes = 40;
+    const maxMinutes = 60;
+    const minTime = new Date(now.getTime() + minMinutes*60000);
+    const maxTime = new Date(now.getTime() + maxMinutes*60000);
+    const formatTime = d => d.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+    const deliveryWindow = `${formatTime(minTime)} - ${formatTime(maxTime)}`;
+    msg += `\nOrario consegna previsto: ${deliveryWindow}`;
 
-    window.open(`https://wa.me/3935560714?text=${msg}`, "_blank");
+    orderTime.textContent = `Orario consegna previsto: ${deliveryWindow}`;
+
+    // Encode messaggio per WhatsApp
+    const encodedMsg = encodeURIComponent(msg);
+
+    // Numero WhatsApp di destinazione
+    const whatsappNumber = "3935560714";
+
+    // Apri WhatsApp con messaggio precompilato
+    const url = `https://wa.me/${whatsappNumber}?text=${encodedMsg}`;
+    window.open(url, "_blank");
   });
 
-  orderBtn.addEventListener("click", () => {
-    orderSection.style.display = "block";
-    populateCategories();
-    updateTotal();
-    orderTitle.textContent = currentLang === "it" ? "Compila il tuo ordine" : "Complete your order";
+  // Event listener per cambio lingua su bandiere
+  langButtons.forEach(btn => {
+    btn.addEventListener("click", onLanguageChange);
   });
 
-  languageSelector.addEventListener("change", () => {
-    currentLang = languageSelector.value;
-    document.getElementById("title").textContent = currentLang === "it" ? "🍕 Menù Spi Pizza" : "🍕 Spi Pizza Menu";
-    orderBtn.textContent = currentLang === "it" ? "📦 Voglio ordinare" : "📦 Order now";
-    sendOrder.textContent = currentLang === "it" ? "📲 Invia Ordine via WhatsApp" : "📲 Send Order via WhatsApp";
-    addToCart.textContent = currentLang === "it" ? "➕ Aggiungi al carrello" : "➕ Add to cart";
-    cartTitle.textContent = currentLang === "it" ? "Carrello" : "Cart";
-    orderTitle.textContent = currentLang === "it" ? "Compila il tuo ordine" : "Complete your order";
-    populateCategories();
-    updateProducts();
-    refreshCart();
-  });
+  // Inizializzazione
+  updateUIText();
+  updateMenuStatic();
+  populateCategorySelect();
+  productSelect.disabled = true;
+  quantitySelect.disabled = true;
+
+})();
 </script>
-</body>
-</html>
