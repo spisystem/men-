@@ -6,13 +6,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap" rel="stylesheet">
   <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     body {
       font-family: 'Fredoka', sans-serif;
-      background-color: #fff8dc;
-      margin: 0;
-      padding: 30px;
-      color: #2c3e50;
+      background-color: #f4f4f9;
+      color: #333;
       font-size: 1.4rem;
+      line-height: 1.6;
+      padding: 20px;
     }
 
     h1 {
@@ -20,10 +26,32 @@
       font-size: 3rem;
       color: #e74c3c;
       margin-bottom: 30px;
+      letter-spacing: 1px;
+    }
+
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 18px 24px;
+      font-size: 1.6rem;
+      background: linear-gradient(145deg, #27ae60, #2ecc71);
+      color: white;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+      margin-bottom: 40px;
+    }
+
+    .btn:hover {
+      background: linear-gradient(145deg, #2ecc71, #27ae60);
+      box-shadow: 0px 6px 16px rgba(0, 0, 0, 0.2);
+      transform: translateY(-5px);
     }
 
     .section {
-      margin-top: 40px;
+      margin-top: 20px;
     }
 
     .section h2 {
@@ -38,64 +66,84 @@
       display: flex;
       justify-content: space-between;
       margin-bottom: 12px;
-      padding: 10px 0;
-      border-bottom: 1px dotted #ccc;
+      padding: 15px;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
     }
 
-    .btn {
-      display: block;
-      margin: 40px auto;
-      padding: 15px 25px;
-      font-size: 1.5rem;
-      background-color: #27ae60;
-      color: white;
-      border: none;
+    .dish:hover {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .dish span {
+      font-size: 1.4rem;
+    }
+
+    .qty {
+      width: 60px;
+      padding: 10px;
+      font-size: 1.2rem;
+      border: 2px solid #ccc;
       border-radius: 12px;
-      cursor: pointer;
-      transition: background 0.3s;
+      text-align: center;
+      background-color: #f9f9f9;
+      transition: all 0.3s ease;
     }
 
-    .btn:hover {
-      background-color: #1e874b;
+    .qty:focus {
+      border-color: #27ae60;
+      outline: none;
+    }
+
+    .total {
+      text-align: center;
+      font-size: 1.8rem;
+      margin-top: 25px;
+      font-weight: bold;
+      color: #27ae60;
     }
 
     .order-section {
       display: none;
       margin-top: 40px;
-      border-top: 3px dashed #999;
+      border-top: 2px solid #ddd;
       padding-top: 30px;
     }
 
-    .menu-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin: 12px 0;
-      padding: 10px;
-      background: #fff;
-      border: 2px solid #ffa500;
-      border-radius: 12px;
-    }
+    /* Responsive */
+    @media (max-width: 768px) {
+      body {
+        padding: 15px;
+        font-size: 1.3rem;
+      }
 
-    .qty {
-      width: 60px;
-      padding: 8px;
-      font-size: 1.2rem;
-      border: 2px solid #ccc;
-      border-radius: 10px;
-      text-align: center;
-    }
+      h1 {
+        font-size: 2.5rem;
+      }
 
-    .total {
-      text-align: center;
-      font-size: 1.6rem;
-      margin-top: 25px;
-      font-weight: bold;
-      color: #27ae60;
+      .btn {
+        width: 100%;
+        font-size: 1.4rem;
+      }
+
+      .menu-item {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .qty {
+        margin-top: 10px;
+        width: 80px;
+      }
     }
   </style>
 </head>
 <body>
+
+  <!-- ✅ Bottone Ben Visibile - Spostato in alto -->
+  <button class="btn" id="openOrder">📦 Voglio ordinare</button>
 
   <h1>🍕 Menù Spi Pizza</h1>
 
@@ -123,9 +171,7 @@
     <div class="dish"><span>Vino della casa</span> <span>€4</span></div>
   </div>
 
-  <!-- ✅ Bottone ben visibile -->
-  <button class="btn" id="openOrder">📦 Voglio ordinare</button>
-
+  <!-- Sezione per ordinare -->
   <div class="order-section" id="orderSection">
     <form id="orderForm">
       <div class="menu-item">
@@ -196,33 +242,18 @@
 
     function sendWhatsApp() {
       let message = "Ciao! Vorrei ordinare da Spi Pizza:\n";
-      let hasOrder = false;
-
       inputs.forEach(input => {
-        const qty = parseInt(input.value);
         const name = input.dataset.name;
-        const price = parseFloat(input.dataset.price);
+        const qty = parseInt(input.value);
         if (qty > 0) {
-          hasOrder = true;
-          message += `- ${qty} x ${name} (€${(qty * price).toFixed(2)})\n`;
+          message += `${name}: ${qty} x €${input.dataset.price}\n`;
         }
       });
-
-      if (!hasOrder) {
-        alert("Seleziona almeno un prodotto.");
-        return;
-      }
-
-      const total = totalDisplay.textContent.replace("Totale: ", "");
-      message += `\nTotale: ${total}`;
-
-      const phone = "3935560714";
-      const encoded = encodeURIComponent(message);
-      const url = `https://wa.me/${phone}?text=${encoded}`;
-
-      window.open(url, '_blank');
+      message += `\nTotale: €${totalDisplay.textContent.split("€")[1]}`;
+      const url = `https://wa.me/?text=${encodeURIComponent(message)}`;
+      window.open(url, "_blank");
     }
   </script>
-
 </body>
 </html>
+
