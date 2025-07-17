@@ -4,37 +4,38 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Menù Spi Pizza</title>
-  <!-- Font elegante da Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+  <!-- Font stile cartone animato da Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap" rel="stylesheet">
   <style>
     body {
-      font-family: 'Playfair Display', serif;
-      color: #3a2c2c;
+      font-family: 'Fredoka', sans-serif;
+      background-color: #fefbe9;
+      color: #333;
       margin: 0;
       padding: 0;
-      background-color: #ffffff; /* 👉 Bianco puro anche sul body */
     }
 
     .container {
       max-width: 800px;
       margin: 40px auto;
       padding: 40px;
-      background-color: #ffffff; /* 👉 Bianco puro anche sul contenitore */
-      border-radius: 12px;
-      box-shadow: 0 0 25px rgba(0, 0, 0, 0.3);
+      background-color: #fff;
+      border: 4px dashed #f4a261;
+      border-radius: 25px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
     }
 
     h1 {
       text-align: center;
-      font-size: 3rem;
-      color: #8b0000;
-      margin-bottom: 5px;
+      font-size: 3.2rem;
+      color: #e76f51;
+      margin-bottom: 10px;
     }
 
     .subtitle {
       text-align: center;
-      font-size: 1.2rem;
-      color: #5a4a4a;
+      font-size: 1.3rem;
+      color: #2a9d8f;
       margin-bottom: 30px;
       font-style: italic;
     }
@@ -44,9 +45,9 @@
     }
 
     .section h2 {
-      font-size: 2rem;
-      color: #8b0000;
-      border-bottom: 2px solid #8b0000;
+      font-size: 1.8rem;
+      color: #264653;
+      border-bottom: 3px dotted #e9c46a;
       padding-bottom: 5px;
       margin-bottom: 15px;
     }
@@ -54,26 +55,36 @@
     .dish {
       display: flex;
       justify-content: space-between;
-      margin-bottom: 10px;
-      font-size: 1.1rem;
+      align-items: center;
+      background-color: #f4f1de;
+      border-radius: 12px;
+      padding: 10px 15px;
+      margin-bottom: 12px;
+      transition: background-color 0.3s ease;
+    }
+
+    .dish:hover {
+      background-color: #fff0c7;
     }
 
     .dish .desc {
       font-size: 0.9rem;
-      color: #5a4a4a;
+      color: #6c757d;
       font-style: italic;
+      display: block;
     }
 
     .price {
-      color: #8b0000;
+      color: #e76f51;
       font-weight: bold;
+      font-size: 1.1rem;
     }
   </style>
 </head>
 <body>
   <div class="container">
     <h1>Spi Pizza</h1>
-    <div class="subtitle">Tradizione e passione dal forno alla tavola</div>
+    <div class="subtitle">Il menù più buono e simpatico della città 🍕😋</div>
 
     <div class="section">
       <h2>Antipasti</h2>
