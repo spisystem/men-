@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <title>Spi Pizza - Menù</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap" rel="stylesheet">
   <style>
     body {
       font-family: 'Fredoka', sans-serif;
@@ -13,8 +13,6 @@
       padding: 30px;
       color: #2c3e50;
       font-size: 1.4rem;
-      position: relative;
-      min-height: 100vh;
     }
 
     h1 {
@@ -24,33 +22,26 @@
       margin-bottom: 30px;
     }
 
-    /* Categoria menù - visibile nel menù statico */
-    .dish.category {
-      font-weight: 700;
-      font-size: 1.6rem;
-      background-color: #ffe6e6;
-      color: #e74c3c;
-      padding: 8px 15px;
-      border-radius: 10px;
-      margin-top: 15px;
-      border: 2px solid #e74c3c;
+    .section {
+      margin-top: 40px;
     }
 
-    /* Piatti menù statico */
-    .dish:not(.category) {
-      font-weight: 400;
-      font-size: 1.4rem;
-      padding-left: 25px;
-      color: #2c3e50;
+    .section h2 {
+      font-size: 2rem;
+      color: #d35400;
+      margin-bottom: 15px;
+      border-bottom: 2px dashed #e67e22;
+      padding-bottom: 5px;
+    }
+
+    .dish {
       display: flex;
       justify-content: space-between;
       margin-bottom: 12px;
-      padding-top: 10px;
-      padding-bottom: 10px;
+      padding: 10px 0;
       border-bottom: 1px dotted #ccc;
     }
 
-    /* Bottone "Voglio ordinare" */
     .btn {
       display: block;
       margin: 40px auto;
@@ -63,11 +54,11 @@
       cursor: pointer;
       transition: background 0.3s;
     }
+
     .btn:hover {
       background-color: #1e874b;
     }
 
-    /* Sezione ordine (form a tendina) nascosta all'inizio */
     .order-section {
       display: none;
       margin-top: 40px;
@@ -75,7 +66,6 @@
       padding-top: 30px;
     }
 
-    /* Menu-item nel form ordine */
     .menu-item {
       display: flex;
       justify-content: space-between;
@@ -88,8 +78,7 @@
       gap: 10px;
     }
 
-    /* Input quantità e testo */
-    .qty, .text-input, select {
+    .qty, .text-input {
       width: 100%;
       padding: 10px;
       font-size: 1.2rem;
@@ -98,7 +87,6 @@
       box-sizing: border-box;
     }
 
-    /* Totale ordine */
     .total {
       text-align: center;
       font-size: 1.6rem;
@@ -106,124 +94,160 @@
       font-weight: bold;
       color: #27ae60;
     }
-
-    /* Riepilogo orario */
-    #orderTime {
-      margin-top: 20px;
-      font-weight: 700;
-      color: #b34700;
-      text-align: center;
-      font-size: 1.3rem;
-    }
-
-    /* Lingue con bandiere - contenitore */
-    #languageSelector {
-      position: fixed;
-      top: 10px;
-      right: 10px;
-      background: #fff8dc;
-      border: 1px solid #ccc;
-      border-radius: 12px;
-      padding: 5px 10px;
-      display: flex;
-      gap: 8px;
-      z-index: 1000;
-      cursor: pointer;
-    }
-    /* Bandierine come bottoni */
-    .flag-btn {
-      width: 30px;
-      height: 20px;
-      background-size: cover;
-      border-radius: 4px;
-      border: 2px solid transparent;
-      transition: border-color 0.3s;
-    }
-    .flag-btn:hover, .flag-btn.active {
-      border-color: #e74c3c;
-    }
-    /* Bandiere */
-    .flag-it { background-image: url('https://flagcdn.com/w20/it.png'); }
-    .flag-en { background-image: url('https://flagcdn.com/w20/gb.png'); }
-    .flag-fr { background-image: url('https://flagcdn.com/w20/fr.png'); }
-    .flag-ar { background-image: url('https://flagcdn.com/w20/sa.png'); }
-
-    /* Label piccoli nel form */
-    label {
-      flex-basis: 25%;
-      font-weight: 700;
-      color: #d35400;
-    }
-    .menu-item > label {
-      margin-right: 10px;
-    }
   </style>
 </head>
 <body>
 
-  <!-- Selettore lingua con bandiere -->
-  <div id="languageSelector" role="radiogroup" aria-label="Seleziona lingua">
-    <button class="flag-btn flag-it active" data-lang="it" aria-label="Italiano" role="radio" aria-checked="true" tabindex="0"></button>
-    <button class="flag-btn flag-en" data-lang="en" aria-label="English" role="radio" aria-checked="false" tabindex="-1"></button>
-    <button class="flag-btn flag-fr" data-lang="fr" aria-label="Français" role="radio" aria-checked="false" tabindex="-1"></button>
-    <button class="flag-btn flag-ar" data-lang="ar" aria-label="العربية" role="radio" aria-checked="false" tabindex="-1"></button>
+  <h1>🍕 Menù Spi Pizza</h1>
+
+  <div class="section">
+    <h2>Pizze Classiche</h2>
+    <div class="dish"><span>Margherita</span> <span>€9</span></div>
+    <div class="dish"><span>Diavola</span> <span>€11</span></div>
   </div>
 
-  <h1 id="title">🍕 Menù Spi Pizza</h1>
+  <div class="section">
+    <h2>Pizze Gourmet</h2>
+    <div class="dish"><span>Quattro Formaggi</span> <span>€13</span></div>
+    <div class="dish"><span>Prosciutto e Rucola</span> <span>€14</span></div>
+  </div>
 
-  <div id="menuStatic">
-    <!-- Menù statico sarà generato da JS -->
+  <div class="section">
+    <h2>Dolci</h2>
+    <div class="dish"><span>Tiramisù</span> <span>€5</span></div>
+    <div class="dish"><span>Panna cotta</span> <span>€5</span></div>
+  </div>
+
+  <div class="section">
+    <h2>Bevande</h2>
+    <div class="dish"><span>Acqua minerale</span> <span>€2</span></div>
+    <div class="dish"><span>Vino della casa</span> <span>€4</span></div>
   </div>
 
   <button class="btn" id="openOrder">📦 Voglio ordinare</button>
 
-  <div class="order-section" id="orderSection" role="region" aria-labelledby="orderTitle">
+  <div class="order-section" id="orderSection">
     <form id="orderForm">
-      <h2 id="orderTitle" style="text-align:center; color:#d35400; margin-bottom:20px;"></h2>
-
-      <!-- Categoria e prodotti come select a tendina -->
+      <!-- Prodotti -->
       <div class="menu-item">
-        <label for="categorySelect" id="labelCategory">Categoria *</label>
-        <select id="categorySelect" required>
-          <!-- Options generate da JS -->
-        </select>
+        <span>Margherita (€9)</span>
+        <input class="qty" type="number" min="0" value="0" data-name="Margherita" data-price="9">
       </div>
-
       <div class="menu-item">
-        <label for="productSelect" id="labelProduct">Prodotto *</label>
-        <select id="productSelect" required disabled>
-          <option value="">Seleziona prima una categoria</option>
-        </select>
+        <span>Diavola (€11)</span>
+        <input class="qty" type="number" min="0" value="0" data-name="Diavola" data-price="11">
       </div>
-
       <div class="menu-item">
-        <label for="quantitySelect" id="labelQuantity">Quantità *</label>
-        <input class="qty" type="number" id="quantitySelect" min="1" value="1" required disabled>
+        <span>Quattro Formaggi (€13)</span>
+        <input class="qty" type="number" min="0" value="0" data-name="Quattro Formaggi" data-price="13">
+      </div>
+      <div class="menu-item">
+        <span>Prosciutto e Rucola (€14)</span>
+        <input class="qty" type="number" min="0" value="0" data-name="Prosciutto e Rucola" data-price="14">
+      </div>
+      <div class="menu-item">
+        <span>Tiramisù (€5)</span>
+        <input class="qty" type="number" min="0" value="0" data-name="Tiramisù" data-price="5">
+      </div>
+      <div class="menu-item">
+        <span>Panna cotta (€5)</span>
+        <input class="qty" type="number" min="0" value="0" data-name="Panna cotta" data-price="5">
+      </div>
+      <div class="menu-item">
+        <span>Acqua minerale (€2)</span>
+        <input class="qty" type="number" min="0" value="0" data-name="Acqua minerale" data-price="2">
+      </div>
+      <div class="menu-item">
+        <span>Vino della casa (€4)</span>
+        <input class="qty" type="number" min="0" value="0" data-name="Vino della casa" data-price="4">
       </div>
 
       <!-- Dati Cliente -->
       <div class="menu-item">
-        <label for="customerName" id="labelName">Nome *</label>
-        <input class="text-input" type="text" id="customerName" placeholder="Es. Mario" required />
+        <label for="customerName">Nome *</label>
+        <input class="text-input" type="text" id="customerName" placeholder="Es. Mario Rossi" required>
       </div>
       <div class="menu-item">
-        <label for="customerSurname" id="labelSurname">Cognome *</label>
-        <input class="text-input" type="text" id="customerSurname" placeholder="Es. Rossi" required />
+        <label for="customerAddress">Indirizzo *</label>
+        <input class="text-input" type="text" id="customerAddress" placeholder="Via, civico, città" required>
       </div>
       <div class="menu-item">
-        <label for="customerAddress" id="labelAddress">Indirizzo *</label>
-        <input class="text-input" type="text" id="customerAddress" placeholder="Via, civico, città" required />
-      </div>
-      <div class="menu-item">
-        <label for="customerPhone" id="labelPhone">Telefono *</label>
-        <input class="text-input" type="tel" id="customerPhone" placeholder="3331234567" required />
+        <label for="customerPhone">Telefono *</label>
+        <input class="text-input" type="tel" id="customerPhone" placeholder="3331234567" required>
       </div>
 
-      <div class="total" id="totalDisplay">Totale: €0.00</div>
+      <div class="total" id="totalDisplay">Totale: €0</div>
 
-      <button type="button" class="btn" id="addToCart">➕ Aggiungi al carrello</button>
+      <button type="button" class="btn" onclick="sendWhatsApp()">📲 Invia Ordine via WhatsApp</button>
+    </form>
+  </div>
 
-      <h3 style="text-align:center; margin-top:30px; color:#d35400;" id="cartTitle">Carrello</h3>
-      <ul id="cartList" style="list-style:none; padding-left:0; max-width:400px; margin: 10px auto;"></ul>
+  <script>
+    const openBtn = document.getElementById('openOrder');
+    const orderSection = document.getElementById('orderSection');
+    const inputs = document.querySelectorAll('.qty');
+    const totalDisplay = document.getElementById('totalDisplay');
 
-      <button type="button" class="btn" id="sendOrder">📲 Invia Ordine via
+    openBtn.addEventListener('click', () => {
+      orderSection.style.display = 'block';
+      openBtn.style.display = 'none';
+    });
+
+    inputs.forEach(input => {
+      input.addEventListener('input', updateTotal);
+    });
+
+    function updateTotal() {
+      let total = 0;
+      inputs.forEach(input => {
+        const qty = parseInt(input.value);
+        const price = parseFloat(input.dataset.price);
+        if (!isNaN(qty) && qty > 0) {
+          total += qty * price;
+        }
+      });
+      totalDisplay.textContent = "Totale: €" + total.toFixed(2);
+    }
+
+    function sendWhatsApp() {
+      let name = document.getElementById('customerName').value.trim();
+      let address = document.getElementById('customerAddress').value.trim();
+      let phone = document.getElementById('customerPhone').value.trim();
+
+      if (!name || !address || !phone) {
+        alert("Per favore, compila tutti i campi richiesti (Nome, Indirizzo e Telefono).");
+        return;
+      }
+
+      let message = `Ciao! Vorrei ordinare da Spi Pizza:\n\n`;
+      let hasOrder = false;
+
+      inputs.forEach(input => {
+        const qty = parseInt(input.value);
+        const nameItem = input.dataset.name;
+        const price = parseFloat(input.dataset.price);
+        if (qty > 0) {
+          hasOrder = true;
+          message += `- ${qty} x ${nameItem} (€${(qty * price).toFixed(2)})\n`;
+        }
+      });
+
+      if (!hasOrder) {
+        alert("Seleziona almeno un prodotto.");
+        return;
+      }
+
+      const total = totalDisplay.textContent.replace("Totale: ", "");
+      message += `\n${total}\n\n`;
+      message += `📍 *Dati cliente:*\n👤 Nome: ${name}\n🏠 Indirizzo: ${address}\n📞 Telefono: ${phone}`;
+
+      const phoneNumber = "3935560714";
+      const encoded = encodeURIComponent(message);
+      const url = `https://wa.me/${phoneNumber}?text=${encoded}`;
+
+      window.open(url, '_blank');
+    }
+  </script>
+
+</body>
+</html>
