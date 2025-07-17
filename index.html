@@ -1,461 +1,700 @@
 <!DOCTYPE html>
-<html lang="it" dir="ltr">
+<html lang="it">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Menù Ordine Multilingue con Carrello e WhatsApp</title>
-<style>
-  body {
-    font-family: Arial, sans-serif;
-    margin: 20px;
-    background: #fafafa;
-    color: #222;
-    transition: background-color 0.3s, color 0.3s;
-  }
-  body[dir="rtl"] {
-    direction: rtl;
-  }
-  h1, h2 {
-    margin-bottom: 10px;
-  }
-  /* Lingue */
-  #language-selector {
-    margin-bottom: 20px;
-  }
-  #language-selector button {
-    border: none;
-    background: transparent;
-    cursor: pointer;
-    font-size: 24px;
-    margin-right: 10px;
-    transition: transform 0.2s;
-  }
-  #language-selector button:focus,
-  #language-selector button:hover {
-    transform: scale(1.2);
-  }
-  /* Menu statico */
-  #menu-static {
-    border: 1px solid #ccc;
-    padding: 15px;
-    max-width: 700px;
-    background: white;
-    margin-bottom: 20px;
-    border-radius: 6px;
-  }
-  .category {
-    margin-bottom: 15px;
-  }
-  .category > h3 {
-    border-bottom: 2px solid #4a90e2;
-    padding-bottom: 5px;
-    margin-bottom: 10px;
-    color: #2c3e50;
-  }
-  .dish {
-    padding: 4px 0;
-    border-bottom: 1px dotted #ccc;
-    display: flex;
-    justify-content: space-between;
-  }
-  .dish:last-child {
-    border-bottom: none;
-  }
-  .dish .price {
-    font-weight: bold;
-    color: #27ae60;
-  }
-  /* Bottone per aprire form */
-  #open-order-btn {
-    display: inline-block;
-    background: #4a90e2;
-    color: white;
-    padding: 10px 20px;
-    border-radius: 6px;
-    cursor: pointer;
-    border: none;
-    font-size: 16px;
-    transition: background-color 0.3s;
-  }
-  #open-order-btn:hover,
-  #open-order-btn:focus {
-    background: #357ABD;
-  }
-  /* Form ordinazione */
-  #order-form-container {
-    margin-top: 20px;
-    max-width: 700px;
-    background: white;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    padding: 15px;
-    display: none;
-  }
-  #order-form fieldset {
-    border: none;
-    margin-bottom: 15px;
-  }
-  #order-form label {
-    display: block;
-    margin-bottom: 6px;
-    font-weight: 600;
-  }
-  #order-form select,
-  #order-form input[type="number"],
-  #order-form input[type="text"],
-  #order-form input[type="tel"],
-  #order-form input[type="email"],
-  #order-form textarea {
-    width: 100%;
-    padding: 6px 8px;
-    font-size: 14px;
-    border: 1px solid #bbb;
-    border-radius: 4px;
-    box-sizing: border-box;
-    margin-bottom: 10px;
-    resize: vertical;
-  }
-  #order-form input[type="number"] {
-    max-width: 80px;
-  }
-  /* Carrello e riepilogo */
-  #cart-summary {
-    margin-top: 20px;
-    background: #e8f5e9;
-    border: 1px solid #27ae60;
-    border-radius: 6px;
-    padding: 10px;
-  }
-  #cart-summary ul {
-    list-style: none;
-    padding-left: 0;
-  }
-  #cart-summary ul li {
-    margin-bottom: 6px;
-  }
-  #cart-total {
-    font-weight: bold;
-    margin-top: 10px;
-  }
-  /* Pulsante invio */
-  #send-order-btn {
-    background: #27ae60;
-    border: none;
-    color: white;
-    font-size: 18px;
-    padding: 12px 20px;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  #send-order-btn:hover,
-  #send-order-btn:focus {
-    background: #1e874b;
-  }
-  /* Errori */
-  .error {
-    color: #c0392b;
-    font-size: 13px;
-    margin-top: -8px;
-    margin-bottom: 10px;
-  }
-</style>
+  <meta charset="UTF-8" />
+  <title>Spi Pizza - Menù</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Fredoka', sans-serif;
+      background-color: #fff8dc;
+      margin: 0;
+      padding: 30px;
+      color: #2c3e50;
+      font-size: 1.4rem;
+      position: relative;
+      min-height: 100vh;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 3rem;
+      color: #e74c3c;
+      margin-bottom: 30px;
+    }
+
+    /* Categoria menù - visibile nel menù statico */
+    .dish.category {
+      font-weight: 700;
+      font-size: 1.6rem;
+      background-color: #ffe6e6;
+      color: #e74c3c;
+      padding: 8px 15px;
+      border-radius: 10px;
+      margin-top: 15px;
+      border: 2px solid #e74c3c;
+    }
+
+    /* Piatti menù statico */
+    .dish:not(.category) {
+      font-weight: 400;
+      font-size: 1.4rem;
+      padding-left: 25px;
+      color: #2c3e50;
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      padding-top: 10px;
+      padding-bottom: 10px;
+      border-bottom: 1px dotted #ccc;
+    }
+
+    /* Bottone "Voglio ordinare" */
+    .btn {
+      display: block;
+      margin: 40px auto;
+      padding: 15px 25px;
+      font-size: 1.5rem;
+      background-color: #27ae60;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .btn:hover {
+      background-color: #1e874b;
+    }
+
+    /* Sezione ordine (form a tendina) nascosta all'inizio */
+    .order-section {
+      display: none;
+      margin-top: 40px;
+      border-top: 3px dashed #999;
+      padding-top: 30px;
+    }
+
+    /* Menu-item nel form ordine */
+    .menu-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 12px 0;
+      padding: 10px;
+      background: #fff;
+      border: 2px solid #ffa500;
+      border-radius: 12px;
+      gap: 10px;
+    }
+
+    /* Input quantità e testo */
+    .qty, .text-input, select {
+      width: 100%;
+      padding: 10px;
+      font-size: 1.2rem;
+      border: 2px solid #ccc;
+      border-radius: 10px;
+      box-sizing: border-box;
+    }
+
+    /* Totale ordine */
+    .total {
+      text-align: center;
+      font-size: 1.6rem;
+      margin-top: 25px;
+      font-weight: bold;
+      color: #27ae60;
+    }
+
+    /* Riepilogo orario */
+    #orderTime {
+      margin-top: 20px;
+      font-weight: 700;
+      color: #b34700;
+      text-align: center;
+      font-size: 1.3rem;
+    }
+
+    /* Lingue con bandiere - contenitore */
+    #languageSelector {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      background: #fff8dc;
+      border: 1px solid #ccc;
+      border-radius: 12px;
+      padding: 5px 10px;
+      display: flex;
+      gap: 8px;
+      z-index: 1000;
+      cursor: pointer;
+    }
+    /* Bandierine come bottoni */
+    .flag-btn {
+      width: 30px;
+      height: 20px;
+      background-size: cover;
+      border-radius: 4px;
+      border: 2px solid transparent;
+      transition: border-color 0.3s;
+    }
+    .flag-btn:hover, .flag-btn.active {
+      border-color: #e74c3c;
+    }
+    /* Bandiere */
+    .flag-it { background-image: url('https://flagcdn.com/w20/it.png'); }
+    .flag-en { background-image: url('https://flagcdn.com/w20/gb.png'); }
+    .flag-fr { background-image: url('https://flagcdn.com/w20/fr.png'); }
+    .flag-ar { background-image: url('https://flagcdn.com/w20/sa.png'); }
+
+    /* Label piccoli nel form */
+    label {
+      flex-basis: 25%;
+      font-weight: 700;
+      color: #d35400;
+    }
+    .menu-item > label {
+      margin-right: 10px;
+    }
+  </style>
 </head>
 <body>
 
-<h1 id="title">Menù Ordinabile</h1>
+  <!-- Selettore lingua con bandiere -->
+  <div id="languageSelector" role="radiogroup" aria-label="Seleziona lingua">
+    <button class="flag-btn flag-it active" data-lang="it" aria-label="Italiano" role="radio" aria-checked="true" tabindex="0"></button>
+    <button class="flag-btn flag-en" data-lang="en" aria-label="English" role="radio" aria-checked="false" tabindex="-1"></button>
+    <button class="flag-btn flag-fr" data-lang="fr" aria-label="Français" role="radio" aria-checked="false" tabindex="-1"></button>
+    <button class="flag-btn flag-ar" data-lang="ar" aria-label="العربية" role="radio" aria-checked="false" tabindex="-1"></button>
+  </div>
 
-<div id="language-selector" role="group" aria-label="Selettore lingua">
-  <button aria-label="Italiano" data-lang="it" type="button">🇮🇹</button>
-  <button aria-label="English" data-lang="en" type="button">🇬🇧</button>
-  <button aria-label="Français" data-lang="fr" type="button">🇫🇷</button>
-  <button aria-label="العربية" data-lang="ar" type="button">🇸🇦</button>
-</div>
+  <h1 id="title">🍕 Menù Spi Pizza</h1>
 
-<div id="menu-static" aria-live="polite">
-  <!-- Menu statico sarà generato via JS -->
-</div>
+  <div id="menuStatic">
+    <div class="dish category" id="catClassic">Pizze Classiche</div>
+    <div class="dish"><span>Margherita</span> <span>€9</span></div>
+    <div class="dish"><span>Diavola</span> <span>€11</span></div>
 
-<button id="open-order-btn" aria-expanded="false" aria-controls="order-form-container">Apri modulo ordine</button>
+    <div class="dish category" id="catGourmet">Pizze Gourmet</div>
+    <div class="dish"><span>Quattro Formaggi</span> <span>€13</span></div>
+    <div class="dish"><span>Prosciutto e Rucola</span> <span>€14</span></div>
 
-<div id="order-form-container">
-  <form id="order-form" aria-label="Modulo ordine">
-    <fieldset>
-      <legend id="legend-order">Seleziona i prodotti</legend>
-      <label for="category-select" id="label-category">Categoria</label>
-      <select id="category-select" aria-describedby="desc-category" required>
-        <option value="" disabled selected>--</option>
-      </select>
+    <div class="dish category" id="catDessert">Dolci</div>
+    <div class="dish"><span>Tiramisù</span> <span>€5</span></div>
+    <div class="dish"><span>Panna cotta</span> <span>€5</span></div>
 
-      <label for="product-select" id="label-product">Prodotto</label>
-      <select id="product-select" aria-describedby="desc-product" required disabled>
-        <option value="" disabled selected>--</option>
-      </select>
+    <div class="dish category" id="catDrinks">Bevande</div>
+    <div class="dish"><span>Acqua minerale</span> <span>€2</span></div>
+    <div class="dish"><span>Vino della casa</span> <span>€4</span></div>
+  </div>
 
-      <label for="quantity-input" id="label-quantity">Quantità</label>
-      <input type="number" id="quantity-input" min="1" max="99" value="1" required />
+  <button class="btn" id="openOrder">📦 Voglio ordinare</button>
 
-      <button type="button" id="add-to-cart-btn">Aggiungi al carrello</button>
-    </fieldset>
+  <div class="order-section" id="orderSection" role="region" aria-labelledby="orderTitle">
+    <form id="orderForm">
+      <h2 id="orderTitle" style="text-align:center; color:#d35400; margin-bottom:20px;"></h2>
 
-    <fieldset>
-      <legend id="legend-client">Dati cliente</legend>
+      <!-- Categoria e prodotti come select a tendina -->
+      <div class="menu-item">
+        <label for="categorySelect" id="labelCategory">Categoria *</label>
+        <select id="categorySelect" required>
+          <!-- Options generate da JS -->
+        </select>
+      </div>
 
-      <label for="client-name" id="label-name">Nome</label>
-      <input type="text" id="client-name" required autocomplete="given-name" />
+      <div class="menu-item">
+        <label for="productSelect" id="labelProduct">Prodotto *</label>
+        <select id="productSelect" required disabled>
+          <option value="">Seleziona prima una categoria</option>
+        </select>
+      </div>
 
-      <label for="client-surname" id="label-surname">Cognome</label>
-      <input type="text" id="client-surname" required autocomplete="family-name" />
+      <div class="menu-item">
+        <label for="quantitySelect" id="labelQuantity">Quantità *</label>
+        <input class="qty" type="number" id="quantitySelect" min="1" value="1" required disabled>
+      </div>
 
-      <label for="client-phone" id="label-phone">Telefono</label>
-      <input type="tel" id="client-phone" required autocomplete="tel" pattern="[\d\s+\-()]{6,}" placeholder="+39 333 1234567" />
+      <!-- Dati Cliente -->
+      <div class="menu-item">
+        <label for="customerName" id="labelName">Nome *</label>
+        <input class="text-input" type="text" id="customerName" placeholder="Es. Mario" required />
+      </div>
+      <div class="menu-item">
+        <label for="customerSurname" id="labelSurname">Cognome *</label>
+        <input class="text-input" type="text" id="customerSurname" placeholder="Es. Rossi" required />
+      </div>
+      <div class="menu-item">
+        <label for="customerAddress" id="labelAddress">Indirizzo *</label>
+        <input class="text-input" type="text" id="customerAddress" placeholder="Via, civico, città" required />
+      </div>
+      <div class="menu-item">
+        <label for="customerPhone" id="labelPhone">Telefono *</label>
+        <input class="text-input" type="tel" id="customerPhone" placeholder="3331234567" required />
+      </div>
 
-      <label for="client-email" id="label-email">Email</label>
-      <input type="email" id="client-email" autocomplete="email" />
+      <div class="total" id="totalDisplay">Totale: €0.00</div>
 
-      <label for="client-note" id="label-note">Note</label>
-      <textarea id="client-note" rows="2" placeholder="Es. senza glutine"></textarea>
-    </fieldset>
+      <button type="button" class="btn" id="addToCart">➕ Aggiungi al carrello</button>
 
-    <div id="cart-summary" aria-live="polite" aria-atomic="true">
-      <h2 id="cart-title">Carrello</h2>
-      <ul id="cart-items">
-        <!-- elementi carrello -->
-      </ul>
-      <div id="cart-total">Totale: € 0.00</div>
-    </div>
+      <h3 style="text-align:center; margin-top:30px; color:#d35400;" id="cartTitle">Carrello</h3>
+      <ul id="cartList" style="list-style:none; padding-left:0; max-width:400px; margin: 10px auto;"></ul>
 
-    <button type="submit" id="send-order-btn">Invia ordine via WhatsApp</button>
-  </form>
-</div>
+      <button type="button" class="btn" id="sendOrder">📲 Invia Ordine via WhatsApp</button>
+    </form>
+
+    <div id="orderTime" aria-live="polite" role="status"></div>
+  </div>
 
 <script>
-(() => {
-  "use strict";
+  // Prossima parte: dati prodotti, funzioni di traduzione e logica
+</script>
 
-  // Dati del menù con traduzioni e prezzi
-  const menuData = {
+</body>
+</html>
+<script>
+(() => {
+  // Dati prodotti con prezzi e categorie
+  const productsData = {
     it: {
       categories: {
-        antipasti: "Antipasti",
-        primi: "Primi Piatti",
-        secondi: "Secondi Piatti",
-        dolci: "Dolci"
+        classic: "Pizze Classiche",
+        gourmet: "Pizze Gourmet",
+        dessert: "Dolci",
+        drinks: "Bevande",
       },
-      dishes: {
-        antipasti: [
-          { id: "bruschetta", name: "Bruschetta al Pomodoro", price: 5.5 },
-          { id: "carpaccio", name: "Carpaccio di Manzo", price: 8.0 }
+      products: {
+        classic: [
+          { name: "Margherita", price: 9 },
+          { name: "Diavola", price: 11 },
         ],
-        primi: [
-          { id: "lasagne", name: "Lasagne alla Bolognese", price: 9.5 },
-          { id: "carbonara", name: "Spaghetti alla Carbonara", price: 8.5 }
+        gourmet: [
+          { name: "Quattro Formaggi", price: 13 },
+          { name: "Prosciutto e Rucola", price: 14 },
         ],
-        secondi: [
-          { id: "bistecca", name: "Bistecca alla Fiorentina", price: 18.0 },
-          { id: "pollo", name: "Pollo alla Cacciatora", price: 12.0 }
+        dessert: [
+          { name: "Tiramisù", price: 5 },
+          { name: "Panna cotta", price: 5 },
         ],
-        dolci: [
-          { id: "tiramisu", name: "Tiramisù", price: 5.0 },
-          { id: "panna", name: "Panna Cotta", price: 4.5 }
-        ]
+        drinks: [
+          { name: "Acqua minerale", price: 2 },
+          { name: "Vino della casa", price: 4 },
+        ],
       },
-      labels: {
-        title: "Menù Ordinabile",
-        openOrder: "Apri modulo ordine",
-        closeOrder: "Chiudi modulo ordine",
-        selectCategory: "Categoria",
-        selectProduct: "Prodotto",
-        quantity: "Quantità",
-        addToCart: "Aggiungi al carrello",
-        clientDataLegend: "Dati cliente",
-        name: "Nome",
-        surname: "Cognome",
-        phone: "Telefono",
-        email: "Email",
-        note: "Note",
+      uiText: {
+        title: "🍕 Menù Spi Pizza",
+        btnOrder: "📦 Voglio ordinare",
+        orderTitle: "Modulo d'ordine",
+        labelCategory: "Categoria *",
+        labelProduct: "Prodotto *",
+        labelQuantity: "Quantità *",
+        labelName: "Nome *",
+        labelSurname: "Cognome *",
+        labelAddress: "Indirizzo *",
+        labelPhone: "Telefono *",
+        addToCart: "➕ Aggiungi al carrello",
         cartTitle: "Carrello",
+        sendOrder: "📲 Invia Ordine via WhatsApp",
         total: "Totale",
-        sendOrder: "Invia ordine via WhatsApp",
-        legendOrder: "Seleziona i prodotti"
+        selectCategoryFirst: "Seleziona prima una categoria",
+        orderSent: "Ordine inviato!",
       }
     },
     en: {
       categories: {
-        antipasti: "Starters",
-        primi: "First Courses",
-        secondi: "Main Courses",
-        dolci: "Desserts"
+        classic: "Classic Pizzas",
+        gourmet: "Gourmet Pizzas",
+        dessert: "Desserts",
+        drinks: "Drinks",
       },
-      dishes: {
-        antipasti: [
-          { id: "bruschetta", name: "Tomato Bruschetta", price: 5.5 },
-          { id: "carpaccio", name: "Beef Carpaccio", price: 8.0 }
+      products: {
+        classic: [
+          { name: "Margherita", price: 9 },
+          { name: "Diavola", price: 11 },
         ],
-        primi: [
-          { id: "lasagne", name: "Bolognese Lasagna", price: 9.5 },
-          { id: "carbonara", name: "Spaghetti Carbonara", price: 8.5 }
+        gourmet: [
+          { name: "Four Cheese", price: 13 },
+          { name: "Ham and Arugula", price: 14 },
         ],
-        secondi: [
-          { id: "bistecca", name: "Florentine Steak", price: 18.0 },
-          { id: "pollo", name: "Hunter-style Chicken", price: 12.0 }
+        dessert: [
+          { name: "Tiramisu", price: 5 },
+          { name: "Panna cotta", price: 5 },
         ],
-        dolci: [
-          { id: "tiramisu", name: "Tiramisu", price: 5.0 },
-          { id: "panna", name: "Panna Cotta", price: 4.5 }
-        ]
+        drinks: [
+          { name: "Mineral Water", price: 2 },
+          { name: "House Wine", price: 4 },
+        ],
       },
-      labels: {
-        title: "Order Menu",
-        openOrder: "Open Order Form",
-        closeOrder: "Close Order Form",
-        selectCategory: "Category",
-        selectProduct: "Product",
-        quantity: "Quantity",
-        addToCart: "Add to Cart",
-        clientDataLegend: "Client Details",
-        name: "Name",
-        surname: "Surname",
-        phone: "Phone",
-        email: "Email",
-        note: "Notes",
+      uiText: {
+        title: "🍕 Spi Pizza Menu",
+        btnOrder: "📦 I want to order",
+        orderTitle: "Order Form",
+        labelCategory: "Category *",
+        labelProduct: "Product *",
+        labelQuantity: "Quantity *",
+        labelName: "Name *",
+        labelSurname: "Surname *",
+        labelAddress: "Address *",
+        labelPhone: "Phone *",
+        addToCart: "➕ Add to Cart",
         cartTitle: "Cart",
+        sendOrder: "📲 Send Order via WhatsApp",
         total: "Total",
-        sendOrder: "Send Order via WhatsApp",
-        legendOrder: "Select products"
+        selectCategoryFirst: "Select a category first",
+        orderSent: "Order sent!",
       }
     },
     fr: {
       categories: {
-        antipasti: "Entrées",
-        primi: "Plats premiers",
-        secondi: "Plats principaux",
-        dolci: "Desserts"
+        classic: "Pizzas Classiques",
+        gourmet: "Pizzas Gourmets",
+        dessert: "Desserts",
+        drinks: "Boissons",
       },
-      dishes: {
-        antipasti: [
-          { id: "bruschetta", name: "Bruschetta Tomate", price: 5.5 },
-          { id: "carpaccio", name: "Carpaccio de Boeuf", price: 8.0 }
+      products: {
+        classic: [
+          { name: "Margherita", price: 9 },
+          { name: "Diavola", price: 11 },
         ],
-        primi: [
-          { id: "lasagne", name: "Lasagne à la Bolognaise", price: 9.5 },
-          { id: "carbonara", name: "Spaghetti Carbonara", price: 8.5 }
+        gourmet: [
+          { name: "Quatre Fromages", price: 13 },
+          { name: "Jambon et Roquette", price: 14 },
         ],
-        secondi: [
-          { id: "bistecca", name: "Steak Florentin", price: 18.0 },
-          { id: "pollo", name: "Poulet Chasseur", price: 12.0 }
+        dessert: [
+          { name: "Tiramisu", price: 5 },
+          { name: "Panna cotta", price: 5 },
         ],
-        dolci: [
-          { id: "tiramisu", name: "Tiramisu", price: 5.0 },
-          { id: "panna", name: "Panna Cotta", price: 4.5 }
-        ]
+        drinks: [
+          { name: "Eau minérale", price: 2 },
+          { name: "Vin de la maison", price: 4 },
+        ],
       },
-      labels: {
-        title: "Menu à Commander",
-        openOrder: "Ouvrir le formulaire",
-        closeOrder: "Fermer le formulaire",
-        selectCategory: "Catégorie",
-        selectProduct: "Produit",
-        quantity: "Quantité",
-        addToCart: "Ajouter au panier",
-        clientDataLegend: "Informations client",
-        name: "Prénom",
-        surname: "Nom",
-        phone: "Téléphone",
-        email: "Email",
-        note: "Notes",
+      uiText: {
+        title: "🍕 Menu Spi Pizza",
+        btnOrder: "📦 Je veux commander",
+        orderTitle: "Formulaire de commande",
+        labelCategory: "Catégorie *",
+        labelProduct: "Produit *",
+        labelQuantity: "Quantité *",
+        labelName: "Prénom *",
+        labelSurname: "Nom *",
+        labelAddress: "Adresse *",
+        labelPhone: "Téléphone *",
+        addToCart: "➕ Ajouter au panier",
         cartTitle: "Panier",
+        sendOrder: "📲 Envoyer la commande via WhatsApp",
         total: "Total",
-        sendOrder: "Envoyer la commande via WhatsApp",
-        legendOrder: "Sélectionnez les produits"
+        selectCategoryFirst: "Sélectionnez d'abord une catégorie",
+        orderSent: "Commande envoyée !",
       }
     },
     ar: {
       categories: {
-        antipasti: "المقبلات",
-        primi: "المعكرونة",
-        secondi: "الأطباق الرئيسية",
-        dolci: "الحلويات"
+        classic: "البيتزا الكلاسيكية",
+        gourmet: "البيتزا الفاخرة",
+        dessert: "الحلويات",
+        drinks: "المشروبات",
       },
-      dishes: {
-        antipasti: [
-          { id: "bruschetta", name: "بروشيتا بالطماطم", price: 5.5 },
-          { id: "carpaccio", name: "كارباشيو اللحم", price: 8.0 }
+      products: {
+        classic: [
+          { name: "مارغريتا", price: 9 },
+          { name: "ديافولا", price: 11 },
         ],
-        primi: [
-          { id: "lasagne", name: "لازانيا بولونيز", price: 9.5 },
-          { id: "carbonara", name: "سباغيتي كاربونارا", price: 8.5 }
+        gourmet: [
+          { name: "أربعة أجبان", price: 13 },
+          { name: "لحم وخس", price: 14 },
         ],
-        secondi: [
-          { id: "bistecca", name: "ستيك فلورنتين", price: 18.0 },
-          { id: "pollo", name: "دجاج صياد", price: 12.0 }
+        dessert: [
+          { name: "تيراميسو", price: 5 },
+          { name: "بانا كوتا", price: 5 },
         ],
-        dolci: [
-          { id: "tiramisu", name: "تيراميسو", price: 5.0 },
-          { id: "panna", name: "بانا كوتا", price: 4.5 }
-        ]
+        drinks: [
+          { name: "مياه معدنية", price: 2 },
+          { name: "نبيذ البيت", price: 4 },
+        ],
       },
-      labels: {
-        title: "قائمة الطلبات",
-        openOrder: "فتح نموذج الطلب",
-        closeOrder: "إغلاق نموذج الطلب",
-        selectCategory: "الفئة",
-        selectProduct: "المنتج",
-        quantity: "الكمية",
-        addToCart: "أضف إلى السلة",
-        clientDataLegend: "بيانات العميل",
-        name: "الاسم",
-        surname: "اللقب",
-        phone: "الهاتف",
-        email: "البريد الإلكتروني",
-        note: "ملاحظات",
+      uiText: {
+        title: "🍕 قائمة سباي بيتزا",
+        btnOrder: "📦 أريد الطلب",
+        orderTitle: "نموذج الطلب",
+        labelCategory: "الفئة *",
+        labelProduct: "المنتج *",
+        labelQuantity: "الكمية *",
+        labelName: "الاسم *",
+        labelSurname: "اللقب *",
+        labelAddress: "العنوان *",
+        labelPhone: "الهاتف *",
+        addToCart: "➕ أضف إلى السلة",
         cartTitle: "السلة",
-        total: "الإجمالي",
-        sendOrder: "إرسال الطلب عبر واتساب",
-        legendOrder: "اختر المنتجات"
+        sendOrder: "📲 أرسل الطلب عبر واتساب",
+        total: "المجموع",
+        selectCategoryFirst: "اختر الفئة أولاً",
+        orderSent: "تم إرسال الطلب!",
       }
     }
   };
 
   let currentLang = "it";
-
-  // Stato carrello: array di { category, id, name, price, qty }
   let cart = [];
 
-  // Elementi DOM
-  const elMenuStatic = document.getElementById("menu-static");
-  const elLangButtons = document.querySelectorAll("#language-selector button");
-  const elOpenOrderBtn = document.getElementById("open-order-btn");
-  const elOrderFormContainer = document.getElementById("order-form-container");
-  const elCategorySelect = document.getElementById("category-select");
-  const elProductSelect = document.getElementById("product-select");
-  const elQuantityInput = document.getElementById("quantity-input");
-  const elAddToCartBtn = document.getElementById("add-to-cart-btn");
-  const elCartItems = document.getElementById("cart-items");
-  const elCartTotal = document.getElementById("cart-total");
-  const elSendOrderBtn = document.getElementById("send-order-btn");
-  const elOrderForm = document.getElementById("order-form");
-  const elClientName = document.getElementById("client-name");
-  const elClientSurname = document.getElementById("client-surname");
-  const elClientPhone = document.getElementById("client-phone");
-  const elClientEmail = document.getElementById("client-email");
-  const elClientNote = document.getElementById("client-note");
-  const elTitle = document.getElementById("title");
-  const elLegendOrder = document.querySelector("#order-form fieldset legend");
-  const elLabelCategory = document.getElementById("label-category");
-  const elLabelProduct = document.getElementById("label-product");
-  const elLabelQuantity = document.getElementById("label-quantity");
-  const elLabelName = document.getElementById("label-name");
-  const elLabelSurname = document.getElementById("label-surname");
-  const elLabelPhone = document.getElementById("label-phone");
-  const elLabelEmail = document.getElementById("label-email");
-  const elLabelNote = document.getElementById("label-note");
-  const elCartTitle = document.getElementById("cart-title");
-  const elOpenOrderBtnAria = elOpenOrderBtn;
+  // Elementi UI
+  const langButtons = document.querySelectorAll(".flag-btn");
+  const titleEl = document.getElementById("title");
+  const btnOrder = document.getElementById("openOrder");
+  const orderSection = document.getElementById("orderSection");
+  const orderTitle = document.getElementById("orderTitle");
+  const labelCategory = document.getElementById("labelCategory");
+  const labelProduct = document.getElementById("labelProduct");
+  const labelQuantity = document.getElementById("labelQuantity");
+  const labelName = document.getElementById("labelName");
+  const labelSurname = document.getElementById("labelSurname");
+  const labelAddress = document.getElementById("labelAddress");
+  const labelPhone = document.getElementById("labelPhone");
+  const addToCartBtn = document.getElementById("addToCart");
+  const cartTitle = document.getElementById("cartTitle");
+  const sendOrderBtn = document.getElementById("sendOrder");
+  const totalDisplay = document.getElementById("totalDisplay");
+  const cartList = document.getElementById("cartList");
+  const categorySelect = document.getElementById("categorySelect");
+  const productSelect = document.getElementById("productSelect");
+  const quantitySelect = document.getElementById("quantitySelect");
+  const orderTime = document.getElementById("orderTime");
 
-  // Funzione per aggiornare il menù statico visibile
-  function renderStaticMenu() {
-    const data = menuData[currentLang];
-    elMenuStatic.innerHTML = "";
-    for (const catKey in data.categories) {
-      const
+  // Funzione per aggiornare testi UI in base alla lingua
+  function updateUIText() {
+    const ui = productsData[currentLang].uiText;
+    titleEl.textContent = ui.title;
+    btnOrder.textContent = ui.btnOrder;
+    orderTitle.textContent = ui.orderTitle;
+    labelCategory.textContent = ui.labelCategory;
+    labelProduct.textContent = ui.labelProduct;
+    labelQuantity.textContent = ui.labelQuantity;
+    labelName.textContent = ui.labelName;
+    labelSurname.textContent = ui.labelSurname;
+    labelAddress.textContent = ui.labelAddress;
+    labelPhone.textContent = ui.labelPhone;
+    addToCartBtn.textContent = ui.addToCart;
+    cartTitle.textContent = ui.cartTitle;
+    sendOrderBtn.textContent = ui.sendOrder;
+    totalDisplay.textContent = `${ui.total}: €0.00`;
+  }
+
+  // Riempie il menù statico in alto con le categorie e piatti nella lingua scelta
+  function updateMenuStatic() {
+    const menuStatic = document.getElementById("menuStatic");
+    // Svuota il contenuto
+    menuStatic.innerHTML = "";
+    const catNames = productsData[currentLang].categories;
+    const prods = productsData[currentLang].products;
+
+    for (const catKey in catNames) {
+      // categoria come titolo
+      const catDiv = document.createElement("div");
+      catDiv.classList.add("dish", "category");
+      catDiv.textContent = catNames[catKey];
+      menuStatic.appendChild(catDiv);
+
+      // prodotti categoria
+      prods[catKey].forEach((p) => {
+        const dishDiv = document.createElement("div");
+        dishDiv.classList.add("dish");
+        const spanName = document.createElement("span");
+        spanName.textContent = p.name;
+        const spanPrice = document.createElement("span");
+        spanPrice.textContent = `€${p.price}`;
+        dishDiv.appendChild(spanName);
+        dishDiv.appendChild(spanPrice);
+        menuStatic.appendChild(dishDiv);
+      });
+    }
+  }
+
+  // Riempie la select categoria nel form
+  function populateCategorySelect() {
+    categorySelect.innerHTML = "";
+    const catNames = productsData[currentLang].categories;
+    for (const catKey in catNames) {
+      const opt = document.createElement("option");
+      opt.value = catKey;
+      opt.textContent = catNames[catKey];
+      categorySelect.appendChild(opt);
+    }
+  }
+
+  // Aggiorna la select prodotti in base alla categoria selezionata
+  function updateProductSelect() {
+    productSelect.innerHTML = "";
+    const cat = categorySelect.value;
+    if (!cat) {
+      const opt = document.createElement("option");
+      opt.textContent = productsData[currentLang].uiText.selectCategoryFirst;
+      productSelect.appendChild(opt);
+      productSelect.disabled = true;
+      quantitySelect.disabled = true;
+      return;
+    }
+    productSelect.disabled = false;
+    quantitySelect.disabled = false;
+    const prods = productsData[currentLang].products[cat];
+    prods.forEach((p, i) => {
+      const opt = document.createElement("option");
+      opt.value = i;
+      opt.textContent = `${p.name} - €${p.price}`;
+      productSelect.appendChild(opt);
+    });
+  }
+
+  // Calcola il totale del carrello
+  function calculateTotal() {
+    let total = 0;
+    cart.forEach(item => {
+      total += item.price * item.quantity;
+    });
+    totalDisplay.textContent = `${productsData[currentLang].uiText.total}: €${total.toFixed(2)}`;
+  }
+
+  // Mostra il carrello a video
+  function updateCartUI() {
+    cartList.innerHTML = "";
+    if (cart.length === 0) {
+      cartList.textContent = "(vuoto)";
+      return;
+    }
+    cart.forEach((item, idx) => {
+      const li = document.createElement("li");
+      li.textContent = `${item.name} x${item.quantity} - €${(item.price * item.quantity).toFixed(2)}`;
+      // Pulsante rimuovi
+      const btnRemove = document.createElement("button");
+      btnRemove.textContent = "❌";
+      btnRemove.style.marginLeft = "10px";
+      btnRemove.style.cursor = "pointer";
+      btnRemove.setAttribute("aria-label", `Rimuovi ${item.name} dal carrello`);
+      btnRemove.onclick = () => {
+        cart.splice(idx, 1);
+        updateCartUI();
+        calculateTotal();
+      };
+      li.appendChild(btnRemove);
+      cartList.appendChild(li);
+    });
+  }
+
+  // Gestisce cambio lingua al click su bandiera
+  function onLanguageChange(e) {
+    const selectedLang = e.target.getAttribute("data-lang");
+    if (!selectedLang || selectedLang === currentLang) return;
+
+    currentLang = selectedLang;
+
+    // Aggiorna classi active bandiere e attributi aria
+    langButtons.forEach(btn => {
+      const lang = btn.getAttribute("data-lang");
+      btn.classList.toggle("active", lang === currentLang);
+      btn.setAttribute("aria-checked", lang === currentLang ? "true" : "false");
+      btn.tabIndex = lang === currentLang ? 0 : -1;
+    });
+
+    updateUIText();
+    updateMenuStatic();
+    populateCategorySelect();
+    productSelect.innerHTML = "";
+    productSelect.disabled = true;
+    quantitySelect.disabled = true;
+    cart = [];
+    updateCartUI();
+    calculateTotal();
+    orderTime.textContent = "";
+  }
+
+  // Gestione apertura modulo ordine
+  btnOrder.addEventListener("click", () => {
+    if (orderSection.style.display === "none" || orderSection.style.display === "") {
+      orderSection.style.display = "block";
+      btnOrder.style.display = "none";
+    }
+  });
+
+  // Cambia prodotti se cambia categoria
+  categorySelect.addEventListener("change", () => {
+    updateProductSelect();
+  });
+
+  // Aggiungi prodotto al carrello
+  addToCartBtn.addEventListener("click", () => {
+    const cat = categorySelect.value;
+    const prodIndex = productSelect.value;
+    const qty = parseInt(quantitySelect.value, 10);
+    if (!cat || prodIndex === "" || isNaN(qty) || qty < 1) {
+      alert("Compila tutti i campi correttamente.");
+      return;
+    }
+    const prodData = productsData[currentLang].products[cat][prodIndex];
+    cart.push({
+      category: cat,
+      name: prodData.name,
+      price: prodData.price,
+      quantity: qty
+    });
+    updateCartUI();
+    calculateTotal();
+  });
+
+  // Invia ordine via WhatsApp
+  sendOrderBtn.addEventListener("click", () => {
+    if (cart.length === 0) {
+      alert("Il carrello è vuoto.");
+      return;
+    }
+    // Dati cliente
+    const name = document.getElementById("customerName").value.trim();
+    const surname = document.getElementById("customerSurname").value.trim();
+    const address = document.getElementById("customerAddress").value.trim();
+    const phone = document.getElementById("customerPhone").value.trim();
+    if (!name || !surname || !address || !phone) {
+      alert("Compila tutti i dati cliente.");
+      return;
+    }
+
+    // Costruisci messaggio ordine
+    const ui = productsData[currentLang].uiText;
+    let msg = `${ui.title}\n${ui.cartTitle}:\n`;
+    cart.forEach(item => {
+      msg += `- ${item.name} x${item.quantity} = €${(item.price * item.quantity).toFixed(2)}\n`;
+    });
+    let total = cart.reduce((sum, i) => sum + i.price * i.quantity, 0);
+    msg += `${ui.total}: €${total.toFixed(2)}\n\n`;
+    msg += `${ui.labelName}: ${name}\n${ui.labelSurname}: ${surname}\n${ui.labelAddress}: ${address}\n${ui.labelPhone}: ${phone}\n`;
+
+    // Orario previsto di consegna = tra 40 e 60 minuti
+    const now = new Date();
+    const minMinutes = 40;
+    const maxMinutes = 60;
+    const minTime = new Date(now.getTime() + minMinutes*60000);
+    const maxTime = new Date(now.getTime() + maxMinutes*60000);
+    const formatTime = d => d.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+    const deliveryWindow = `${formatTime(minTime)} - ${formatTime(maxTime)}`;
+    msg += `\nOrario consegna previsto: ${deliveryWindow}`;
+
+    orderTime.textContent = `Orario consegna previsto: ${deliveryWindow}`;
+
+    // Encode messaggio per WhatsApp
+    const encodedMsg = encodeURIComponent(msg);
+
+    // Numero WhatsApp di destinazione
+    const whatsappNumber = "3935560714";
+
+    // Apri WhatsApp con messaggio precompilato
+    const url = `https://wa.me/${whatsappNumber}?text=${encodedMsg}`;
+    window.open(url, "_blank");
+  });
+
+  // Event listener per cambio lingua su bandiere
+  langButtons.forEach(btn => {
+    btn.addEventListener("click", onLanguageChange);
+  });
+
+  // Inizializzazione
+  updateUIText();
+  updateMenuStatic();
+  populateCategorySelect();
+  productSelect.disabled = true;
