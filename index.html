@@ -123,4 +123,106 @@
     <div class="dish"><span>Vino della casa</span> <span>€4</span></div>
   </div>
 
-  <button class="btn" onclick="document.querySelector('.order-section').style.display
+  <!-- ✅ Bottone ben visibile -->
+  <button class="btn" id="openOrder">📦 Voglio ordinare</button>
+
+  <div class="order-section" id="orderSection">
+    <form id="orderForm">
+      <div class="menu-item">
+        <span>Margherita (€9)</span>
+        <input class="qty" type="number" min="0" value="0" data-name="Margherita" data-price="9">
+      </div>
+      <div class="menu-item">
+        <span>Diavola (€11)</span>
+        <input class="qty" type="number" min="0" value="0" data-name="Diavola" data-price="11">
+      </div>
+      <div class="menu-item">
+        <span>Quattro Formaggi (€13)</span>
+        <input class="qty" type="number" min="0" value="0" data-name="Quattro Formaggi" data-price="13">
+      </div>
+      <div class="menu-item">
+        <span>Prosciutto e Rucola (€14)</span>
+        <input class="qty" type="number" min="0" value="0" data-name="Prosciutto e Rucola" data-price="14">
+      </div>
+      <div class="menu-item">
+        <span>Tiramisù (€5)</span>
+        <input class="qty" type="number" min="0" value="0" data-name="Tiramisù" data-price="5">
+      </div>
+      <div class="menu-item">
+        <span>Panna cotta (€5)</span>
+        <input class="qty" type="number" min="0" value="0" data-name="Panna cotta" data-price="5">
+      </div>
+      <div class="menu-item">
+        <span>Acqua minerale (€2)</span>
+        <input class="qty" type="number" min="0" value="0" data-name="Acqua minerale" data-price="2">
+      </div>
+      <div class="menu-item">
+        <span>Vino della casa (€4)</span>
+        <input class="qty" type="number" min="0" value="0" data-name="Vino della casa" data-price="4">
+      </div>
+
+      <div class="total" id="totalDisplay">Totale: €0</div>
+
+      <button type="button" class="btn" onclick="sendWhatsApp()">📲 Invia Ordine via WhatsApp</button>
+    </form>
+  </div>
+
+  <script>
+    const openBtn = document.getElementById('openOrder');
+    const orderSection = document.getElementById('orderSection');
+    const inputs = document.querySelectorAll('.qty');
+    const totalDisplay = document.getElementById('totalDisplay');
+
+    openBtn.addEventListener('click', () => {
+      orderSection.style.display = 'block';
+      openBtn.style.display = 'none';
+    });
+
+    inputs.forEach(input => {
+      input.addEventListener('input', updateTotal);
+    });
+
+    function updateTotal() {
+      let total = 0;
+      inputs.forEach(input => {
+        const qty = parseInt(input.value);
+        const price = parseFloat(input.dataset.price);
+        if (!isNaN(qty)) {
+          total += qty * price;
+        }
+      });
+      totalDisplay.textContent = "Totale: €" + total.toFixed(2);
+    }
+
+    function sendWhatsApp() {
+      let message = "Ciao! Vorrei ordinare da Spi Pizza:\n";
+      let hasOrder = false;
+
+      inputs.forEach(input => {
+        const qty = parseInt(input.value);
+        const name = input.dataset.name;
+        const price = parseFloat(input.dataset.price);
+        if (qty > 0) {
+          hasOrder = true;
+          message += `- ${qty} x ${name} (€${(qty * price).toFixed(2)})\n`;
+        }
+      });
+
+      if (!hasOrder) {
+        alert("Seleziona almeno un prodotto.");
+        return;
+      }
+
+      const total = totalDisplay.textContent.replace("Totale: ", "");
+      message += `\nTotale: ${total}`;
+
+      const phone = "3935560714";
+      const encoded = encodeURIComponent(message);
+      const url = `https://wa.me/${phone}?text=${encoded}`;
+
+      window.open(url, '_blank');
+    }
+  </script>
+
+</body>
+</html>
